@@ -1,4 +1,4 @@
-package com.github.world_heritage_client.remote
+package com.github.gericass.world_heritage_client.data.remote
 
 const val GET_ALL_CATEGORIES = "/v1/categories"
 const val GET_VIDEO_BY_CATEGORY = "/v1/videos/{page}"
