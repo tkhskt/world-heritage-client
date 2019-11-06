@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.gericass.feature.home" />
+<manifest package="com.github.gericass.world_heritage_client.feature.home" />
