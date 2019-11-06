@@ -1,0 +1,3 @@
+<resources>
+    <string name="common_msg_api_error">通信エラー</string>
+</resources>

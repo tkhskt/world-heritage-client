@@ -3,8 +3,12 @@ package com.github.gericass.world_heritage_client.di
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.AvgleRepositoryImpl
+import com.github.gericass.world_heritage_client.data.remote.BASE_URL
+import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -28,7 +32,10 @@ object Modules {
         }
 
         single {
-            Moshi.Builder().build()
+            Moshi
+                .Builder()
+                .add(KotlinJsonAdapterFactory())
+                .build()
         }
 
 
@@ -36,13 +43,17 @@ object Modules {
             Retrofit.Builder()
                 .client(get())
                 .addConverterFactory(MoshiConverterFactory.create(get()))
-                .baseUrl("https://api.github.com")
+                .baseUrl(BASE_URL)
                 .build()
         }
     }
 
     val repositoryModule = module {
         single<AvgleRepository> { AvgleRepositoryImpl(get()) }
+    }
+
+    val viewModelModule = module {
+        viewModel { CategoryViewModel(get()) }
     }
 
     //val navigationModule = module {
