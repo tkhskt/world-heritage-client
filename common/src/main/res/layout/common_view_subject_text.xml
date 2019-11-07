@@ -10,7 +10,7 @@
         android:layout_marginEnd="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/common_gray_dark"
         android:textSize="24sp"
         android:textStyle="bold"
         tools:text="カテゴリ" />

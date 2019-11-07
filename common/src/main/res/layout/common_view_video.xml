@@ -98,7 +98,7 @@
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:text="@{video.title}"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/common_gray_dark"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
