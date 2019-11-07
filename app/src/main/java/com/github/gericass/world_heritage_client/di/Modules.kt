@@ -5,6 +5,7 @@ import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.AvgleRepositoryImpl
 import com.github.gericass.world_heritage_client.data.remote.BASE_URL
 import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
+import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -54,6 +55,7 @@ object Modules {
 
     val viewModelModule = module {
         viewModel { CategoryViewModel(get()) }
+        viewModel { CollectionViewModel(get()) }
     }
 
     //val navigationModule = module {

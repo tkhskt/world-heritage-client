@@ -1,6 +1,7 @@
 package com.github.gericass.world_heritage_client.data.remote
 
 import com.github.gericass.world_heritage_client.data.model.Categories
+import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.data.model.Videos
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,4 +21,9 @@ interface AvgleClient {
         @Path("page") page: Int,
         @Path("query") query: String
     ): Videos
+
+    @GET(GET_COLLECTIONS)
+    suspend fun getCollections(
+        @Path("page") page: Int
+    ): Collections
 }

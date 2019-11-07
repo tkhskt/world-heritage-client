@@ -15,6 +15,7 @@ object Libs {
         val epoxy = "3.8.0"
         val butterKnifePlugin = "10.1.0"
         val lifecycle = "2.1.0"
+        val paging = "2.1.0"
     }
 
     val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
@@ -44,4 +45,5 @@ object Libs {
         "com.jakewharton:butterknife-gradle-plugin:${Versions.butterKnifePlugin}"
     val lifecycle = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
+    val paging = "androidx.paging:paging-runtime:${Versions.paging}"
 }
