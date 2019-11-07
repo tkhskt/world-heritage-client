@@ -5,6 +5,7 @@ import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.data.model.Videos
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface AvgleClient {
     @GET(GET_ALL_CATEGORIES)
@@ -13,7 +14,7 @@ interface AvgleClient {
     @GET(GET_VIDEO_BY_CATEGORY)
     suspend fun getVideoByCategory(
         @Path("page") page: Int,
-        @Path("c") categoryId: String
+        @Query("c") categoryId: String
     ): Videos
 
     @GET(GET_SEARCH_VIDEO)

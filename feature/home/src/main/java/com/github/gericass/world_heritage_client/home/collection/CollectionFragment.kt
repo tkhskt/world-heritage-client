@@ -53,7 +53,6 @@ class CollectionFragment : Fragment() {
     private fun setUpList() {
         val spanCount = 2
         collectionController = CollectionController()
-        recyclerView.setController(collectionController)
         val layoutManager = GridLayoutManager(requireContext(), spanCount)
         collectionController.spanCount = spanCount
         layoutManager.spanSizeLookup = collectionController.spanSizeLookup
