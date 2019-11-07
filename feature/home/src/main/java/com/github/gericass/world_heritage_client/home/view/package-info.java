@@ -1,4 +1,4 @@
-@EpoxyDataBindingLayouts({R2.layout.home_item_category})
+@EpoxyDataBindingLayouts({R2.layout.home_item_category, R2.layout.home_item_collection})
 
 package com.github.gericass.world_heritage_client.home.view;
 

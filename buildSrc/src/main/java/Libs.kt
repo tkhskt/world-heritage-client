@@ -41,6 +41,7 @@ object Libs {
     val epoxy = "com.airbnb.android:epoxy:${Versions.epoxy}"
     val epoxyAnnotation = "com.airbnb.android:epoxy-processor:${Versions.epoxy}"
     val epoxyDataBinding = "com.airbnb.android:epoxy-databinding:${Versions.epoxy}"
+    val epoxyPaging = "com.airbnb.android:epoxy-paging:${Versions.epoxy}"
     val butterKnifePlugin =
         "com.jakewharton:butterknife-gradle-plugin:${Versions.butterKnifePlugin}"
     val lifecycle = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"

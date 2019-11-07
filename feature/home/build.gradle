@@ -61,6 +61,7 @@ dependencies {
     implementation Libs.epoxy
     kapt Libs.epoxyAnnotation
     implementation Libs.epoxyDataBinding
+    implementation Libs.epoxyPaging
     implementation Libs.viewModel
     implementation Libs.lifecycle
     implementation Libs.paging

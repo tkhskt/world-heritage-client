@@ -54,12 +54,6 @@ class CategoryFragment : Fragment() {
     private fun setUpList() {
         categoryController = CategoryController()
         recyclerView.setController(categoryController)
-        //recyclerView.apply {
-        //    val manager = LinearLayoutManager(requireContext())
-        //    layoutManager = manager
-        //    adapter = categoryController.adapter
-        //}
-
     }
 
     private fun observeCategories(response: Response<List<Categories.Category>>?) {
