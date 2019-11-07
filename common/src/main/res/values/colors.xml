@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="common_blue">#4078c0</color>
+    <color name="common_green">#6cc644</color>
+    <color name="common_red">#bd2c00</color>
+    <color name="common_gray_light">#999</color>
+    <color name="common_gray">#767676</color>
+    <color name="common_gray_dark">#333</color>
+    <color name="common_transparent_black">#A6000000</color>
+</resources>
