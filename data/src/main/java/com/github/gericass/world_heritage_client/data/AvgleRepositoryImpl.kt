@@ -1,6 +1,7 @@
 package com.github.gericass.world_heritage_client.data
 
 import com.github.gericass.world_heritage_client.data.model.Categories
+import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.data.remote.AvgleClient
 import retrofit2.Retrofit
@@ -21,5 +22,9 @@ class AvgleRepositoryImpl(
 
     override suspend fun searchVideo(page: Int, keyword: String): Videos {
         return client.search(page, keyword)
+    }
+
+    override suspend fun getCollections(page: Int): Collections {
+        return client.getCollections(page)
     }
 }

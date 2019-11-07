@@ -43,4 +43,6 @@ dependencies {
 
     implementation Libs.glide
     kapt Libs.glideAnnotation
+    implementation Libs.epoxy
+    kapt Libs.epoxyAnnotation
 }
