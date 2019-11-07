@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.observe
@@ -54,18 +53,20 @@ class CategoryFragment : Fragment() {
     private fun setUpList() {
         categoryController = CategoryController()
         recyclerView.setController(categoryController)
+        categoryController.setData(null, true)
     }
 
     private fun observeCategories(response: Response<List<Categories.Category>>?) {
-        binding.progress.isVisible = false
         if (response?.status == Status.ERROR) {
+            categoryController.run {
+                setData(null, false)
+            }
             toast(getString(R.string.common_msg_api_error))
             return Timber.e(response.error)
         }
         response?.data?.let {
             categoryController.run {
-                setData(it)
-                //requestModelBuild()
+                setData(it, false)
             }
         }
 
