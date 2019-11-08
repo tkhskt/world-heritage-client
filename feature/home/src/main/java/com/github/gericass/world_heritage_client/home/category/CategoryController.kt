@@ -4,6 +4,7 @@ import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.carousel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.github.gericass.world_heritage_client.common.CommonViewVideoBindingModel_
+import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.progressView
 import com.github.gericass.world_heritage_client.common.view.subjectTextView
 import com.github.gericass.world_heritage_client.data.model.Categories
@@ -11,7 +12,8 @@ import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.feature.home.HomeItemCategoryBindingModel_
 
 class CategoryController(
-    val categoryClickListener: CategoryClickListener
+    private val categoryClickListener: CategoryClickListener,
+    private val videoClickListener: VideoClickListener
 ) : PagedListEpoxyController<Videos.Video>() {
 
     val categories = mutableListOf<Categories.Category>()
@@ -36,6 +38,7 @@ class CategoryController(
             item?.let {
                 video(it)
             }
+            listener(videoClickListener)
         }
     }
 

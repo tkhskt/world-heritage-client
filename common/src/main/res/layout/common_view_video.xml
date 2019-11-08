@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="listener"
+            type="com.github.gericass.world_heritage_client.common.view.VideoClickListener" />
+
+        <variable
             name="video"
             type="com.github.gericass.world_heritage_client.data.model.Videos.Video" />
     </data>
@@ -17,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:onClick="@{() -> listener.onClick(video)}"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
