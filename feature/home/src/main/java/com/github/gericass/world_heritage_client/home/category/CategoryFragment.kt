@@ -1,21 +1,25 @@
 package com.github.gericass.world_heritage_client.home.category
 
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.trusted.TrustedWebActivityIntentBuilder
 import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.toast
+import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.vo.Response
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Categories
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentCategoryBinding
+import com.google.androidbrowserhelper.trusted.TwaLauncher
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -32,6 +36,13 @@ class CategoryFragment : Fragment() {
         override fun onClick(category: Categories.Category) {
             viewModel.fetch(category.CHID, category.name)
             categoryController.currentCategory = category.name
+        }
+    }
+
+    private val videoClickListener = object : VideoClickListener {
+        override fun onClick(video: Videos.Video) {
+            val builder = TrustedWebActivityIntentBuilder(Uri.parse(video.video_url))
+            TwaLauncher(requireContext()).launch(builder, null, null)
         }
     }
 
@@ -62,7 +73,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun setUpList() {
-        categoryController = CategoryController(categoryClickListener)
+        categoryController = CategoryController(categoryClickListener, videoClickListener)
         recyclerView.setController(categoryController)
     }
 

@@ -23,6 +23,11 @@ android {
         enabled = true
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     kapt {
         correctErrorTypes = true
     }
@@ -65,6 +70,8 @@ dependencies {
     implementation Libs.viewModel
     implementation Libs.lifecycle
     implementation Libs.paging
+    implementation Libs.browther
+    implementation Libs.customTabHelper
 }
 repositories {
     mavenCentral()
