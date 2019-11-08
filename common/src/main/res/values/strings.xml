@@ -1,4 +1,5 @@
 <resources>
     <string name="common_msg_api_error">通信エラー</string>
     <string name="common_category">カテゴリー</string>
+    <string name="common_hd">HD</string>
 </resources>
