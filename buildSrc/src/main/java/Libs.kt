@@ -18,6 +18,7 @@ object Libs {
         val paging = "2.1.0"
         val browther = "1.0.0"
         val customTabHelper = "0.1.0-alpha1"
+        val room = "2.2.1"
     }
 
     val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
@@ -48,8 +49,12 @@ object Libs {
         "com.jakewharton:butterknife-gradle-plugin:${Versions.butterKnifePlugin}"
     val lifecycle = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
+    val liveData = "androidx.lifecycle:lifecycle-livedata:${Versions.lifecycle}"
     val paging = "androidx.paging:paging-runtime:${Versions.paging}"
-    val browther = "androidx.browser:browser:${Versions.browther}"
+    val browser = "androidx.browser:browser:${Versions.browther}"
     val customTabHelper =
         "com.google.androidbrowserhelper:androidbrowserhelper:${Versions.customTabHelper}"
+    val room = "androidx.room:room-runtime:${Versions.room}"
+    val roomAnnotation = "androidx.room:room-compiler:${Versions.room}"
+    val roomKtx = "androidx.room:room-ktx:${Versions.room}"
 }

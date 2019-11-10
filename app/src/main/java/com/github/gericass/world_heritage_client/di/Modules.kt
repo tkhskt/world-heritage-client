@@ -1,14 +1,18 @@
 package com.github.gericass.world_heritage_client.di
 
+import androidx.room.Room
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.AvgleRepositoryImpl
+import com.github.gericass.world_heritage_client.data.local.AvgleDatabase
 import com.github.gericass.world_heritage_client.data.remote.BASE_URL
 import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
 import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
+import com.github.gericass.world_heritage_client.search.search.SearchViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -49,13 +53,24 @@ object Modules {
         }
     }
 
+    val databaseModule = module {
+        single {
+            Room.databaseBuilder(
+                androidApplication(),
+                AvgleDatabase::class.java,
+                "avgle.db"
+            ).build()
+        }
+    }
+
     val repositoryModule = module {
-        single<AvgleRepository> { AvgleRepositoryImpl(get()) }
+        single<AvgleRepository> { AvgleRepositoryImpl(get(), get()) }
     }
 
     val viewModelModule = module {
         viewModel { CategoryViewModel(get()) }
         viewModel { CollectionViewModel(get()) }
+        viewModel { SearchViewModel(get()) }
     }
 
     //val navigationModule = module {

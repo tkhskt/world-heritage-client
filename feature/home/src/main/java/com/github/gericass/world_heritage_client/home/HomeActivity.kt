@@ -8,6 +8,7 @@ import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeActivityHomeBinding
 import com.github.gericass.world_heritage_client.home.category.CategoryFragment
 import com.github.gericass.world_heritage_client.home.collection.CollectionFragment
+import com.github.gericass.world_heritage_client.search.SearchActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -20,7 +21,10 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.home_activity_home)
-        binding.appBar
+        binding.searchBackground.setOnClickListener {
+            val intent = SearchActivity.createIntent(this)
+            startActivity(intent)
+        }
         setUpViewPager()
         setUpTab()
     }

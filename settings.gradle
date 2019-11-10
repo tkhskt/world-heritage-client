@@ -1,1 +1,1 @@
-include ':app', ':data', ':feature:home', ':common'
+include ':app', ':data', ':feature:home', ':common', ':feature:search'
