@@ -17,7 +17,7 @@ android {
 
     }
 
-    //resourcePrefix 'home_'
+    resourcePrefix 'home_'
 
     dataBinding {
         enabled = true
@@ -55,6 +55,7 @@ dependencies {
 
     implementation project(":data")
     implementation project(":common")
+    implementation project(":feature:search")
 
     implementation Libs.timber
     implementation Libs.viewPager2
@@ -70,7 +71,7 @@ dependencies {
     implementation Libs.viewModel
     implementation Libs.lifecycle
     implementation Libs.paging
-    implementation Libs.browther
+    implementation Libs.browser
     implementation Libs.customTabHelper
 }
 repositories {
