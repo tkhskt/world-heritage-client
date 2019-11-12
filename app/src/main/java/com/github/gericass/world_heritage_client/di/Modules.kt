@@ -8,6 +8,7 @@ import com.github.gericass.world_heritage_client.data.local.AvgleDatabase
 import com.github.gericass.world_heritage_client.data.remote.BASE_URL
 import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
 import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
+import com.github.gericass.world_heritage_client.search.result.ResultViewModel
 import com.github.gericass.world_heritage_client.search.search.SearchViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -28,11 +29,6 @@ object Modules {
                 .writeTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(15, TimeUnit.SECONDS)
                 .addNetworkInterceptor(StethoInterceptor())
-                //.addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
-                //    Timber.tag("okhttp").d(it)
-                //}).apply {
-                //    level = HttpLoggingInterceptor.Level.BODY
-                //})
                 .build()
         }
 
@@ -71,6 +67,7 @@ object Modules {
         viewModel { CategoryViewModel(get()) }
         viewModel { CollectionViewModel(get()) }
         viewModel { SearchViewModel(get()) }
+        viewModel { ResultViewModel(get()) }
     }
 
     //val navigationModule = module {

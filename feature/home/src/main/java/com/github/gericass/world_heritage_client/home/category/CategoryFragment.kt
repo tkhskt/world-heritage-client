@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.browser.trusted.TrustedWebActivityIntentBuilder
 import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
-import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.toast
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
@@ -29,7 +28,6 @@ class CategoryFragment : Fragment() {
     private val viewModel: CategoryViewModel by viewModel()
 
     private lateinit var binding: HomeFragmentCategoryBinding
-    private lateinit var recyclerView: EpoxyRecyclerView
     private lateinit var categoryController: CategoryController
 
     private val categoryClickListener = object : CategoryController.CategoryClickListener {
@@ -52,7 +50,7 @@ class CategoryFragment : Fragment() {
         viewModel.run {
             observe(categories, ::observeCategories)
             observe(pagedList, ::observePagedList)
-            observe(networkStatus, ::observeNetworkState)
+            observe(networkStatus, ::observeNetworkStatus)
         }
     }
 
@@ -68,13 +66,12 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
-        recyclerView = binding.recycler
         setUpList()
     }
 
     private fun setUpList() {
         categoryController = CategoryController(categoryClickListener, videoClickListener)
-        recyclerView.setController(categoryController)
+        binding.recycler.setController(categoryController)
     }
 
     private fun observeCategories(response: Response<List<Categories.Category>>?) {
@@ -98,7 +95,7 @@ class CategoryFragment : Fragment() {
         categoryController.submitList(pagedList)
     }
 
-    private fun observeNetworkState(status: Status?) {
+    private fun observeNetworkStatus(status: Status?) {
         when (status ?: return) {
             Status.LOADING -> categoryController.isLoading = true
             Status.SUCCESS -> {
