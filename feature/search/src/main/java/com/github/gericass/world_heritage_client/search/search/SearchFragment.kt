@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.github.gericass.world_heritage_client.common.hideKeyboard
 import com.github.gericass.world_heritage_client.common.observe
+import com.github.gericass.world_heritage_client.common.showKeyboard
 import com.github.gericass.world_heritage_client.data.model.Keyword
 import com.github.gericass.world_heritage_client.search.R
 import com.github.gericass.world_heritage_client.search.SearchItemKeywordBindingModel_
@@ -21,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment() {
 
     private lateinit var binding: SearchFragmentSearchBinding
+
     private val viewModel: SearchViewModel by viewModel()
 
     private val args: SearchFragmentArgs by navArgs()
@@ -39,7 +42,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +57,9 @@ class SearchFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         lifecycle.addObserver(viewModel)
+        args.keyword?.let {
+            viewModel.keywordEditText.value = it
+        }
         binding.searchText.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -64,8 +69,13 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
+        showKeyboard()
     }
 
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard(binding.root)
+    }
 
     private fun setUpToolbar() {
         (requireActivity() as AppCompatActivity).apply {
@@ -96,13 +106,14 @@ class SearchFragment : Fragment() {
     private fun transitToResult(keyword: String?) {
         val word = keyword ?: return
         viewModel.saveKeyword(word)
-        // TODO 遷移
+        val direction = SearchFragmentDirections.searchToResult(word)
+        findNavController().navigate(direction)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             args.keyword?.run {
-                findNavController().navigate(R.id.action_pop_search)
+                findNavController().navigateUp()
             } ?: run {
                 requireActivity().finish()
             }

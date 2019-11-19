@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.github.gericass.world_heritage_client.search.search.SearchViewModel" />
+            type="com.github.gericass.world_heritage_client.search.result.ResultViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        tools:context=".search.SearchFragment">
-
+        tools:context=".result.ResultFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -43,34 +41,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:descendantFocusability="beforeDescendants"
+                    android:onClick="@{() -> viewModel.onKeywordClick()}"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <TextView
                         android:id="@+id/search_text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:background="@color/common_transparent"
-                        android:hint="@string/common_search"
-                        android:imeOptions="actionSearch"
                         android:singleLine="true"
-                        android:text="@={viewModel.keywordEditText}"
+                        android:text="@{viewModel.keyword}"
                         android:textColor="@color/common_gray_dark"
-                        android:textCursorDrawable="@drawable/common_cursor"
-                        android:theme="@style/common_EditTextStyle"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/search_button"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:selection="@{viewModel.keywordEditText}" />
+                        tools:text="aaaaa" />
 
                     <ImageView
                         android:id="@+id/search_button"
                         android:layout_width="0dp"
                         android:layout_height="24dp"
                         android:layout_marginEnd="16dp"
-                        android:onClick="@{() -> viewModel.onSearchClick()}"
                         android:src="@drawable/common_ic_search_24dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +105,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/border" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

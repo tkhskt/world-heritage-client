@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
-import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.observe
-import com.github.gericass.world_heritage_client.common.toast
+import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.feature.home.R
@@ -22,7 +21,6 @@ class CollectionFragment : Fragment() {
 
     private val viewModel: CollectionViewModel by viewModel()
     private lateinit var binding: HomeFragmentCollectionBinding
-    private lateinit var recyclerView: EpoxyRecyclerView
     private lateinit var collectionController: CollectionController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,18 +44,19 @@ class CollectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = binding.recycler
         setUpList()
     }
 
     private fun setUpList() {
         val spanCount = 2
         collectionController = CollectionController()
-        val layoutManager = GridLayoutManager(requireContext(), spanCount)
+        val manager = GridLayoutManager(requireContext(), spanCount)
         collectionController.spanCount = spanCount
-        layoutManager.spanSizeLookup = collectionController.spanSizeLookup
-        recyclerView.setController(collectionController)
-        recyclerView.layoutManager = layoutManager
+        manager.spanSizeLookup = collectionController.spanSizeLookup
+        binding.recycler.apply {
+            setController(collectionController)
+            layoutManager = manager
+        }
     }
 
 
@@ -71,10 +70,9 @@ class CollectionFragment : Fragment() {
                 Status.LOADING -> collectionController.isLoading = true
                 Status.SUCCESS -> collectionController.isLoading = false
                 Status.ERROR -> run {
-                    toast(getString(R.string.common_msg_api_error))
+                    binding.root.showSnackbar(getString(R.string.common_msg_api_error))
                     collectionController.isLoading = false
                 }
-
             }
         }
     }
