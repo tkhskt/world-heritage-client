@@ -6,7 +6,9 @@ import com.github.gericass.world_heritage_client.common.view.progressView
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.feature.home.HomeItemCollectionBindingModel_
 
-class CollectionController : PagedListEpoxyController<Collections.Collection>() {
+class CollectionController(
+    private val collectionClickListener: CollectionClickListener
+) : PagedListEpoxyController<Collections.Collection>() {
 
     var isLoading: Boolean = false
         set(value) {
@@ -25,6 +27,7 @@ class CollectionController : PagedListEpoxyController<Collections.Collection>() 
             item?.let {
                 collection(it)
             }
+            listener(collectionClickListener)
         }
     }
 
@@ -35,6 +38,9 @@ class CollectionController : PagedListEpoxyController<Collections.Collection>() 
                 id(models.size)
             }
         }
+    }
 
+    interface CollectionClickListener {
+        fun onClick(keyword: String)
     }
 }

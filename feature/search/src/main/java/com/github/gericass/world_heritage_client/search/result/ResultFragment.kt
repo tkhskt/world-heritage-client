@@ -48,6 +48,7 @@ class ResultFragment : BaseFragment() {
             observe(networkStatus, ::observeNetworkStatus)
             observe(keywordClick, ::observeKeywordClick)
         }
+        viewModel.saveKeyword(args.keyword)
     }
 
     override fun onCreateView(

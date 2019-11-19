@@ -14,6 +14,7 @@ import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentCollectionBinding
+import com.github.gericass.world_heritage_client.search.SearchActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -23,7 +24,14 @@ class CollectionFragment : BaseFragment() {
 
     private lateinit var binding: HomeFragmentCollectionBinding
 
-    private val collectionController = CollectionController()
+    private val collectionClickListener = object : CollectionController.CollectionClickListener {
+        override fun onClick(keyword: String) {
+            val intent = SearchActivity.createIntent(requireActivity(), keyword)
+            startActivity(intent)
+        }
+    }
+
+    private val collectionController = CollectionController(collectionClickListener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
