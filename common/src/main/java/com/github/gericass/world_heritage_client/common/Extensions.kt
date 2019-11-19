@@ -5,9 +5,7 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
@@ -20,13 +18,27 @@ fun BaseFragment.showSnackbar(
     msg: String,
     length: Int = BaseTransientBottomBar.LENGTH_INDEFINITE
 ) {
-    Snackbar.make(requireView(), msg, length).apply {
+    val snackbar = Snackbar.make(requireView(), msg, length).apply {
         setAction("Retry") {
             refresh()
             dismiss()
         }
-
-    }.show()
+    }
+    val observer = object : LifecycleObserver {
+        @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+        fun dissmiss() {
+            snackbar.dismiss()
+        }
+    }
+    lifecycle.addObserver(observer)
+    snackbar.apply {
+        addCallback(object : Snackbar.Callback() {
+            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                lifecycle.removeObserver(observer)
+            }
+        })
+        show()
+    }
 }
 
 fun Fragment.hideKeyboard(rootView: View) {
