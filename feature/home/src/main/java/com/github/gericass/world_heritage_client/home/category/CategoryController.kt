@@ -53,6 +53,7 @@ class CategoryController(
         subjectTextView {
             id("subject_category")
             text("カテゴリー")
+            withPaddingStyle()
         }
         carousel {
             id("category")
@@ -62,6 +63,7 @@ class CategoryController(
         subjectTextView {
             id("subject_description")
             text(currentCategory)
+            withPaddingStyle()
         }
         super.addModels(models)
         if (isLoading) {

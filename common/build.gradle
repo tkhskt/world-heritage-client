@@ -54,6 +54,8 @@ dependencies {
     implementation Libs.epoxy
     kapt Libs.epoxyAnnotation
     implementation Libs.epoxyDataBinding
+    implementation Libs.paris
+    kapt Libs.parisAnnotation
 }
 
 repositories {

@@ -3,6 +3,7 @@ package com.github.gericass.world_heritage_client.home.collection
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.github.gericass.world_heritage_client.common.view.progressView
+import com.github.gericass.world_heritage_client.common.view.subjectTextView
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.feature.home.HomeItemCollectionBindingModel_
 
@@ -32,6 +33,11 @@ class CollectionController(
     }
 
     override fun addModels(models: List<EpoxyModel<*>>) {
+        subjectTextView {
+            id("subject_collection")
+            text("コレクション")
+            withNoPaddingStyle()
+        }
         super.addModels(models)
         if (isLoading) {
             progressView {
