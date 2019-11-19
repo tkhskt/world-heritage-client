@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.github.gericass.world_heritage_client.common.hideKeyboard
 import com.github.gericass.world_heritage_client.common.observe
+import com.github.gericass.world_heritage_client.common.showKeyboard
 import com.github.gericass.world_heritage_client.data.model.Keyword
 import com.github.gericass.world_heritage_client.search.R
 import com.github.gericass.world_heritage_client.search.SearchItemKeywordBindingModel_
@@ -21,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment() {
 
     private lateinit var binding: SearchFragmentSearchBinding
+
     private val viewModel: SearchViewModel by viewModel()
 
     private val args: SearchFragmentArgs by navArgs()
@@ -66,6 +69,12 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
+        showKeyboard()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard(binding.root)
     }
 
     private fun setUpToolbar() {

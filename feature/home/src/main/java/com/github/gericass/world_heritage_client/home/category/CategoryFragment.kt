@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.browser.trusted.TrustedWebActivityIntentBuilder
-import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
+import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
-import com.github.gericass.world_heritage_client.common.toast
+import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.vo.Response
 import com.github.gericass.world_heritage_client.common.vo.Status
@@ -23,12 +23,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
-class CategoryFragment : Fragment() {
+class CategoryFragment : BaseFragment() {
 
     private val viewModel: CategoryViewModel by viewModel()
 
     private lateinit var binding: HomeFragmentCategoryBinding
-    private lateinit var categoryController: CategoryController
 
     private val categoryClickListener = object : CategoryController.CategoryClickListener {
         override fun onClick(category: Categories.Category) {
@@ -43,6 +42,9 @@ class CategoryFragment : Fragment() {
             TwaLauncher(requireContext()).launch(builder, null, null)
         }
     }
+
+    private val categoryController: CategoryController =
+        CategoryController(categoryClickListener, videoClickListener)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,17 +68,12 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
-        setUpList()
-    }
-
-    private fun setUpList() {
-        categoryController = CategoryController(categoryClickListener, videoClickListener)
         binding.recycler.setController(categoryController)
     }
 
     private fun observeCategories(response: Response<List<Categories.Category>>?) {
         if (response?.status == Status.ERROR) {
-            toast(getString(R.string.common_msg_api_error))
+            binding.root.showSnackbar(getString(R.string.common_msg_api_error))
             return Timber.e(response.error)
         }
         response?.data?.let {
@@ -102,10 +99,14 @@ class CategoryFragment : Fragment() {
                 categoryController.isLoading = false
             }
             Status.ERROR -> run {
-                toast(getString(R.string.common_msg_api_error))
+                binding.root.showSnackbar(getString(R.string.common_msg_api_error))
                 categoryController.isLoading = false
             }
         }
+    }
+
+    override fun refresh() {
+        // TODO
     }
 
     companion object {

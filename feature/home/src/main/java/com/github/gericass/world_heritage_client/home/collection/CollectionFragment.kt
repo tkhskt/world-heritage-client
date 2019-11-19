@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.gericass.world_heritage_client.common.observe
-import com.github.gericass.world_heritage_client.common.toast
+import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.feature.home.R
@@ -70,7 +70,7 @@ class CollectionFragment : Fragment() {
                 Status.LOADING -> collectionController.isLoading = true
                 Status.SUCCESS -> collectionController.isLoading = false
                 Status.ERROR -> run {
-                    toast(getString(R.string.common_msg_api_error))
+                    binding.root.showSnackbar(getString(R.string.common_msg_api_error))
                     collectionController.isLoading = false
                 }
             }

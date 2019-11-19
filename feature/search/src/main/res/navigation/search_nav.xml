@@ -36,11 +36,6 @@
         android:label="result"
         tools:layout="@layout/search_fragment_result">
 
-        <!-- toolbarの戻るボタンを押した時の挙動 -->
-        <action
-            android:id="@+id/action_pop_result"
-            app:popUpTo="@id/result_fragment"
-            app:popUpToInclusive="true" />
 
         <!-- 検索窓をタップした時の挙動 -->
         <action

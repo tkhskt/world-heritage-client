@@ -9,23 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.trusted.TrustedWebActivityIntentBuilder
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.PagedList
+import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
-import com.github.gericass.world_heritage_client.common.toast
+import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.search.R
 import com.github.gericass.world_heritage_client.search.databinding.SearchFragmentResultBinding
-
 import com.google.androidbrowserhelper.trusted.TwaLauncher
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ResultFragment : Fragment() {
+class ResultFragment : BaseFragment() {
 
     private lateinit var binding: SearchFragmentResultBinding
 
@@ -33,14 +32,14 @@ class ResultFragment : Fragment() {
 
     private val args: ResultFragmentArgs by navArgs()
 
-    private lateinit var resultController: ResultController
-
     private val videoClickListener = object : VideoClickListener {
         override fun onClick(video: Videos.Video) {
             val builder = TrustedWebActivityIntentBuilder(Uri.parse(video.video_url))
             TwaLauncher(requireContext()).launch(builder, null, null)
         }
     }
+
+    private val resultController = ResultController(videoClickListener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,17 +62,11 @@ class ResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpToolbar()
-        setUpList()
+        binding.keywordLogRecycler.setController(resultController)
         binding.viewModel = viewModel
         viewModel.keyword.value = args.keyword
         lifecycle.addObserver(viewModel)
     }
-
-    private fun setUpList() {
-        resultController = ResultController(videoClickListener)
-        binding.keywordLogRecycler.setController(resultController)
-    }
-
 
     private fun setUpToolbar() {
         (requireActivity() as AppCompatActivity).apply {
@@ -104,20 +97,19 @@ class ResultFragment : Fragment() {
                 resultController.isLoading = false
             }
             Status.ERROR -> run {
-                toast(getString(R.string.common_msg_api_error))
+                binding.root.showSnackbar(getString(R.string.common_msg_api_error))
                 resultController.isLoading = false
             }
         }
     }
 
+    override fun refresh() {
+        // TODO
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            if (requireActivity().supportFragmentManager.backStackEntryCount > 1) {
-                //findNavController().popBackStack()
-                findNavController().navigate(R.id.action_pop_result)
-            } else {
-                requireActivity().finish()
-            }
+            requireActivity().finish()
         }
         return super.onOptionsItemSelected(item)
     }
