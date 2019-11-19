@@ -77,12 +77,11 @@ class CategoryFragment : BaseFragment() {
                 refresh()
             }
         }
-
     }
 
     private fun observeCategories(response: Response<List<Categories.Category>>?) {
         if (response?.status == Status.ERROR) {
-            binding.root.showSnackbar(getString(R.string.common_msg_api_error))
+            showSnackbar(getString(R.string.common_msg_api_error))
             return Timber.e(response.error)
         }
         response?.data?.let {
@@ -116,7 +115,7 @@ class CategoryFragment : BaseFragment() {
                 categoryController.isLoading = false
             }
             Status.ERROR -> run {
-                binding.root.showSnackbar(getString(R.string.common_msg_api_error))
+                showSnackbar(getString(R.string.common_msg_api_error))
                 categoryController.isLoading = false
             }
         }
