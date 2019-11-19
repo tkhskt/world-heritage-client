@@ -24,12 +24,20 @@ class CategoryViewModel(
     private val _networkStatus = MutableLiveData<Status>()
     val networkStatus: LiveData<Status> = _networkStatus
 
-    private val factory = CategoryDataSourceFactory(viewModelScope, repository, _networkStatus)
+    val isRefreshing = MediatorLiveData<Boolean>()
 
+    private val factory = CategoryDataSourceFactory(viewModelScope, repository, _networkStatus)
 
     var currentCategoryName: String = ""
 
     init {
+        val loadingObserver = Observer<Status> {
+            if (it == Status.LOADING) {
+                return@Observer
+            }
+            isRefreshing.value = false
+        }
+        isRefreshing.addSource(_networkStatus, loadingObserver)
         val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setPageSize(50).build()
@@ -54,5 +62,9 @@ class CategoryViewModel(
     fun fetch(categoryId: String, categoryName: String) {
         factory.setNewCategoryId(categoryId)
         currentCategoryName = categoryName
+    }
+
+    fun refresh() {
+        init()
     }
 }

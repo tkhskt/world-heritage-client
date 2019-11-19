@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
+import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.vo.Status
@@ -17,17 +17,19 @@ import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFr
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class CollectionFragment : Fragment() {
+class CollectionFragment : BaseFragment() {
 
     private val viewModel: CollectionViewModel by viewModel()
+
     private lateinit var binding: HomeFragmentCollectionBinding
-    private lateinit var collectionController: CollectionController
+
+    private val collectionController = CollectionController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.run {
             observe(pagedList, ::observePagedList)
-            observe(networkState, ::observeNetworkState)
+            observe(networkStatus, ::observeNetworkStatus)
         }
     }
 
@@ -35,7 +37,6 @@ class CollectionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.home_fragment_collection, container, false)
         binding = HomeFragmentCollectionBinding.bind(view)
         return binding.root
@@ -45,11 +46,18 @@ class CollectionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpList()
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+        binding.refresh.apply {
+            setOnRefreshListener {
+                viewModel.isRefreshing.value = true
+                refresh()
+            }
+        }
     }
 
     private fun setUpList() {
         val spanCount = 2
-        collectionController = CollectionController()
         val manager = GridLayoutManager(requireContext(), spanCount)
         collectionController.spanCount = spanCount
         manager.spanSizeLookup = collectionController.spanSizeLookup
@@ -64,10 +72,15 @@ class CollectionFragment : Fragment() {
         collectionController.submitList(pagedList)
     }
 
-    private fun observeNetworkState(status: Status?) {
+    private fun observeNetworkStatus(status: Status?) {
         status?.let {
             when (it) {
-                Status.LOADING -> collectionController.isLoading = true
+                Status.LOADING -> collectionController.isLoading = run {
+                    viewModel.isRefreshing.value?.let { refreshing ->
+                        if (refreshing) return@run false
+                    }
+                    return@run true
+                }
                 Status.SUCCESS -> collectionController.isLoading = false
                 Status.ERROR -> run {
                     binding.root.showSnackbar(getString(R.string.common_msg_api_error))
@@ -75,6 +88,10 @@ class CollectionFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun refresh() {
+        viewModel.refresh()
     }
 
     companion object {

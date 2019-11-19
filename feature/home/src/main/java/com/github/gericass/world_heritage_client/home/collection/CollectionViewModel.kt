@@ -1,9 +1,6 @@
 package com.github.gericass.world_heritage_client.home.collection
 
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.gericass.world_heritage_client.common.vo.Status
@@ -15,15 +12,30 @@ class CollectionViewModel(
 ) : ViewModel(), LifecycleObserver {
 
     val pagedList: LiveData<PagedList<Collections.Collection>>
-    
-    private val factory = CollectionDataSourceFactory(viewModelScope, repository)
-    val networkState: LiveData<Status> by lazy { factory.getNetworkState() }
+
+    private val _networkStatus = MutableLiveData<Status>()
+    val networkStatus: LiveData<Status> = _networkStatus
+
+    private val factory = CollectionDataSourceFactory(viewModelScope, repository, _networkStatus)
+
+    val isRefreshing = MediatorLiveData<Boolean>()
 
     init {
+        val loadingObserver = Observer<Status> {
+            if (it == Status.LOADING) {
+                return@Observer
+            }
+            isRefreshing.value = false
+        }
+        isRefreshing.addSource(_networkStatus, loadingObserver)
         val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setPageSize(50).build()
         pagedList = LivePagedListBuilder(factory, pagedListConfig)
             .build()
+    }
+
+    fun refresh() {
+        factory.refresh()
     }
 }

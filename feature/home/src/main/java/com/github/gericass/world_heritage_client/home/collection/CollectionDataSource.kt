@@ -1,6 +1,5 @@
 package com.github.gericass.world_heritage_client.home.collection
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.github.gericass.world_heritage_client.common.vo.Status
@@ -14,12 +13,9 @@ import timber.log.Timber
 
 class CollectionDataSource(
     private val scope: CoroutineScope,
-    private val repository: AvgleRepository
+    private val repository: AvgleRepository,
+    private val status: MutableLiveData<Status>
 ) : PageKeyedDataSource<Int, Collections.Collection>() {
-
-
-    private val _networkState: MutableLiveData<Status> = MutableLiveData()
-    val networkState: LiveData<Status> = _networkState
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -55,7 +51,7 @@ class CollectionDataSource(
         callback: (Int?, List<Collections.Collection>) -> Unit
     ) {
         try {
-            _networkState.postValue(Status.LOADING)
+            status.postValue(Status.LOADING)
             val collections = withContext(Dispatchers.IO) {
                 repository.getCollections(page)
             }
@@ -65,10 +61,10 @@ class CollectionDataSource(
             } else {
                 callback(null, collections.response.collections)
             }
-            _networkState.postValue(Status.SUCCESS)
+            status.postValue(Status.SUCCESS)
         } catch (e: Throwable) {
             Timber.e(e)
-            _networkState.postValue(Status.ERROR)
+            status.postValue(Status.ERROR)
         }
     }
 

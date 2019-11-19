@@ -68,7 +68,16 @@ class CategoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
-        binding.recycler.setController(categoryController)
+        binding.apply {
+            viewModel = this@CategoryFragment.viewModel
+            lifecycleOwner = this@CategoryFragment
+            recycler.setController(categoryController)
+            refresh.setOnRefreshListener {
+                this@CategoryFragment.viewModel.isRefreshing.value = true
+                refresh()
+            }
+        }
+
     }
 
     private fun observeCategories(response: Response<List<Categories.Category>>?) {
@@ -78,6 +87,7 @@ class CategoryFragment : BaseFragment() {
         }
         response?.data?.let {
             categoryController.run {
+                categories.clear()
                 categories.addAll(it)
                 requestModelBuild()
             }
@@ -94,7 +104,14 @@ class CategoryFragment : BaseFragment() {
 
     private fun observeNetworkStatus(status: Status?) {
         when (status ?: return) {
-            Status.LOADING -> categoryController.isLoading = true
+            Status.LOADING -> categoryController.isLoading = run {
+                viewModel.isRefreshing.value?.let {
+                    if (it) {
+                        return@run false
+                    }
+                }
+                return@run true
+            }
             Status.SUCCESS -> {
                 categoryController.isLoading = false
             }
@@ -106,7 +123,7 @@ class CategoryFragment : BaseFragment() {
     }
 
     override fun refresh() {
-        // TODO
+        viewModel.refresh()
     }
 
     companion object {
