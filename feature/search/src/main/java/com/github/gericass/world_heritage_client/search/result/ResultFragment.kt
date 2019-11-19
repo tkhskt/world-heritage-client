@@ -97,7 +97,7 @@ class ResultFragment : BaseFragment() {
                 resultController.isLoading = false
             }
             Status.ERROR -> run {
-                binding.root.showSnackbar(getString(R.string.common_msg_api_error))
+                showSnackbar(getString(R.string.common_msg_api_error))
                 resultController.isLoading = false
             }
         }

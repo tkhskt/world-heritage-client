@@ -16,8 +16,17 @@ fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) ->
     liveData.observe(this, Observer(body))
 }
 
-fun View.showSnackbar(msg: String, length: Int = BaseTransientBottomBar.LENGTH_SHORT) {
-    Snackbar.make(this, msg, length).show()
+fun BaseFragment.showSnackbar(
+    msg: String,
+    length: Int = BaseTransientBottomBar.LENGTH_INDEFINITE
+) {
+    Snackbar.make(requireView(), msg, length).apply {
+        setAction("Retry") {
+            refresh()
+            dismiss()
+        }
+
+    }.show()
 }
 
 fun Fragment.hideKeyboard(rootView: View) {

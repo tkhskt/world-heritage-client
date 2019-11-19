@@ -68,16 +68,25 @@ class CategoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
-        binding.recycler.setController(categoryController)
+        binding.apply {
+            viewModel = this@CategoryFragment.viewModel
+            lifecycleOwner = this@CategoryFragment
+            recycler.setController(categoryController)
+            refresh.setOnRefreshListener {
+                this@CategoryFragment.viewModel.isRefreshing.value = true
+                refresh()
+            }
+        }
     }
 
     private fun observeCategories(response: Response<List<Categories.Category>>?) {
         if (response?.status == Status.ERROR) {
-            binding.root.showSnackbar(getString(R.string.common_msg_api_error))
+            showSnackbar(getString(R.string.common_msg_api_error))
             return Timber.e(response.error)
         }
         response?.data?.let {
             categoryController.run {
+                categories.clear()
                 categories.addAll(it)
                 requestModelBuild()
             }
@@ -94,19 +103,26 @@ class CategoryFragment : BaseFragment() {
 
     private fun observeNetworkStatus(status: Status?) {
         when (status ?: return) {
-            Status.LOADING -> categoryController.isLoading = true
+            Status.LOADING -> categoryController.isLoading = run {
+                viewModel.isRefreshing.value?.let {
+                    if (it) {
+                        return@run false
+                    }
+                }
+                return@run true
+            }
             Status.SUCCESS -> {
                 categoryController.isLoading = false
             }
             Status.ERROR -> run {
-                binding.root.showSnackbar(getString(R.string.common_msg_api_error))
+                showSnackbar(getString(R.string.common_msg_api_error))
                 categoryController.isLoading = false
             }
         }
     }
 
     override fun refresh() {
-        // TODO
+        viewModel.refresh()
     }
 
     companion object {
