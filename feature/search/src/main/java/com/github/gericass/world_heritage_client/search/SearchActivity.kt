@@ -29,7 +29,7 @@ class SearchActivity : AppCompatActivity() {
         } ?: run {
             navGraph.startDestination = R.id.search_fragment
         }
-        navController.graph = navGraph
+        navController.setGraph(navGraph, intent.extras)
     }
 
     companion object {

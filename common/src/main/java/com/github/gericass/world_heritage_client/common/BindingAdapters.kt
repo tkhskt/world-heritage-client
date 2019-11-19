@@ -10,14 +10,18 @@ import com.bumptech.glide.Glide
 
 @BindingAdapter("image_url")
 fun loadImage(v: ImageView, imageUrl: String?) {
-    Glide.with(v).load(imageUrl).centerCrop().into(v)
+    Glide.with(v)
+        .load(imageUrl)
+        .centerCrop()
+        .thumbnail(Glide.with(v).load(R.drawable.common_logo).centerCrop())
+        .into(v)
 }
 
 @BindingAdapter("duration")
 fun duration(v: TextView, duration: Double) {
-    val hour = (duration / 3600).toInt()
-    val minute = ((duration % 3600) / 60).toInt()
-    v.text = "%02d:%02d".format(hour, minute)
+    val minute = (duration / 60).toInt()
+    val second = (duration % 60).toInt()
+    v.text = "%02d:%02d".format(minute, second)
 }
 
 @SuppressLint("RestrictedApi")

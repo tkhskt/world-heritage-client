@@ -34,6 +34,7 @@ class AvgleRepositoryImpl(
     }
 
     override suspend fun insertKeyword(keyword: String) {
+        if (keyword.isBlank()) return
         dao.deleteOldest()
         val record = Keyword(keyword, Calendar.getInstance().time)
         dao.insert(record)

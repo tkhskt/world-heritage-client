@@ -3,10 +3,13 @@ package com.github.gericass.world_heritage_client.home.collection
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.github.gericass.world_heritage_client.common.view.progressView
+import com.github.gericass.world_heritage_client.common.view.subjectTextView
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.feature.home.HomeItemCollectionBindingModel_
 
-class CollectionController : PagedListEpoxyController<Collections.Collection>() {
+class CollectionController(
+    private val collectionClickListener: CollectionClickListener
+) : PagedListEpoxyController<Collections.Collection>() {
 
     var isLoading: Boolean = false
         set(value) {
@@ -25,16 +28,25 @@ class CollectionController : PagedListEpoxyController<Collections.Collection>() 
             item?.let {
                 collection(it)
             }
+            listener(collectionClickListener)
         }
     }
 
     override fun addModels(models: List<EpoxyModel<*>>) {
+        subjectTextView {
+            id("subject_collection")
+            text("コレクション")
+            withNoPaddingStyle()
+        }
         super.addModels(models)
         if (isLoading) {
             progressView {
                 id(models.size)
             }
         }
+    }
 
+    interface CollectionClickListener {
+        fun onClick(keyword: String)
     }
 }

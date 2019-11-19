@@ -6,9 +6,12 @@ import androidx.paging.PagedList
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.Videos
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ResultViewModel(
-    repository: AvgleRepository
+    private val repository: AvgleRepository
 ) : ViewModel(), LifecycleObserver {
 
 
@@ -38,6 +41,14 @@ class ResultViewModel(
     private fun fetch() {
         keyword.value?.let {
             factory.refresh(it)
+        }
+    }
+
+    fun saveKeyword(keyword: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repository.insertKeyword(keyword)
+            }
         }
     }
 

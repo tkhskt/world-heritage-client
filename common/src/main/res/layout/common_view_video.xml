@@ -14,6 +14,7 @@
         <variable
             name="video"
             type="com.github.gericass.world_heritage_client.data.model.Videos.Video" />
+
     </data>
 
     <LinearLayout
@@ -102,6 +103,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:maxLines="2"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:text="@{video.title}"

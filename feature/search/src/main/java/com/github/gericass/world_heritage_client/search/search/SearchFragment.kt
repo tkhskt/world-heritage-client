@@ -105,7 +105,6 @@ class SearchFragment : Fragment() {
 
     private fun transitToResult(keyword: String?) {
         val word = keyword ?: return
-        viewModel.saveKeyword(word)
         val direction = SearchFragmentDirections.searchToResult(word)
         findNavController().navigate(direction)
     }

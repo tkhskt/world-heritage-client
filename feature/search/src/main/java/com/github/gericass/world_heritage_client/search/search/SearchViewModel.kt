@@ -50,14 +50,6 @@ class SearchViewModel(
         }
     }
 
-    fun saveKeyword(keyword: String) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                repository.insertKeyword(keyword)
-            }
-        }
-    }
-
     fun onSearchClick() {
         _searchButton.value = Unit
     }

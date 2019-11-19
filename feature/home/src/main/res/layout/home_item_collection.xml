@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="listener"
+            type="com.github.gericass.world_heritage_client.home.collection.CollectionController.CollectionClickListener" />
+
+        <variable
             name="collection"
             type="com.github.gericass.world_heritage_client.data.model.Collections.Collection" />
     </data>
@@ -12,12 +16,14 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{() -> listener.onClick(collection.title)}"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardCornerRadius="10dp"
             app:cardUseCompatPadding="true">
 
