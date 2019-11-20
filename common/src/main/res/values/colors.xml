@@ -8,4 +8,5 @@
     <color name="common_gray_dark">#333</color>
     <color name="common_transparent_black">#A6000000</color>
     <color name="common_transparent">#00000000</color>
+    <color name="common_color_border">#E0E0E0</color>
 </resources>

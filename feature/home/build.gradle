@@ -23,6 +23,10 @@ android {
         enabled = true
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
@@ -56,6 +60,7 @@ dependencies {
     implementation project(":data")
     implementation project(":common")
     implementation project(":feature:search")
+    implementation project(":feature:library")
 
     implementation Libs.timber
     implementation Libs.viewPager2
@@ -73,6 +78,8 @@ dependencies {
     implementation Libs.paging
     implementation Libs.browser
     implementation Libs.customTabHelper
+    implementation Libs.navigationUi
+    implementation Libs.navigationFragment
 }
 repositories {
     mavenCentral()
