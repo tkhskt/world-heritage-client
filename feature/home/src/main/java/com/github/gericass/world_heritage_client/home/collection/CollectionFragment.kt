@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.gericass.world_heritage_client.common.BaseFragment
+import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentCollectionBinding
-import com.github.gericass.world_heritage_client.search.SearchActivity
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -22,12 +23,15 @@ class CollectionFragment : BaseFragment() {
 
     private val viewModel: CollectionViewModel by viewModel()
 
+    private val navigator: AvgleNavigator by inject()
+
     private lateinit var binding: HomeFragmentCollectionBinding
 
     private val collectionClickListener = object : CollectionController.CollectionClickListener {
         override fun onClick(keyword: String) {
-            val intent = SearchActivity.createIntent(requireActivity(), keyword)
-            startActivity(intent)
+            navigator.run {
+                requireActivity().navigateToSearch(keyword)
+            }
         }
     }
 

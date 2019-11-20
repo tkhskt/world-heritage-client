@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentHomeBinding
 import com.github.gericass.world_heritage_client.home.category.CategoryFragment
 import com.github.gericass.world_heritage_client.home.collection.CollectionFragment
-import com.github.gericass.world_heritage_client.search.SearchActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import org.koin.android.ext.android.inject
 
 
 class HomeFragment : Fragment() {
@@ -21,6 +22,8 @@ class HomeFragment : Fragment() {
     private lateinit var binding: HomeFragmentHomeBinding
     private lateinit var pager: ViewPager2
     private lateinit var tab: TabLayout
+
+    private val navigator: AvgleNavigator by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +38,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.searchBackground.setOnClickListener {
-            val intent = SearchActivity.createIntent(requireActivity())
-            startActivity(intent)
+            navigator.run {
+                requireActivity().navigateToSearch()
+            }
         }
         setUpViewPager()
         setUpTab()
