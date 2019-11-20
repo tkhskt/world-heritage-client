@@ -59,9 +59,7 @@ dependencies {
 
     implementation project(":data")
     implementation project(":common")
-    implementation project(":feature:search")
-    implementation project(":feature:library")
-
+    
     implementation Libs.timber
     implementation Libs.viewPager2
     implementation Libs.materialComponents
