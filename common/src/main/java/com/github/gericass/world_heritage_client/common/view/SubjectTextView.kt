@@ -8,9 +8,6 @@ import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
 import com.airbnb.paris.annotations.Style
 import com.airbnb.paris.annotations.Styleable
-import com.airbnb.paris.extensions.paddingEndDp
-import com.airbnb.paris.extensions.paddingStartDp
-import com.airbnb.paris.extensions.subjectTextViewStyle
 import com.github.gericass.world_heritage_client.common.R
 
 
@@ -37,14 +34,9 @@ class SubjectTextView @JvmOverloads constructor(
 
     companion object {
         @Style(isDefault = true)
-        val NO_PADDING_STYLE = subjectTextViewStyle {
-            paddingStartDp(0)
-            paddingEndDp(0)
-        }
+        val NO_PADDING_STYLE = R.style.common_NoPaddingStyle
+
         @Style(isDefault = true)
-        val PADDING_STYLE = subjectTextViewStyle {
-            paddingStartDp(16)
-            paddingEndDp(16)
-        }
+        val PADDING_STYLE = R.style.common_PaddingStyle
     }
 }
