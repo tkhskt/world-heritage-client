@@ -10,14 +10,14 @@ import com.github.gericass.world_heritage_client.data.model.Keyword
 interface KeywordDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(period: Keyword)
+    suspend fun insert(period: Keyword)
 
     @Query("SELECT * FROM Keyword ORDER BY created_at DESC")
-    fun getAll(): List<Keyword>
+    suspend fun getAll(): List<Keyword>
 
     @Query("SELECT * FROM Keyword WHERE keyword LIKE :keyword || '%' ORDER BY created_at DESC")
-    fun getSimilarWords(keyword: String): List<Keyword>
+    suspend fun getSimilarWords(keyword: String): List<Keyword>
 
     @Query("DELETE FROM Keyword WHERE ROWID IN (SELECT ROWID FROM Keyword ORDER BY ROWID DESC LIMIT -1 OFFSET 50)")
-    fun deleteOldest()
+    suspend fun deleteOldest()
 }

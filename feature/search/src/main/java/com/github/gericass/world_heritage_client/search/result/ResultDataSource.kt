@@ -6,9 +6,7 @@ import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.Videos
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class ResultDataSource(
@@ -54,9 +52,7 @@ class ResultDataSource(
         try {
             val keyword = keyword ?: return
             networkState.postValue(Status.LOADING)
-            val collections = withContext(Dispatchers.IO) {
-                repository.searchVideo(page, keyword)
-            }
+            val collections = repository.searchVideo(page, keyword)
             if (collections.response.has_more) {
                 val next = page + 1
                 callback(next, collections.response.videos)

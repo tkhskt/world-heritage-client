@@ -3,9 +3,7 @@ package com.github.gericass.world_heritage_client.search.search
 import androidx.lifecycle.*
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.Keyword
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class SearchViewModel(
@@ -30,23 +28,19 @@ class SearchViewModel(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun init() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val keywords = repository.getAllKeywords()
-                _keywordLog.postValue(keywords)
-            }
+            val keywords = repository.getAllKeywords()
+            _keywordLog.postValue(keywords)
         }
     }
 
     private fun fetchLog(editTextValue: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val keyword = if (editTextValue.isEmpty()) {
-                    repository.getAllKeywords()
-                } else {
-                    repository.gerSimilarWords(editTextValue)
-                }
-                _keywordLog.postValue(keyword)
+            val keyword = if (editTextValue.isEmpty()) {
+                repository.getAllKeywords()
+            } else {
+                repository.gerSimilarWords(editTextValue)
             }
+            _keywordLog.postValue(keyword)
         }
     }
 
