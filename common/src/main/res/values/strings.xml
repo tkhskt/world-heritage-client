@@ -3,4 +3,6 @@
     <string name="common_category">カテゴリー</string>
     <string name="common_hd">HD</string>
     <string name="common_search">Search</string>
+    <string name="common_home">ホーム</string>
+    <string name="common_library">ライブラリ</string>
 </resources>

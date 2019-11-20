@@ -2,12 +2,14 @@ package com.github.gericass.world_heritage_client.di
 
 import androidx.room.Room
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.AvgleRepositoryImpl
 import com.github.gericass.world_heritage_client.data.local.AvgleDatabase
 import com.github.gericass.world_heritage_client.data.remote.BASE_URL
 import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
 import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
+import com.github.gericass.world_heritage_client.navigator.AvgleNavigatorImpl
 import com.github.gericass.world_heritage_client.search.result.ResultViewModel
 import com.github.gericass.world_heritage_client.search.search.SearchViewModel
 import com.squareup.moshi.Moshi
@@ -68,6 +70,12 @@ object Modules {
         viewModel { CollectionViewModel(get()) }
         viewModel { SearchViewModel(get()) }
         viewModel { ResultViewModel(get()) }
+    }
+
+    val navigatorModule = module {
+        single<AvgleNavigator> {
+            AvgleNavigatorImpl()
+        }
     }
 
     //val navigationModule = module {
