@@ -91,7 +91,9 @@ class CategoryFragment : BaseFragment() {
                 categories.clear()
                 categories.addAll(it)
                 // TODO 綺麗にする
-                if (viewModel.categoryId.value != null) return
+                if (viewModel.categoryId.value != null &&
+                    viewModel.isRefreshing.value != true
+                ) return
                 requestModelBuild()
             }
             viewModel.apply {
