@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.github.gericass.world_heritage_client.common.hideKeyboard
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showKeyboard
+import com.github.gericass.world_heritage_client.common.vo.Event
 import com.github.gericass.world_heritage_client.data.model.Keyword
 import com.github.gericass.world_heritage_client.search.R
 import com.github.gericass.world_heritage_client.search.SearchItemKeywordBindingModel_
@@ -88,8 +89,10 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun observeSearchButton(event: Unit?) {
-        transitToResult(viewModel.keywordEditText.value)
+    private fun observeSearchButton(event: Event<String>?) {
+        event?.getContentIfNotHandled()?.let {
+            transitToResult(it)
+        }
     }
 
     private fun observeKeywords(keyword: List<Keyword>?) {

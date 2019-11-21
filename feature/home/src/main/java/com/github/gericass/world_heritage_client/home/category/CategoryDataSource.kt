@@ -13,7 +13,7 @@ class CategoryDataSource(
     private val scope: CoroutineScope,
     private val repository: AvgleRepository,
     private val networkState: MutableLiveData<Status>,
-    var categoryId: String?
+    var categoryId: String? = null
 ) : PageKeyedDataSource<Int, Videos.Video>() {
 
     override fun loadInitial(
@@ -49,8 +49,8 @@ class CategoryDataSource(
         page: Int,
         callback: (Int?, List<Videos.Video>) -> Unit
     ) {
+        val id = categoryId ?: return
         try {
-            val id = categoryId ?: return
             networkState.postValue(Status.LOADING)
             val collections = repository.getVideoByCategory(page, id)
             if (collections.response.has_more) {

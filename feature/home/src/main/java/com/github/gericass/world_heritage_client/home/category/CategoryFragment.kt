@@ -19,19 +19,21 @@ import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentCategoryBinding
 import com.google.androidbrowserhelper.trusted.TwaLauncher
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
 
 class CategoryFragment : BaseFragment() {
 
-    private val viewModel: CategoryViewModel by viewModel()
+    private val viewModel: CategoryViewModel by sharedViewModel(
+        from = { parentFragment?.parentFragment!! }
+    )
 
     private lateinit var binding: HomeFragmentCategoryBinding
 
     private val categoryClickListener = object : CategoryController.CategoryClickListener {
         override fun onClick(category: Categories.Category) {
-            viewModel.fetch(category.CHID, category.name)
+            viewModel.fetchVideos(category.CHID)
             categoryController.currentCategory = category.name
         }
     }
@@ -91,7 +93,7 @@ class CategoryFragment : BaseFragment() {
                 requestModelBuild()
             }
             viewModel.apply {
-                fetch(it.first().CHID, it.first().name)
+                fetchVideos(it.first().CHID)
                 categoryController.currentCategory = it.first().name
             }
         }

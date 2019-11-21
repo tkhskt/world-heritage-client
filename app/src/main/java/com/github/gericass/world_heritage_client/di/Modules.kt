@@ -7,6 +7,7 @@ import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.AvgleRepositoryImpl
 import com.github.gericass.world_heritage_client.data.local.AvgleDatabase
 import com.github.gericass.world_heritage_client.data.remote.BASE_URL
+import com.github.gericass.world_heritage_client.home.HomeViewModel
 import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
 import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
 import com.github.gericass.world_heritage_client.navigator.AvgleNavigatorImpl
@@ -70,6 +71,7 @@ object Modules {
         viewModel { CollectionViewModel(get()) }
         viewModel { SearchViewModel(get()) }
         viewModel { ResultViewModel(get()) }
+        viewModel { HomeViewModel() }
     }
 
     val navigatorModule = module {
