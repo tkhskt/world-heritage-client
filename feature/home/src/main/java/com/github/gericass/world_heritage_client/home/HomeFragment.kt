@@ -34,6 +34,13 @@ class HomeFragment : Fragment() {
     private val categoryViewModel: CategoryViewModel by viewModel()
     private val collectionViewModel: CollectionViewModel by viewModel()
 
+    private val pagerCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            homeViewModel.currentPage = position
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,17 +84,17 @@ class HomeFragment : Fragment() {
         }
         pager = binding.mainPager
         pager.apply {
+            currentItem = homeViewModel.currentPage
             orientation = ViewPager2.ORIENTATION_HORIZONTAL
             adapter = pagerAdapter
             isUserInputEnabled = false
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    homeViewModel.currentPage = position
-                }
-            })
-            currentItem = homeViewModel.currentPage
+            registerOnPageChangeCallback(pagerCallback)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        pager.unregisterOnPageChangeCallback(pagerCallback)
     }
 }
 
