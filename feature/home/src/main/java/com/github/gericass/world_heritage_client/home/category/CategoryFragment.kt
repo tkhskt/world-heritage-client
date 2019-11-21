@@ -90,6 +90,8 @@ class CategoryFragment : BaseFragment() {
             categoryController.run {
                 categories.clear()
                 categories.addAll(it)
+                // TODO 綺麗にする
+                if (viewModel.categoryId.value != null) return
                 requestModelBuild()
             }
             viewModel.apply {
