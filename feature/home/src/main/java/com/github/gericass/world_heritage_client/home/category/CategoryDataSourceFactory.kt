@@ -10,10 +10,10 @@ import kotlinx.coroutines.CoroutineScope
 class CategoryDataSourceFactory(
     private val scope: CoroutineScope,
     private val repository: AvgleRepository,
-    private val status: MutableLiveData<Status>,
-    private var categoryId: String? = null
+    private val status: MutableLiveData<Status>
 ) : DataSource.Factory<Int, Videos.Video>() {
 
+    private var categoryId: String? = null
     private val dataSource = MutableLiveData<CategoryDataSource>()
 
     override fun create(): DataSource<Int, Videos.Video> {
@@ -22,10 +22,12 @@ class CategoryDataSourceFactory(
         return dataSource
     }
 
-    fun setNewCategoryId(categoryId: String) {
+    fun refresh() {
+        dataSource.value?.invalidate()
+    }
+
+    fun setNewCategory(categoryId: String?) {
         this.categoryId = categoryId
-        dataSource.value?.run {
-            invalidate()
-        }
+        dataSource.value?.invalidate()
     }
 }

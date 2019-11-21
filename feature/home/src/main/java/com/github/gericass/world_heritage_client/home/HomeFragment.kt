@@ -11,10 +11,14 @@ import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentHomeBinding
 import com.github.gericass.world_heritage_client.home.category.CategoryFragment
+import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
 import com.github.gericass.world_heritage_client.home.collection.CollectionFragment
+import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : Fragment() {
@@ -24,6 +28,11 @@ class HomeFragment : Fragment() {
     private lateinit var tab: TabLayout
 
     private val navigator: AvgleNavigator by inject()
+
+    private val homeViewModel: HomeViewModel by sharedViewModel()
+
+    private val categoryViewModel: CategoryViewModel by viewModel()
+    private val collectionViewModel: CollectionViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +69,7 @@ class HomeFragment : Fragment() {
 
     private fun setUpViewPager() {
         val pagerAdapter = HomePagerAdapter(
-            requireActivity().supportFragmentManager,
+            childFragmentManager,
             lifecycle
         ).apply {
             addFragment(CategoryFragment.newInstance())
@@ -71,8 +80,14 @@ class HomeFragment : Fragment() {
             orientation = ViewPager2.ORIENTATION_HORIZONTAL
             adapter = pagerAdapter
             isUserInputEnabled = false
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    homeViewModel.currentPage = position
+                }
+            })
+            currentItem = homeViewModel.currentPage
         }
     }
-
 }
 

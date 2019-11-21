@@ -16,12 +16,16 @@ import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentCollectionBinding
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class CollectionFragment : BaseFragment() {
 
-    private val viewModel: CollectionViewModel by viewModel()
+    private val viewModel: CollectionViewModel by sharedViewModel(
+        from = {
+            parentFragment?.parentFragment!!
+        }
+    )
 
     private val navigator: AvgleNavigator by inject()
 
