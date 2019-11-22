@@ -92,10 +92,8 @@ class CategoryFragment : Fragment() {
             return Timber.e(response.error)
         }
         val data = response?.data ?: return
-        viewModel.apply {
-            if (viewModel.currentCategory == null) {
-                fetchVideos(data.first())
-            }
+        if (viewModel.currentCategory == null) {
+            viewModel.fetchVideos(data.first())
         }
         categoryController.run {
             categories.clear()
