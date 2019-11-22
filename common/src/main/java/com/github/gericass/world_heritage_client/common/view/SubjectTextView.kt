@@ -43,6 +43,11 @@ class SubjectTextView @JvmOverloads constructor(
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
                 setTypeface(typeface, Typeface.NORMAL)
             }
+        } else {
+            subject.apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
+                setTypeface(typeface, Typeface.BOLD)
+            }
         }
     }
 
