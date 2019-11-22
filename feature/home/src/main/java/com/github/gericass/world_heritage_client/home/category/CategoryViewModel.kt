@@ -23,7 +23,6 @@ class CategoryViewModel(
     val isRefreshing = MediatorLiveData<Boolean>()
 
     private val factory = CategoryDataSourceFactory(viewModelScope, repository, _networkStatus)
-    //val categoryId = MutableLiveData<String>()
 
     val pagedList: LiveData<PagedList<Videos.Video>>
 

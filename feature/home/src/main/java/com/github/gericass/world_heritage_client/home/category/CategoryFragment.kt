@@ -90,7 +90,6 @@ class CategoryFragment : BaseFragment() {
             return Timber.e(response.error)
         }
         val data = response?.data ?: return
-
         viewModel.apply {
             if (viewModel.currentCategory == null || viewModel.isRefreshing.value == true) {
                 fetchVideos(data.first())
@@ -101,7 +100,6 @@ class CategoryFragment : BaseFragment() {
             categories.addAll(data)
             currentCategoryName = viewModel.currentCategory?.name ?: data.first().name
         }
-
     }
 
     private fun observePagedList(pagedList: PagedList<Videos.Video>?) {
