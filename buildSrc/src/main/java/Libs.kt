@@ -1,7 +1,7 @@
 object Libs {
     object Versions {
         const val okHttp = "4.2.1"
-        const val threeTenAbp = "1.2.0"
+        const val threeTenAbp = "1.2.1"
         const val timber = "4.7.1"
         const val stetho = "1.5.1"
         const val retrofit = "2.6.2"

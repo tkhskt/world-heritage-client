@@ -64,4 +64,5 @@ dependencies {
     implementation Libs.navigationUi
     implementation Libs.room
     implementation Libs.roomKtx
+    implementation Libs.threeTenAbp
 }

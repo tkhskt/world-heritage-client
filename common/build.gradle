@@ -58,6 +58,7 @@ dependencies {
     kapt Libs.parisAnnotation
     implementation Libs.navigationFragment
     implementation Libs.navigationUi
+    implementation Libs.threeTenAbp
 }
 
 repositories {

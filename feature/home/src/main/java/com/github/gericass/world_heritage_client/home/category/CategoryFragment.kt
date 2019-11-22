@@ -73,6 +73,7 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
+        categoryController.orientation = requireActivity().resources.configuration.orientation
         binding.apply {
             viewModel = this@CategoryFragment.viewModel
             lifecycleOwner = this@CategoryFragment
