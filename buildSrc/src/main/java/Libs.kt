@@ -20,6 +20,7 @@ object Libs {
         const val customTabHelper = "0.1.0-alpha1"
         const val room = "2.2.1"
         const val paris = "1.3.0"
+        const val leakCanary = "2.0-beta-4"
 
     }
 
@@ -63,4 +64,5 @@ object Libs {
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val paris = "com.airbnb.android:paris:${Versions.paris}"
     const val parisAnnotation = "com.airbnb.android:paris-processor:${Versions.paris}"
+    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"
 }

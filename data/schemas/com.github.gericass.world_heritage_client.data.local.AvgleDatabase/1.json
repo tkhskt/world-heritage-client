@@ -1,0 +1,150 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "6e2dc7de1b6d7013324115227105acd6",
+    "entities": [
+      {
+        "tableName": "Keyword",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`keyword` TEXT NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`keyword`))",
+        "fields": [
+          {
+            "fieldPath": "keyword",
+            "columnName": "keyword",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "keyword"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Video",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`addtime` INTEGER NOT NULL, `channel` TEXT NOT NULL, `dislikes` INTEGER NOT NULL, `duration` REAL NOT NULL, `embedded_url` TEXT NOT NULL, `framerate` REAL NOT NULL, `hd` INTEGER NOT NULL, `keyword` TEXT NOT NULL, `likes` INTEGER NOT NULL, `preview_url` TEXT NOT NULL, `title` TEXT NOT NULL, `uid` TEXT NOT NULL, `vid` TEXT NOT NULL, `video_url` TEXT NOT NULL, `viewnumber` INTEGER NOT NULL, `created_at` INTEGER, PRIMARY KEY(`vid`))",
+        "fields": [
+          {
+            "fieldPath": "addtime",
+            "columnName": "addtime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "channel",
+            "columnName": "channel",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dislikes",
+            "columnName": "dislikes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "embedded_url",
+            "columnName": "embedded_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "framerate",
+            "columnName": "framerate",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hd",
+            "columnName": "hd",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "keyword",
+            "columnName": "keyword",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "likes",
+            "columnName": "likes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preview_url",
+            "columnName": "preview_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "uid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vid",
+            "columnName": "vid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "video_url",
+            "columnName": "video_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "viewnumber",
+            "columnName": "viewnumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_at",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "vid"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6e2dc7de1b6d7013324115227105acd6')"
+    ]
+  }
+}

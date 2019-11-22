@@ -1,21 +1,20 @@
 package com.github.gericass.world_heritage_client.data
 
 import com.github.gericass.world_heritage_client.data.local.AvgleDatabase
-import com.github.gericass.world_heritage_client.data.model.Categories
+import com.github.gericass.world_heritage_client.data.model.*
 import com.github.gericass.world_heritage_client.data.model.Collections
-import com.github.gericass.world_heritage_client.data.model.Keyword
-import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.data.remote.AvgleClient
 import retrofit2.Retrofit
 import java.util.*
 
-class AvgleRepositoryImpl(
+internal class AvgleRepositoryImpl(
     private val retrofit: Retrofit,
     private val avgleDatabase: AvgleDatabase
 ) : AvgleRepository {
 
     private val client by lazy { retrofit.create(AvgleClient::class.java) }
-    private val dao by lazy { avgleDatabase.keywordDao() }
+    private val keywordDao by lazy { avgleDatabase.keywordDao() }
+    private val historyDao by lazy { avgleDatabase.viewingHistoryDao() }
 
     override suspend fun getCategories(): Categories {
         return client.getAllCategories()
@@ -33,18 +32,29 @@ class AvgleRepositoryImpl(
         return client.getCollections(page)
     }
 
-    override suspend fun insertKeyword(keyword: String) {
+    override suspend fun saveKeyword(keyword: String) {
         if (keyword.isBlank()) return
-        dao.deleteOldest()
+        keywordDao.deleteOldest()
         val record = Keyword(keyword, Calendar.getInstance().time)
-        dao.insert(record)
+        keywordDao.insert(record)
     }
 
     override suspend fun getAllKeywords(): List<Keyword> {
-        return dao.getAll()
+        return keywordDao.getAll()
     }
 
     override suspend fun gerSimilarWords(keyword: String): List<Keyword> {
-        return dao.getSimilarWords(keyword)
+        return keywordDao.getSimilarWords(keyword)
+    }
+
+    override suspend fun saveInsertHistory(video: Videos.Video) {
+        historyDao.deleteOldest()
+        val history = video.toViewingHistory(Calendar.getInstance().time)
+        historyDao.insert(history)
+    }
+
+    override suspend fun getViewingHistories(limit: Int): List<ViewingHistory> {
+        return historyDao.getHistories(limit)
+
     }
 }

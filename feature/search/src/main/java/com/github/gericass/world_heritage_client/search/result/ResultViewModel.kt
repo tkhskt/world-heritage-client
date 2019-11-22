@@ -38,7 +38,7 @@ class ResultViewModel(
 
     fun saveKeyword(keyword: String) {
         viewModelScope.launch {
-            repository.insertKeyword(keyword)
+            repository.saveKeyword(keyword)
         }
     }
 

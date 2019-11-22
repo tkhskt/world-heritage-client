@@ -43,6 +43,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    debugImplementation Libs.leakCanary
+
     implementation project(":data")
     implementation project(":common")
     implementation project(":feature:home")
