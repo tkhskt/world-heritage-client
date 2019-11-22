@@ -18,11 +18,7 @@ class CategoryController(
 
     val categories = mutableListOf<Categories.Category>()
 
-    var currentCategory: String = ""
-        set(value) {
-            field = value
-            requestModelBuild()
-        }
+    var currentCategoryName: String = ""
 
     var isLoading: Boolean = true
         set(value) {
@@ -62,7 +58,7 @@ class CategoryController(
         }
         subjectTextView {
             id("subject_description")
-            text(currentCategory)
+            text(currentCategoryName)
             withPaddingStyle()
         }
         super.addModels(models)

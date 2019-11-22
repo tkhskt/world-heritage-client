@@ -33,8 +33,11 @@ class CategoryFragment : BaseFragment() {
 
     private val categoryClickListener = object : CategoryController.CategoryClickListener {
         override fun onClick(category: Categories.Category) {
-            viewModel.fetchVideos(category.CHID)
-            categoryController.currentCategory = category.name
+            viewModel.fetchVideos(category)
+            categoryController.run {
+                currentCategoryName = category.name
+                requestModelBuild()
+            }
         }
     }
 
@@ -86,21 +89,19 @@ class CategoryFragment : BaseFragment() {
             showSnackbar(getString(R.string.common_msg_api_error))
             return Timber.e(response.error)
         }
-        response?.data?.let {
-            categoryController.run {
-                categories.clear()
-                categories.addAll(it)
-                // TODO 綺麗にする
-                if (viewModel.categoryId.value != null &&
-                    viewModel.isRefreshing.value != true
-                ) return
-                requestModelBuild()
-            }
-            viewModel.apply {
-                fetchVideos(it.first().CHID)
-                categoryController.currentCategory = it.first().name
+        val data = response?.data ?: return
+
+        viewModel.apply {
+            if (viewModel.currentCategory == null || viewModel.isRefreshing.value == true) {
+                fetchVideos(data.first())
             }
         }
+        categoryController.run {
+            categories.clear()
+            categories.addAll(data)
+            currentCategoryName = viewModel.currentCategory?.name ?: data.first().name
+        }
+
     }
 
     private fun observePagedList(pagedList: PagedList<Videos.Video>?) {
