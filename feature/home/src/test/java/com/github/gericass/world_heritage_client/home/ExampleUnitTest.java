@@ -1,4 +1,4 @@
-package com.github.gericass.feature.home;
+package com.github.gericass.world_heritage_client.home;
 
 import org.junit.Test;
 
