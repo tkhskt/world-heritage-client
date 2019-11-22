@@ -91,7 +91,7 @@ class CategoryFragment : BaseFragment() {
         }
         val data = response?.data ?: return
         viewModel.apply {
-            if (viewModel.currentCategory == null || viewModel.isRefreshing.value == true) {
+            if (viewModel.currentCategory == null) {
                 fetchVideos(data.first())
             }
         }

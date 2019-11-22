@@ -50,8 +50,8 @@ class CategoryViewModel(
     }
 
     fun fetchVideos(category: Categories.Category) {
-        val refreshing = isRefreshing.value ?: false
-        if (category.CHID != currentCategory?.CHID || refreshing) {
+        // val refreshing = isRefreshing.value ?: false
+        if (category.CHID != currentCategory?.CHID) {
             currentCategory = category
             factory.setNewCategory(category.CHID)
         }
@@ -69,6 +69,7 @@ class CategoryViewModel(
     }
 
     fun refresh() {
+        currentCategory = null
         fetchCategories()
     }
 }
