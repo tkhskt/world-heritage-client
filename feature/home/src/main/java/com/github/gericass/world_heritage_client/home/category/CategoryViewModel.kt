@@ -50,7 +50,6 @@ class CategoryViewModel(
     }
 
     fun fetchVideos(category: Categories.Category) {
-        // val refreshing = isRefreshing.value ?: false
         if (category.CHID != currentCategory?.CHID) {
             currentCategory = category
             factory.setNewCategory(category.CHID)
