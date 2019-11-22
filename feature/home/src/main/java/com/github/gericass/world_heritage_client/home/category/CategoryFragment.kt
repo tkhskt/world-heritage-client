@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.browser.trusted.TrustedWebActivityIntentBuilder
+import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
-import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
@@ -23,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
 
-class CategoryFragment : BaseFragment() {
+class CategoryFragment : Fragment() {
 
     private val viewModel: CategoryViewModel by sharedViewModel(
         from = { parentFragment?.parentFragment!! }
@@ -79,14 +79,16 @@ class CategoryFragment : BaseFragment() {
             recycler.setController(categoryController)
             refresh.setOnRefreshListener {
                 this@CategoryFragment.viewModel.isRefreshing.value = true
-                refresh()
+                this@CategoryFragment.viewModel.refresh()
             }
         }
     }
 
     private fun observeCategories(response: Response<List<Categories.Category>>?) {
         if (response?.status == Status.ERROR) {
-            showSnackbar(getString(R.string.common_msg_api_error))
+            showSnackbar(getString(R.string.common_msg_api_error)) {
+                viewModel.refresh()
+            }
             return Timber.e(response.error)
         }
         val data = response?.data ?: return
@@ -120,14 +122,12 @@ class CategoryFragment : BaseFragment() {
                 categoryController.isLoading = false
             }
             Status.ERROR -> run {
-                showSnackbar(getString(R.string.common_msg_api_error))
+                showSnackbar(getString(R.string.common_msg_api_error)) {
+                    viewModel.refresh()
+                }
                 categoryController.isLoading = false
             }
         }
-    }
-
-    override fun refresh() {
-        viewModel.refresh()
     }
 
     companion object {

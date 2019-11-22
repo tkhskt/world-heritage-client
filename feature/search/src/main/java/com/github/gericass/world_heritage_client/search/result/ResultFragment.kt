@@ -9,10 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.trusted.TrustedWebActivityIntentBuilder
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.PagedList
-import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
@@ -25,7 +25,7 @@ import com.google.androidbrowserhelper.trusted.TwaLauncher
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ResultFragment : BaseFragment() {
+class ResultFragment : Fragment() {
 
     private lateinit var binding: SearchFragmentResultBinding
 
@@ -99,14 +99,12 @@ class ResultFragment : BaseFragment() {
             Status.LOADING -> resultController.isLoading = true
             Status.SUCCESS -> resultController.isLoading = false
             Status.ERROR -> run {
-                showSnackbar(getString(R.string.common_msg_api_error))
+                showSnackbar(getString(R.string.common_msg_api_error)) {
+                    viewModel.fetch()
+                }
                 resultController.isLoading = false
             }
         }
-    }
-
-    override fun refresh() {
-        viewModel.fetch()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

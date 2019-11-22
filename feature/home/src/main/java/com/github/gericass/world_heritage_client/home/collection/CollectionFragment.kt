@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
-import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
@@ -19,7 +19,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-class CollectionFragment : BaseFragment() {
+class CollectionFragment : Fragment() {
 
     private val viewModel: CollectionViewModel by sharedViewModel(
         from = {
@@ -67,7 +67,7 @@ class CollectionFragment : BaseFragment() {
         binding.refresh.apply {
             setOnRefreshListener {
                 viewModel.isRefreshing.value = true
-                refresh()
+                viewModel.refresh()
             }
         }
     }
@@ -99,15 +99,13 @@ class CollectionFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> collectionController.isLoading = false
                 Status.ERROR -> run {
-                    showSnackbar(getString(R.string.common_msg_api_error))
+                    showSnackbar(getString(R.string.common_msg_api_error)) {
+                        viewModel.refresh()
+                    }
                     collectionController.isLoading = false
                 }
             }
         }
-    }
-
-    override fun refresh() {
-        viewModel.refresh()
     }
 
     companion object {
