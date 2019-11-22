@@ -2,6 +2,7 @@ package com.github.gericass.world_heritage_client.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -28,9 +29,15 @@ class HomeActivity : AppCompatActivity() {
                 .toBottomNavigationController()
         }.apply {
             addOnDestinationChangedListener { _, dest, _ ->
-                homeViewModel.currentBottomNavigation = when (dest.label.toString()) {
-                    "home" -> R.id.nav_home
-                    else -> R.id.nav_library
+                when (dest.label.toString()) {
+                    "home" -> run {
+                        homeViewModel.currentBottomNavigation = R.id.nav_home
+                        binding.mainTab.isVisible = true
+                    }
+                    else -> run {
+                        homeViewModel.currentBottomNavigation = R.id.nav_library
+                        binding.mainTab.isVisible = false
+                    }
                 }
             }
         }
@@ -38,6 +45,11 @@ class HomeActivity : AppCompatActivity() {
             binding.bottomNavigationView.selectedItemId = it
         }
         binding.bottomNavigationView.setupWithNavController(navigationController)
+        binding.searchBackground.setOnClickListener {
+            navigator.run {
+                navigateToSearch()
+            }
+        }
     }
 
 }

@@ -1,9 +1,12 @@
 package com.github.gericass.world_heritage_client.common.view
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.widget.FrameLayout
 import android.widget.TextView
+import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.airbnb.epoxy.TextProp
 import com.airbnb.paris.annotations.Style
@@ -30,6 +33,17 @@ class SubjectTextView @JvmOverloads constructor(
     @TextProp
     fun setText(subject: CharSequence) {
         this.subject.text = subject
+    }
+
+    @JvmOverloads
+    @ModelProp
+    fun sectionStyle(flag: Boolean = false) {
+        if (flag) {
+            subject.apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+                setTypeface(typeface, Typeface.NORMAL)
+            }
+        }
     }
 
     companion object {

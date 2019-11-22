@@ -5,16 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import com.airbnb.epoxy.Carousel
+import com.github.gericass.world_heritage_client.common.BaseFragment
+import com.github.gericass.world_heritage_client.common.observe
+import com.github.gericass.world_heritage_client.data.model.ViewingHistory
 import com.github.gericass.world_heritage_client.library.databinding.LibraryFragmentLibraryBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class LibraryFragment : Fragment() {
+class LibraryFragment : BaseFragment() {
 
     private val viewModel: LibraryViewModel by viewModel()
 
     private lateinit var binding: LibraryFragmentLibraryBinding
+
+    private val libraryController = LibraryController(videoClickListener)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.run {
+            observe(history, ::observeHistories)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,5 +37,22 @@ class LibraryFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycle.addObserver(viewModel)
+        Carousel.setDefaultGlobalSnapHelperFactory(null)
+        binding.apply {
+            viewModel = this@LibraryFragment.viewModel
+            recycler.setController(libraryController)
+            refresh.setOnRefreshListener {
+                this@LibraryFragment.viewModel.isRefreshing.value = false
+            }
 
+        }
+    }
+
+
+    private fun observeHistories(histories: List<ViewingHistory>?) {
+        libraryController.setData(histories)
+    }
 }

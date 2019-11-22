@@ -16,6 +16,7 @@ import com.github.gericass.world_heritage_client.home.collection.CollectionFragm
 import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.home_activity_home.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,6 +42,8 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private lateinit var tabLayoutMediator: TabLayoutMediator
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,25 +56,21 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.searchBackground.setOnClickListener {
-            navigator.run {
-                requireActivity().navigateToSearch()
-            }
-        }
         setUpViewPager()
         setUpTab()
     }
 
     private fun setUpTab() {
-        tab = binding.mainTab
-        // AutoRefreshは後からどっちか調整した方が良さげ
-        TabLayoutMediator(tab, pager, true) { tab, position ->
+        // ActivityのViewを参照しているのでonDestroyのタイミングで参照を切る必要がある
+        tab = requireActivity().main_tab
+        tabLayoutMediator = TabLayoutMediator(tab, pager, true) { tab, position ->
             tab.text = when (position) {
                 0 -> "Category"
-                //1 -> getString(R.string.overview)
                 else -> "Collection"
             }
-        }.attach()
+        }.apply {
+            attach()
+        }
     }
 
     private fun setUpViewPager() {
@@ -95,6 +94,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         pager.unregisterOnPageChangeCallback(pagerCallback)
+        tabLayoutMediator.detach()
     }
 }
 
