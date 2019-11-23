@@ -1,15 +1,12 @@
 package com.github.gericass.world_heritage_client.home.category
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.SnapHelper
-import com.airbnb.epoxy.Carousel
+import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
@@ -30,6 +27,8 @@ class CategoryFragment : BaseFragment() {
     )
 
     private lateinit var binding: HomeFragmentCategoryBinding
+
+    override val recyclerView: EpoxyRecyclerView by lazy { binding.recycler }
 
     private val categoryClickListener = object : CategoryController.CategoryClickListener {
         override fun onClick(category: Categories.Category) {
@@ -67,11 +66,6 @@ class CategoryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
         categoryController.orientation = requireActivity().resources.configuration.orientation
-        Carousel.setDefaultGlobalSnapHelperFactory(object : Carousel.SnapHelperFactory() {
-            override fun buildSnapHelper(context: Context?): SnapHelper {
-                return LinearSnapHelper()
-            }
-        })
         binding.apply {
             viewModel = this@CategoryFragment.viewModel
             lifecycleOwner = this@CategoryFragment

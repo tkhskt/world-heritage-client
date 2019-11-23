@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
+import com.airbnb.epoxy.EpoxyRecyclerView
+import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
@@ -19,7 +20,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-class CollectionFragment : Fragment() {
+class CollectionFragment : BaseFragment() {
 
     private val viewModel: CollectionViewModel by sharedViewModel(
         from = {
@@ -30,6 +31,8 @@ class CollectionFragment : Fragment() {
     private val navigator: AvgleNavigator by inject()
 
     private lateinit var binding: HomeFragmentCollectionBinding
+
+    override val recyclerView: EpoxyRecyclerView by lazy { binding.recycler }
 
     private val collectionClickListener = object : CollectionController.CollectionClickListener {
         override fun onClick(keyword: String) {

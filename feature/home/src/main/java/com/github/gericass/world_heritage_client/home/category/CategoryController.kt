@@ -1,6 +1,10 @@
 package com.github.gericass.world_heritage_client.home.category
 
+import android.content.Context
 import android.content.res.Configuration
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.SnapHelper
+import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.carousel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
@@ -64,6 +68,12 @@ class CategoryController(
             text("カテゴリー")
             withPaddingStyle()
         }
+        Carousel.setDefaultGlobalSnapHelperFactory(object :
+            Carousel.SnapHelperFactory() {
+            override fun buildSnapHelper(context: Context?): SnapHelper {
+                return LinearSnapHelper()
+            }
+        })
         carousel {
             id("category")
             numViewsToShowOnScreen(3f)

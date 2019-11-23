@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.PagedList
+import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
@@ -30,6 +31,8 @@ class ResultFragment : BaseFragment() {
     private val args: ResultFragmentArgs by navArgs()
 
     private val resultController = ResultController(videoClickListener)
+
+    override val recyclerView: EpoxyRecyclerView by lazy { binding.keywordLogRecycler }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

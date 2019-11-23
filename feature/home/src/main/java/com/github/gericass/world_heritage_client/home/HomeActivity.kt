@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.feature.home.R
@@ -23,27 +24,24 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.home_activity_home)
-
-        val navigationController = navigator.run {
-            findNavController(R.id.home_nav_host_fragment)
-                .toBottomNavigationController()
-        }.apply {
+        setSupportActionBar(binding.mainToolbar)
+        val navigationController = findNavController(R.id.home_nav_host_fragment).apply {
+            navigator.run { setHomeGraph() }
             addOnDestinationChangedListener { _, dest, _ ->
                 when (dest.label.toString()) {
                     "home" -> run {
-                        homeViewModel.currentBottomNavigation = R.id.nav_home
+                        // homeViewModel.currentBottomNavigation = R.id.nav_home
                         binding.mainTab.isVisible = true
                     }
                     else -> run {
-                        homeViewModel.currentBottomNavigation = R.id.nav_library
+                        // homeViewModel.currentBottomNavigation = R.id.nav_library
                         binding.mainTab.isVisible = false
                     }
                 }
             }
         }
-        homeViewModel.currentBottomNavigation?.let {
-            binding.bottomNavigationView.selectedItemId = it
-        }
+        val appBarConfiguration = navigator.getBottomNavigationConfig()
+        setupActionBarWithNavController(navigationController, appBarConfiguration)
         binding.bottomNavigationView.setupWithNavController(navigationController)
         binding.searchBackground.setOnClickListener {
             navigator.run {

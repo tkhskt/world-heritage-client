@@ -1,5 +1,6 @@
 package com.github.gericass.world_heritage_client.library
 
+import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.airbnb.epoxy.carousel
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
@@ -25,6 +26,7 @@ class LibraryController(
                 listener(videoClickListener)
             }
         } ?: return
+        Carousel.setDefaultGlobalSnapHelperFactory(null)
         carousel {
             id("history")
             models(videos)

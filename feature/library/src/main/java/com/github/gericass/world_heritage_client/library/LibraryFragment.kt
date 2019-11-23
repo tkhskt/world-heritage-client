@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.airbnb.epoxy.Carousel
+import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
@@ -20,6 +20,8 @@ class LibraryFragment : BaseFragment() {
     private lateinit var binding: LibraryFragmentLibraryBinding
 
     private val libraryController = LibraryController(videoClickListener)
+
+    override val recyclerView: EpoxyRecyclerView by lazy { binding.recycler }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,6 @@ class LibraryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
-        Carousel.setDefaultGlobalSnapHelperFactory(null)
         binding.apply {
             viewModel = this@LibraryFragment.viewModel
             recycler.setController(libraryController)
@@ -50,7 +51,6 @@ class LibraryFragment : BaseFragment() {
 
         }
     }
-
 
     private fun observeHistories(histories: List<ViewingHistory>?) {
         libraryController.setData(histories)
