@@ -15,10 +15,12 @@ abstract class BaseFragment : Fragment() {
 
     abstract val recyclerView: EpoxyRecyclerView
 
+    private val launcher by lazy { TwaLauncher(requireContext()) }
+
     protected val videoClickListener = object : VideoClickListener {
         override fun onClick(video: Videos.Video) {
             val builder = TrustedWebActivityIntentBuilder(Uri.parse(video.video_url))
-            TwaLauncher(requireContext()).launch(builder, null, null)
+            launcher.launch(builder, null, null)
             viewModel.saveHistory(video)
         }
     }
@@ -26,5 +28,6 @@ abstract class BaseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         recyclerView.recycledViewPool.clear()
+        launcher.destroy()
     }
 }

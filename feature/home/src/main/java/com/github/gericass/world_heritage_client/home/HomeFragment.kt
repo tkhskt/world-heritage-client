@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentHomeBinding
 import com.github.gericass.world_heritage_client.home.category.CategoryFragment
@@ -17,7 +16,6 @@ import com.github.gericass.world_heritage_client.home.collection.CollectionViewM
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.home_activity_home.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,8 +25,6 @@ class HomeFragment : Fragment() {
     private lateinit var binding: HomeFragmentHomeBinding
     private lateinit var pager: ViewPager2
     private lateinit var tab: TabLayout
-
-    private val navigator: AvgleNavigator by inject()
 
     private val homeViewModel: HomeViewModel by sharedViewModel()
 

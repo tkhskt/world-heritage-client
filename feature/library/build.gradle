@@ -62,6 +62,8 @@ dependencies {
     implementation Libs.paging
     implementation Libs.navigationUi
     implementation Libs.navigationFragment
+    implementation Libs.paris
+    kapt Libs.parisAnnotation
 }
 repositories {
     mavenCentral()

@@ -3,6 +3,7 @@ package com.github.gericass.world_heritage_client.library
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.TypedEpoxyController
 import com.airbnb.epoxy.carousel
+import com.github.gericass.world_heritage_client.common.commonViewBorder
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.subjectTextView
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
@@ -31,6 +32,10 @@ class LibraryController(
             id("history")
             models(videos)
         }
+        commonViewBorder {
+            id("carousel_border")
+        }
+
     }
 
 }
