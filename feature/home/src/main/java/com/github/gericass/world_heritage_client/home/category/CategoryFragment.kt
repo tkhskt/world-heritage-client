@@ -1,24 +1,21 @@
 package com.github.gericass.world_heritage_client.home.category
 
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.browser.trusted.TrustedWebActivityIntentBuilder
 import androidx.paging.PagedList
+import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
-import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.vo.Response
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Categories
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentCategoryBinding
-import com.google.androidbrowserhelper.trusted.TwaLauncher
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
@@ -31,17 +28,15 @@ class CategoryFragment : BaseFragment() {
 
     private lateinit var binding: HomeFragmentCategoryBinding
 
+    override val recyclerView: EpoxyRecyclerView by lazy { binding.recycler }
+
     private val categoryClickListener = object : CategoryController.CategoryClickListener {
         override fun onClick(category: Categories.Category) {
-            viewModel.fetchVideos(category.CHID)
-            categoryController.currentCategory = category.name
-        }
-    }
-
-    private val videoClickListener = object : VideoClickListener {
-        override fun onClick(video: Videos.Video) {
-            val builder = TrustedWebActivityIntentBuilder(Uri.parse(video.video_url))
-            TwaLauncher(requireContext()).launch(builder, null, null)
+            viewModel.fetchVideos(category)
+            categoryController.run {
+                currentCategoryName = category.name
+                requestModelBuild()
+            }
         }
     }
 
@@ -70,36 +65,33 @@ class CategoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
+        categoryController.orientation = requireActivity().resources.configuration.orientation
         binding.apply {
             viewModel = this@CategoryFragment.viewModel
             lifecycleOwner = this@CategoryFragment
             recycler.setController(categoryController)
             refresh.setOnRefreshListener {
                 this@CategoryFragment.viewModel.isRefreshing.value = true
-                refresh()
+                this@CategoryFragment.viewModel.refresh()
             }
         }
     }
 
     private fun observeCategories(response: Response<List<Categories.Category>>?) {
         if (response?.status == Status.ERROR) {
-            showSnackbar(getString(R.string.common_msg_api_error))
+            showSnackbar(getString(R.string.common_msg_api_error)) {
+                viewModel.refresh()
+            }
             return Timber.e(response.error)
         }
-        response?.data?.let {
-            categoryController.run {
-                categories.clear()
-                categories.addAll(it)
-                // TODO 綺麗にする
-                if (viewModel.categoryId.value != null &&
-                    viewModel.isRefreshing.value != true
-                ) return
-                requestModelBuild()
-            }
-            viewModel.apply {
-                fetchVideos(it.first().CHID)
-                categoryController.currentCategory = it.first().name
-            }
+        val data = response?.data ?: return
+        if (viewModel.currentCategory == null) {
+            viewModel.fetchVideos(data.first())
+        }
+        categoryController.run {
+            categories.clear()
+            categories.addAll(data)
+            currentCategoryName = viewModel.currentCategory?.name ?: data.first().name
         }
     }
 
@@ -121,14 +113,12 @@ class CategoryFragment : BaseFragment() {
                 categoryController.isLoading = false
             }
             Status.ERROR -> run {
-                showSnackbar(getString(R.string.common_msg_api_error))
+                showSnackbar(getString(R.string.common_msg_api_error)) {
+                    viewModel.refresh()
+                }
                 categoryController.isLoading = false
             }
         }
-    }
-
-    override fun refresh() {
-        viewModel.refresh()
     }
 
     companion object {

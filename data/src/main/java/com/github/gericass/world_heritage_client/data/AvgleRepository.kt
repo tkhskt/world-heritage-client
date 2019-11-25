@@ -1,9 +1,6 @@
 package com.github.gericass.world_heritage_client.data
 
-import com.github.gericass.world_heritage_client.data.model.Categories
-import com.github.gericass.world_heritage_client.data.model.Collections
-import com.github.gericass.world_heritage_client.data.model.Keyword
-import com.github.gericass.world_heritage_client.data.model.Videos
+import com.github.gericass.world_heritage_client.data.model.*
 
 interface AvgleRepository {
 
@@ -15,9 +12,14 @@ interface AvgleRepository {
 
     suspend fun getCollections(page: Int): Collections
 
-    suspend fun insertKeyword(keyword: String)
+    suspend fun saveKeyword(keyword: String)
 
     suspend fun getAllKeywords(): List<Keyword>
 
     suspend fun gerSimilarWords(keyword: String): List<Keyword>
+
+    suspend fun saveInsertHistory(video: Videos.Video)
+
+    suspend fun getViewingHistories(limit: Int = 50): List<ViewingHistory>
+
 }

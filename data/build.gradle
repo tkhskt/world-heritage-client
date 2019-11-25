@@ -40,6 +40,8 @@ dependencies {
     implementation Libs.room
     implementation Libs.roomKtx
     kapt Libs.roomAnnotation
+    implementation Libs.koinAndroid
+    implementation Libs.koinAndroidxScope
 }
 repositories {
     mavenCentral()

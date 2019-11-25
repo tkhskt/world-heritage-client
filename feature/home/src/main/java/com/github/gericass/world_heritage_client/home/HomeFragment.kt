@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeFragmentHomeBinding
 import com.github.gericass.world_heritage_client.home.category.CategoryFragment
@@ -16,7 +15,7 @@ import com.github.gericass.world_heritage_client.home.collection.CollectionFragm
 import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.android.ext.android.inject
+import kotlinx.android.synthetic.main.home_activity_home.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,8 +25,6 @@ class HomeFragment : Fragment() {
     private lateinit var binding: HomeFragmentHomeBinding
     private lateinit var pager: ViewPager2
     private lateinit var tab: TabLayout
-
-    private val navigator: AvgleNavigator by inject()
 
     private val homeViewModel: HomeViewModel by sharedViewModel()
 
@@ -39,6 +36,12 @@ class HomeFragment : Fragment() {
             super.onPageSelected(position)
             homeViewModel.currentPage = position
         }
+    }
+
+    private lateinit var tabLayoutMediator: TabLayoutMediator
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -53,25 +56,21 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.searchBackground.setOnClickListener {
-            navigator.run {
-                requireActivity().navigateToSearch()
-            }
-        }
         setUpViewPager()
         setUpTab()
     }
 
     private fun setUpTab() {
-        tab = binding.mainTab
-        // AutoRefreshは後からどっちか調整した方が良さげ
-        TabLayoutMediator(tab, pager, true) { tab, position ->
+        // ActivityのViewを参照しているのでonDestroyのタイミングで参照を切る必要がある
+        tab = requireActivity().main_tab
+        tabLayoutMediator = TabLayoutMediator(tab, pager, true) { tab, position ->
             tab.text = when (position) {
                 0 -> "Category"
-                //1 -> getString(R.string.overview)
                 else -> "Collection"
             }
-        }.attach()
+        }.apply {
+            attach()
+        }
     }
 
     private fun setUpViewPager() {
@@ -95,6 +94,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         pager.unregisterOnPageChangeCallback(pagerCallback)
+        tabLayoutMediator.detach()
     }
 }
 

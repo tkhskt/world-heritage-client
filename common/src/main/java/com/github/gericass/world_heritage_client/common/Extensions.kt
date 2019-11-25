@@ -14,9 +14,10 @@ fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) ->
     liveData.observe(this, Observer(body))
 }
 
-fun BaseFragment.showSnackbar(
+fun Fragment.showSnackbar(
     msg: String,
-    length: Int = BaseTransientBottomBar.LENGTH_INDEFINITE
+    length: Int = BaseTransientBottomBar.LENGTH_INDEFINITE,
+    refresh: () -> Unit
 ) {
     val snackbar = Snackbar.make(requireView(), msg, length).apply {
         setAction("Retry") {

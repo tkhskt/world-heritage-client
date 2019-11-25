@@ -1,5 +1,7 @@
 package com.github.gericass.world_heritage_client.data.model
 
+import java.util.*
+
 data class Videos(
     val response: Response,
     val success: Boolean
@@ -28,5 +30,28 @@ data class Videos(
         val vid: String,
         val video_url: String,
         val viewnumber: Int
-    )
+    ) {
+        fun toViewingHistory(date: Date): ViewingHistory {
+            return ViewingHistory(
+                vid = this.vid,
+                addtime = this.addtime,
+                channel = this.channel,
+                dislikes = this.dislikes,
+                duration = this.duration,
+                embedded_url = this.embedded_url,
+                framerate = this.framerate,
+                hd = this.hd,
+                keyword = this.keyword,
+                likes = this.likes,
+                preview_url = this.preview_url,
+                title = this.title,
+                uid = this.uid,
+                video_url = this.video_url,
+                viewnumber = this.viewnumber,
+                created_at = date
+            )
+        }
+    }
+
+
 }

@@ -23,9 +23,10 @@ class CategoryViewModel(
     val isRefreshing = MediatorLiveData<Boolean>()
 
     private val factory = CategoryDataSourceFactory(viewModelScope, repository, _networkStatus)
-    val categoryId = MutableLiveData<String>()
 
     val pagedList: LiveData<PagedList<Videos.Video>>
+
+    var currentCategory: Categories.Category? = null
 
     init {
         val loadingObserver = Observer<Status> {
@@ -44,15 +45,15 @@ class CategoryViewModel(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun init() {
-        if (categoryId.value != null) return
+        if (currentCategory != null) return
         fetchCategories()
     }
 
-    fun fetchVideos(categoryId: String) {
-        val refreshing = isRefreshing.value ?: false
-        if (categoryId == this.categoryId.value && !refreshing) return
-        this.categoryId.value = categoryId
-        factory.setNewCategory(categoryId)
+    fun fetchVideos(category: Categories.Category) {
+        if (category.CHID != currentCategory?.CHID) {
+            currentCategory = category
+            factory.setNewCategory(category.CHID)
+        }
     }
 
     private fun fetchCategories() {
@@ -67,6 +68,7 @@ class CategoryViewModel(
     }
 
     fun refresh() {
+        currentCategory = null
         fetchCategories()
     }
 }
