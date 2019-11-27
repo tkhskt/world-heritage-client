@@ -59,7 +59,7 @@ class ViewingHistoryFragment : BaseFragment() {
 
     private fun observeLoadingStatus(status: Status?) {
         if (status == Status.ERROR) {
-            showSnackbar(getString(R.string.common_msg_api_error)) {
+            showSnackbar(getString(R.string.common_msg_local_error)) {
                 viewModel.refresh()
             }
         }
