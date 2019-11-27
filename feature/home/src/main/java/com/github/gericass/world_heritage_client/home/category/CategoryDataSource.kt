@@ -6,16 +6,14 @@ import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.Videos
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class CategoryDataSource(
     private val scope: CoroutineScope,
     private val repository: AvgleRepository,
     private val networkState: MutableLiveData<Status>,
-    var categoryId: String?
+    var categoryId: String? = null
 ) : PageKeyedDataSource<Int, Videos.Video>() {
 
     override fun loadInitial(
@@ -51,12 +49,10 @@ class CategoryDataSource(
         page: Int,
         callback: (Int?, List<Videos.Video>) -> Unit
     ) {
+        val id = categoryId ?: return
         try {
-            val id = categoryId ?: return
             networkState.postValue(Status.LOADING)
-            val collections = withContext(Dispatchers.IO) {
-                repository.getVideoByCategory(page, id)
-            }
+            val collections = repository.getVideoByCategory(page, id)
             if (collections.response.has_more) {
                 val next = page + 1
                 callback(next, collections.response.videos)

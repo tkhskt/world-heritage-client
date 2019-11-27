@@ -8,9 +8,7 @@ import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.Categories
 import com.github.gericass.world_heritage_client.data.model.Videos
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CategoryViewModel(
     private val repository: AvgleRepository
@@ -19,8 +17,6 @@ class CategoryViewModel(
     private val _categories = MutableLiveData<Response<List<Categories.Category>>>()
     val categories: LiveData<Response<List<Categories.Category>>> = _categories
 
-    val pagedList: LiveData<PagedList<Videos.Video>>
-
     private val _networkStatus = MutableLiveData<Status>()
     val networkStatus: LiveData<Status> = _networkStatus
 
@@ -28,7 +24,9 @@ class CategoryViewModel(
 
     private val factory = CategoryDataSourceFactory(viewModelScope, repository, _networkStatus)
 
-    var currentCategoryName: String = ""
+    val pagedList: LiveData<PagedList<Videos.Video>>
+
+    var currentCategory: Categories.Category? = null
 
     init {
         val loadingObserver = Observer<Status> {
@@ -47,11 +45,21 @@ class CategoryViewModel(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun init() {
+        if (currentCategory != null) return
+        fetchCategories()
+    }
+
+    fun fetchVideos(category: Categories.Category) {
+        if (category.CHID != currentCategory?.CHID) {
+            currentCategory = category
+            factory.setNewCategory(category.CHID)
+        }
+    }
+
+    private fun fetchCategories() {
         viewModelScope.launch {
             try {
-                val categories = withContext(Dispatchers.IO) {
-                    repository.getCategories()
-                }
+                val categories = repository.getCategories()
                 _categories.value = Response.onSuccess(categories.response.categories)
             } catch (e: Throwable) {
                 _categories.value = Response.onError(e)
@@ -59,12 +67,8 @@ class CategoryViewModel(
         }
     }
 
-    fun fetch(categoryId: String, categoryName: String) {
-        factory.setNewCategoryId(categoryId)
-        currentCategoryName = categoryName
-    }
-
     fun refresh() {
-        init()
+        currentCategory = null
+        fetchCategories()
     }
 }

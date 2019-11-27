@@ -114,29 +114,31 @@
                     app:layout_constraintTop_toBottomOf="@id/cover_image"
                     tools:text="タイトルだよ" />
 
-
-                <ImageView
-                    android:id="@+id/eye"
+                <TextView
+                    android:id="@+id/post_date"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:paddingTop="2dp"
-                    android:src="@drawable/common_ic_remove_red_eye_24dp"
-                    android:tint="@color/common_gray"
+                    android:textColor="@color/common_gray"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@id/dislike_count"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/dislike_count" />
+                    app:layout_constraintTop_toTopOf="@id/dislike_count"
+                    app:post_date="@{video.addtime}"
+                    tools:text="4年前" />
+
 
                 <TextView
                     android:id="@+id/watch_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{Integer.toString(video.viewnumber)}"
                     android:textColor="@color/common_gray"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@id/dislike_count"
-                    app:layout_constraintStart_toEndOf="@id/eye"
+                    app:layout_constraintStart_toEndOf="@id/post_date"
                     app:layout_constraintTop_toTopOf="@id/dislike_count"
-                    tools:text="2345" />
+                    app:view_number="@{video.viewnumber}"
+                    tools:text="2345回数視聴" />
 
                 <ImageView
                     android:id="@+id/like"
@@ -155,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:text="@{Integer.toString(video.dislikes)}"
+                    android:text="@{Integer.toString(video.likes)}"
                     android:textColor="@color/common_gray"
                     app:layout_constraintBottom_toBottomOf="@id/dislike_count"
                     app:layout_constraintEnd_toStartOf="@id/dislike"

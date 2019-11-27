@@ -3,4 +3,10 @@
     <string name="common_category">カテゴリー</string>
     <string name="common_hd">HD</string>
     <string name="common_search">Search</string>
+    <string name="common_home">ホーム</string>
+    <string name="common_library">ライブラリ</string>
+
+    <string name="common_view_number">%1$s回視聴</string>
+
+    <string name="common_post_date">%1$s前 ･\u0020</string>
 </resources>

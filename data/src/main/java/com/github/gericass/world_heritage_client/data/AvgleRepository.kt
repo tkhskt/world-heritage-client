@@ -1,9 +1,7 @@
 package com.github.gericass.world_heritage_client.data
 
-import com.github.gericass.world_heritage_client.data.model.Categories
-import com.github.gericass.world_heritage_client.data.model.Collections
-import com.github.gericass.world_heritage_client.data.model.Keyword
-import com.github.gericass.world_heritage_client.data.model.Videos
+import androidx.annotation.DrawableRes
+import com.github.gericass.world_heritage_client.data.model.*
 
 interface AvgleRepository {
 
@@ -15,9 +13,33 @@ interface AvgleRepository {
 
     suspend fun getCollections(page: Int): Collections
 
-    suspend fun insertKeyword(keyword: String)
+    suspend fun saveKeyword(keyword: String)
 
     suspend fun getAllKeywords(): List<Keyword>
 
     suspend fun gerSimilarWords(keyword: String): List<Keyword>
+
+    suspend fun saveInsertHistory(video: Videos.Video)
+
+    suspend fun getViewingHistories(limit: Int = 50, offset: Int = 1): List<ViewingHistory>
+
+    suspend fun getViewingHistoriesByKeyword(
+        keyword: String,
+        limit: Int = 50,
+        offset: Int = 1
+    ): List<ViewingHistory>
+
+    suspend fun getAllPlayList(): List<PlayList>
+
+    suspend fun getPlayListWithVideos(playListId: Int): PlayListWithVideos
+
+    suspend fun savePlayList(
+        title: String,
+        videos: List<Videos.Video>,
+        @DrawableRes
+        thumbnail: Int? = null
+    )
+
+    suspend fun deletePlayList(playListWithVideos: PlayListWithVideos)
+
 }

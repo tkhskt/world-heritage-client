@@ -6,9 +6,7 @@ import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.Collections
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class CollectionDataSource(
@@ -52,9 +50,7 @@ class CollectionDataSource(
     ) {
         try {
             status.postValue(Status.LOADING)
-            val collections = withContext(Dispatchers.IO) {
-                repository.getCollections(page)
-            }
+            val collections = repository.getCollections(page)
             if (collections.response.has_more) {
                 val next = page + 1
                 callback(next, collections.response.collections)

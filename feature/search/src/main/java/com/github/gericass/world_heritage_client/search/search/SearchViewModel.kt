@@ -1,11 +1,10 @@
 package com.github.gericass.world_heritage_client.search.search
 
 import androidx.lifecycle.*
+import com.github.gericass.world_heritage_client.common.vo.Event
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.Keyword
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class SearchViewModel(
@@ -16,8 +15,8 @@ class SearchViewModel(
     private val _keywordLog = MediatorLiveData<List<Keyword>>()
     val keywordLog: LiveData<List<Keyword>> = _keywordLog
 
-    private val _searchButton = MutableLiveData<Unit>()
-    val searchButton: LiveData<Unit> = _searchButton
+    private val _searchButton = MutableLiveData<Event<String>>()
+    val searchButton: LiveData<Event<String>> = _searchButton
 
     init {
         val editTextObserver = Observer<String> {
@@ -30,7 +29,7 @@ class SearchViewModel(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun init() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            if (keywordEditText.value.isNullOrEmpty()) {
                 val keywords = repository.getAllKeywords()
                 _keywordLog.postValue(keywords)
             }
@@ -39,18 +38,18 @@ class SearchViewModel(
 
     private fun fetchLog(editTextValue: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val keyword = if (editTextValue.isEmpty()) {
-                    repository.getAllKeywords()
-                } else {
-                    repository.gerSimilarWords(editTextValue)
-                }
-                _keywordLog.postValue(keyword)
+            val keyword = if (editTextValue.isEmpty()) {
+                repository.getAllKeywords()
+            } else {
+                repository.gerSimilarWords(editTextValue)
             }
+            _keywordLog.postValue(keyword)
         }
     }
 
     fun onSearchClick() {
-        _searchButton.value = Unit
+        keywordEditText.value?.let {
+            _searchButton.value = Event(it)
+        }
     }
 }

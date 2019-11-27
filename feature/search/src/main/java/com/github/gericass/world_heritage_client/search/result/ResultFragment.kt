@@ -1,26 +1,24 @@
 package com.github.gericass.world_heritage_client.search.result
 
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.browser.trusted.TrustedWebActivityIntentBuilder
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.PagedList
+import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
-import com.github.gericass.world_heritage_client.common.view.VideoClickListener
+import com.github.gericass.world_heritage_client.common.vo.Event
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.search.R
 import com.github.gericass.world_heritage_client.search.databinding.SearchFragmentResultBinding
-import com.google.androidbrowserhelper.trusted.TwaLauncher
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -32,14 +30,9 @@ class ResultFragment : BaseFragment() {
 
     private val args: ResultFragmentArgs by navArgs()
 
-    private val videoClickListener = object : VideoClickListener {
-        override fun onClick(video: Videos.Video) {
-            val builder = TrustedWebActivityIntentBuilder(Uri.parse(video.video_url))
-            TwaLauncher(requireContext()).launch(builder, null, null)
-        }
-    }
-
     private val resultController = ResultController(videoClickListener)
+
+    override val recyclerView: EpoxyRecyclerView by lazy { binding.keywordLogRecycler }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,8 +58,10 @@ class ResultFragment : BaseFragment() {
         setUpToolbar()
         binding.keywordLogRecycler.setController(resultController)
         binding.viewModel = viewModel
-        viewModel.keyword.value = args.keyword
-        lifecycle.addObserver(viewModel)
+        // 画面回転によるPagedListの再生成(APIへの再リクエスト)を防ぐ
+        if (viewModel.keyword.value.isNullOrEmpty()) {
+            viewModel.keyword.value = args.keyword
+        }
     }
 
     private fun setUpToolbar() {
@@ -80,9 +75,9 @@ class ResultFragment : BaseFragment() {
         }
     }
 
-    private fun observeKeywordClick(event: Unit?) {
-        viewModel.keyword.value?.let {
-            val action = ResultFragmentDirections.resultToSearch(it)
+    private fun observeKeywordClick(event: Event<String>?) {
+        event?.getContentIfNotHandled()?.let { keyword ->
+            val action = ResultFragmentDirections.resultToSearch(keyword)
             findNavController().navigate(action)
         }
     }
@@ -94,18 +89,14 @@ class ResultFragment : BaseFragment() {
     private fun observeNetworkStatus(status: Status?) {
         when (status ?: return) {
             Status.LOADING -> resultController.isLoading = true
-            Status.SUCCESS -> {
-                resultController.isLoading = false
-            }
+            Status.SUCCESS -> resultController.isLoading = false
             Status.ERROR -> run {
-                showSnackbar(getString(R.string.common_msg_api_error))
+                showSnackbar(getString(R.string.common_msg_api_error)) {
+                    viewModel.fetch()
+                }
                 resultController.isLoading = false
             }
         }
-    }
-
-    override fun refresh() {
-        // TODO
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

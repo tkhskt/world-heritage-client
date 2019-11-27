@@ -1,9 +1,15 @@
 package com.github.gericass.world_heritage_client.home.category
 
+import android.content.Context
+import android.content.res.Configuration
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.SnapHelper
+import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.carousel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.github.gericass.world_heritage_client.common.CommonViewVideoBindingModel_
+import com.github.gericass.world_heritage_client.common.CommonViewVideoSmallBindingModel_
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.progressView
 import com.github.gericass.world_heritage_client.common.view.subjectTextView
@@ -18,11 +24,7 @@ class CategoryController(
 
     val categories = mutableListOf<Categories.Category>()
 
-    var currentCategory: String = ""
-        set(value) {
-            field = value
-            requestModelBuild()
-        }
+    var currentCategoryName: String = ""
 
     var isLoading: Boolean = true
         set(value) {
@@ -32,7 +34,18 @@ class CategoryController(
             }
         }
 
+    var orientation: Int = 0
+
     override fun buildItemModel(currentPosition: Int, item: Videos.Video?): EpoxyModel<*> {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            return CommonViewVideoSmallBindingModel_().apply {
+                id(currentPosition)
+                item?.let {
+                    video(it)
+                }
+                listener(videoClickListener)
+            }
+        }
         return CommonViewVideoBindingModel_().apply {
             id(currentPosition)
             item?.let {
@@ -55,6 +68,12 @@ class CategoryController(
             text("カテゴリー")
             withPaddingStyle()
         }
+        Carousel.setDefaultGlobalSnapHelperFactory(object :
+            Carousel.SnapHelperFactory() {
+            override fun buildSnapHelper(context: Context?): SnapHelper {
+                return LinearSnapHelper()
+            }
+        })
         carousel {
             id("category")
             numViewsToShowOnScreen(3f)
@@ -62,7 +81,7 @@ class CategoryController(
         }
         subjectTextView {
             id("subject_description")
-            text(currentCategory)
+            text(currentCategoryName)
             withPaddingStyle()
         }
         super.addModels(models)

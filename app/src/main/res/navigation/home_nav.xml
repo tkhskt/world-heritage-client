@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.github.gericass.world_heritage_client.home.HomeFragment"
+        android:label="home"
+        tools:layout="@layout/home_fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_library"
+        android:name="com.github.gericass.world_heritage_client.library.LibraryFragment"
+        android:label="library"
+        tools:layout="@layout/library_fragment_library">
+        <action
+            android:id="@+id/action_library_to_history"
+            app:destination="@id/nav_viewing_history" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_viewing_history"
+        android:name="com.github.gericass.world_heritage_client.library.history.ViewingHistoryFragment"
+        android:label="history"
+        tools:layout="@layout/library_fragment_viewing_history" />
+
+</navigation>

@@ -2,55 +2,74 @@ package com.github.gericass.world_heritage_client.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.viewpager2.widget.ViewPager2
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeActivityHomeBinding
-import com.github.gericass.world_heritage_client.home.category.CategoryFragment
-import com.github.gericass.world_heritage_client.home.collection.CollectionFragment
-import com.github.gericass.world_heritage_client.search.SearchActivity
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: HomeActivityHomeBinding
-    private lateinit var pager: ViewPager2
-    private lateinit var tab: TabLayout
+
+    private val navigator: AvgleNavigator by inject()
+
+    private val homeViewModel: HomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.home_activity_home)
-        binding.searchBackground.setOnClickListener {
-            val intent = SearchActivity.createIntent(this)
-            startActivity(intent)
-        }
-        setUpViewPager()
-        setUpTab()
-    }
-
-    private fun setUpTab() {
-        tab = binding.mainTab
-        // AutoRefreshは後からどっちか調整した方が良さげ
-        TabLayoutMediator(tab, pager, true) { tab, position ->
-            tab.text = when (position) {
-                0 -> "Category"
-                //1 -> getString(R.string.overview)
-                else -> "Collection"
+        setSupportActionBar(binding.toolbarArrow.backArrowToolbar)
+        val navigationController = findNavController(R.id.home_nav_host_fragment).apply {
+            navigator.run { setHomeGraph() }
+            addOnDestinationChangedListener { _, dest, _ ->
+                when (dest.label.toString()) {
+                    "home" -> run {
+                        binding.apply {
+                            toolbarDefault.mainToolbar.isVisible = true
+                            toolbarArrow.backArrowToolbar.isVisible = false
+                            mainTab.isVisible = true
+                        }
+                    }
+                    "history" -> {
+                        binding.apply {
+                            toolbarArrow.title.text = "履歴"
+                            toolbarDefault.mainToolbar.isVisible = false
+                            toolbarArrow.backArrowToolbar.isVisible = true
+                            mainTab.isVisible = false
+                        }
+                    }
+                    else -> run {
+                        binding.apply {
+                            toolbarDefault.mainToolbar.isVisible = true
+                            toolbarArrow.backArrowToolbar.isVisible = false
+                            mainTab.isVisible = false
+                        }
+                    }
+                }
             }
-        }.attach()
+        }
+        val appBarConfiguration = navigator.getBottomNavigationConfig()
+        setupActionBarWithNavController(navigationController, appBarConfiguration)
+        binding.bottomNavigationView.setupWithNavController(navigationController)
+        binding.toolbarDefault.searchBackground.setOnClickListener {
+            navigator.run {
+                navigateToSearch()
+            }
+        }
+        binding.toolbarArrow.searchButton.setOnClickListener {
+            navigator.run {
+                navigateToSearch()
+            }
+        }
     }
 
-    private fun setUpViewPager() {
-        val pagerAdapter = HomePagerAdapter(supportFragmentManager, lifecycle).apply {
-            addFragment(CategoryFragment.newInstance())
-            addFragment(CollectionFragment.newInstance())
-        }
-        pager = binding.mainPager
-        pager.apply {
-            orientation = ViewPager2.ORIENTATION_HORIZONTAL
-            adapter = pagerAdapter
-            isUserInputEnabled = false
-        }
-    }
+    override fun onSupportNavigateUp(): Boolean =
+        findNavController(R.id.home_nav_host_fragment).navigateUp()
+
 }
