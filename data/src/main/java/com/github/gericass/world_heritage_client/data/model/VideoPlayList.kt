@@ -3,6 +3,7 @@ package com.github.gericass.world_heritage_client.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.ForeignKey.CASCADE
 
 @Entity(
     primaryKeys = ["video_id", "playlist_id"],
@@ -10,11 +11,13 @@ import androidx.room.ForeignKey
         ForeignKey(
             entity = VideoEntity::class,
             parentColumns = ["vid"],
-            childColumns = ["studentId"]
+            childColumns = ["video_id"]
+
         ), ForeignKey(
             entity = PlayList::class,
             parentColumns = ["id"],
-            childColumns = ["playlist_id"]
+            childColumns = ["playlist_id"],
+            onDelete = CASCADE
         )
     ]
 )
@@ -22,5 +25,5 @@ class VideoPlayList(
     @ColumnInfo(name = "video_id")
     val videoId: String,
     @ColumnInfo(name = "playlist_id")
-    val playlistId: Int
+    val playlistId: Long
 )

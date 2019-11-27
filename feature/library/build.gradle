@@ -64,6 +64,7 @@ dependencies {
     implementation Libs.navigationFragment
     implementation Libs.paris
     kapt Libs.parisAnnotation
+    implementation Libs.glide
 }
 repositories {
     mavenCentral()
