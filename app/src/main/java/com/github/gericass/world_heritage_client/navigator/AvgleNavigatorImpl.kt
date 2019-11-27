@@ -7,7 +7,7 @@ import com.github.gericass.world_heritage_client.R
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.search.SearchActivity
 
-class AvgleNavigatorImpl : AvgleNavigator {
+class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
 
     override fun NavController.setHomeGraph() {
         setGraph(R.navigation.home_nav)
@@ -26,5 +26,9 @@ class AvgleNavigatorImpl : AvgleNavigator {
             SearchActivity.createIntent(this, keyword)
         }
         startActivity(intent)
+    }
+
+    override fun NavController.navigateToHistory() {
+        navigate(R.id.action_library_to_history)
     }
 }

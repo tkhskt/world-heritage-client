@@ -26,4 +26,8 @@ class LibraryViewModel(
             _playLists.value = repository.getAllPlayList()
         }
     }
+
+    fun refresh() {
+        fetchHistories()
+    }
 }

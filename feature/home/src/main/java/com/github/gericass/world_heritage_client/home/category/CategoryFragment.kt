@@ -112,7 +112,7 @@ class CategoryFragment : BaseFragment() {
             Status.SUCCESS -> {
                 categoryController.isLoading = false
             }
-            Status.ERROR -> run {
+            Status.ERROR -> {
                 showSnackbar(getString(R.string.common_msg_api_error)) {
                     viewModel.refresh()
                 }

@@ -55,8 +55,16 @@ internal class AvgleRepositoryImpl(
         historyDao.insert(history)
     }
 
-    override suspend fun getViewingHistories(limit: Int): List<ViewingHistory> {
-        return historyDao.getHistories(limit)
+    override suspend fun getViewingHistories(limit: Int, offset: Int): List<ViewingHistory> {
+        return historyDao.getHistories(limit, offset)
+    }
+
+    override suspend fun getViewingHistoriesByKeyword(
+        keyword: String,
+        limit: Int,
+        offset: Int
+    ): List<ViewingHistory> {
+        return historyDao.getHistoriesByKeyword(keyword, limit, offset)
     }
 
     override suspend fun getAllPlayList(): List<PlayList> {

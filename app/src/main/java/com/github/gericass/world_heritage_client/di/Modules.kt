@@ -10,6 +10,7 @@ import com.github.gericass.world_heritage_client.home.HomeViewModel
 import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
 import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
 import com.github.gericass.world_heritage_client.library.LibraryViewModel
+import com.github.gericass.world_heritage_client.library.history.ViewingHistoryViewModel
 import com.github.gericass.world_heritage_client.navigator.AvgleNavigatorImpl
 import com.github.gericass.world_heritage_client.search.result.ResultViewModel
 import com.github.gericass.world_heritage_client.search.search.SearchViewModel
@@ -70,10 +71,14 @@ object Modules {
         viewModel { ResultViewModel(get()) }
         viewModel { HomeViewModel() }
         viewModel { LibraryViewModel(get()) }
+        viewModel { ViewingHistoryViewModel(get()) }
     }
 
     val navigatorModule = module {
         single<AvgleNavigator> {
+            AvgleNavigatorImpl()
+        }
+        single<AvgleNavigator.LibraryNavigator> {
             AvgleNavigatorImpl()
         }
     }

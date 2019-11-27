@@ -24,18 +24,32 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.home_activity_home)
-        setSupportActionBar(binding.mainToolbar)
+        setSupportActionBar(binding.toolbarArrow.backArrowToolbar)
         val navigationController = findNavController(R.id.home_nav_host_fragment).apply {
             navigator.run { setHomeGraph() }
             addOnDestinationChangedListener { _, dest, _ ->
                 when (dest.label.toString()) {
                     "home" -> run {
-                        // homeViewModel.currentBottomNavigation = R.id.nav_home
-                        binding.mainTab.isVisible = true
+                        binding.apply {
+                            toolbarDefault.mainToolbar.isVisible = true
+                            toolbarArrow.backArrowToolbar.isVisible = false
+                            mainTab.isVisible = true
+                        }
+                    }
+                    "history" -> {
+                        binding.apply {
+                            toolbarArrow.title.text = "履歴"
+                            toolbarDefault.mainToolbar.isVisible = false
+                            toolbarArrow.backArrowToolbar.isVisible = true
+                            mainTab.isVisible = false
+                        }
                     }
                     else -> run {
-                        // homeViewModel.currentBottomNavigation = R.id.nav_library
-                        binding.mainTab.isVisible = false
+                        binding.apply {
+                            toolbarDefault.mainToolbar.isVisible = true
+                            toolbarArrow.backArrowToolbar.isVisible = false
+                            mainTab.isVisible = false
+                        }
                     }
                 }
             }
@@ -43,11 +57,19 @@ class HomeActivity : AppCompatActivity() {
         val appBarConfiguration = navigator.getBottomNavigationConfig()
         setupActionBarWithNavController(navigationController, appBarConfiguration)
         binding.bottomNavigationView.setupWithNavController(navigationController)
-        binding.searchBackground.setOnClickListener {
+        binding.toolbarDefault.searchBackground.setOnClickListener {
+            navigator.run {
+                navigateToSearch()
+            }
+        }
+        binding.toolbarArrow.searchButton.setOnClickListener {
             navigator.run {
                 navigateToSearch()
             }
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean =
+        findNavController(R.id.home_nav_host_fragment).navigateUp()
 
 }

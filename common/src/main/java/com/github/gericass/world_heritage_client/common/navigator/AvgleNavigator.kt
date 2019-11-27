@@ -11,4 +11,8 @@ interface AvgleNavigator {
     fun getBottomNavigationConfig(): AppBarConfiguration
 
     fun Activity.navigateToSearch(keyword: String = "")
+
+    interface LibraryNavigator {
+        fun NavController.navigateToHistory()
+    }
 }
