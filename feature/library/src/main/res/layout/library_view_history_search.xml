@@ -5,46 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/common_gray_background"
-    tools:parentTag="androidx.constraintlayout.motion.widget.MotionLayout">
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <ImageView
-        android:id="@+id/search_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/common_ic_search_24dp"
-        android:tint="@color/common_gray"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/search_text"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/search_motion_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center|start"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:text="@string/library_search_text"
-        android:textColor="@color/common_gray_dark"
-        android:textSize="16sp"
+        app:layoutDescription="@xml/library_motion_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/cancel_button"
-        app:layout_constraintStart_toEndOf="@id/search_icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/cancel_button"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@color/common_gray_light"
-        android:padding="16dp"
-        android:text="@string/library_cancel"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/common_ic_search_24dp"
+            android:tint="@color/common_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:gravity="center|start"
+            android:hint="@string/library_search_text"
+            android:maxLines="1"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="@color/common_gray_dark"
+            android:textColorHint="@color/common_gray"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cancel_button"
+            app:layout_constraintStart_toEndOf="@id/search_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cancel_button"
+            android:layout_width="112dp"
+            android:layout_height="0dp"
+            android:background="@color/common_gray_background_light"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/library_cancel"
+            android:textColor="@android:color/black" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </merge>
