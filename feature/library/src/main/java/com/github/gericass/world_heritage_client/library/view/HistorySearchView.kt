@@ -82,7 +82,7 @@ class HistorySearchView @JvmOverloads constructor(
 
     @JvmOverloads
     @ModelProp
-    fun refresh(isRefreshing: Boolean = true) {
+    fun refresh(isRefreshing: Boolean = false) {
         if (isRefreshing) {
             binding.run {
                 searchMotionLayout.transitionToStart()
