@@ -29,7 +29,9 @@ data class Videos(
         val uid: String,
         val vid: String,
         val video_url: String,
-        val viewnumber: Int
+        val viewnumber: Int,
+        @Transient
+        val createdAt: Date? = null
     ) {
         fun toViewingHistory(date: Date): ViewingHistory {
             return ViewingHistory(

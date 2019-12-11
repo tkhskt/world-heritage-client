@@ -15,7 +15,7 @@ interface ViewingHistoryDao {
     @Query("SELECT * FROM ViewingHistory ORDER BY created_at DESC LIMIT :limit OFFSET :offset")
     suspend fun getHistories(limit: Int, offset: Int): List<ViewingHistory>
 
-    @Query("SELECT * FROM ViewingHistory WHERE title LIKE :keyword  ORDER BY created_at DESC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM ViewingHistory WHERE title LIKE '%' || :keyword || '%' ORDER BY created_at DESC LIMIT :limit OFFSET :offset")
     suspend fun getHistoriesByKeyword(
         keyword: String,
         limit: Int,

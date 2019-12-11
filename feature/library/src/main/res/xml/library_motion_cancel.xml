@@ -7,7 +7,9 @@
         motion:constraintSetStart="@+id/start"
         motion:duration="200"
         motion:motionInterpolator="linear">
-        <OnClick motion:targetId="@+id/search_edit_text" />
+        <OnClick
+            motion:clickAction="transitionToEnd"
+            motion:targetId="@+id/search_edit_text" />
 
     </Transition>
 
@@ -17,7 +19,9 @@
         motion:constraintSetStart="@+id/end"
         motion:duration="200"
         motion:motionInterpolator="linear">
-        <OnClick motion:targetId="@+id/cancel_button" />
+        <OnClick
+            motion:clickAction="transitionToStart"
+            motion:targetId="@+id/cancel_button" />
 
     </Transition>
 

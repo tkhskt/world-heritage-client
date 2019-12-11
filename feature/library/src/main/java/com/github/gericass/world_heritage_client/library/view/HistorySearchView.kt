@@ -1,55 +1,108 @@
 package com.github.gericass.world_heritage_client.library.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import androidx.constraintlayout.motion.widget.MotionLayout
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import com.airbnb.epoxy.AfterPropsSet
+import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
 import com.airbnb.paris.annotations.Styleable
+import com.github.gericass.world_heritage_client.common.hideKeyboard
+import com.github.gericass.world_heritage_client.common.vo.Event
 import com.github.gericass.world_heritage_client.library.R
-import kotlinx.android.synthetic.main.library_view_history_search.view.*
+import com.github.gericass.world_heritage_client.library.databinding.LibraryViewHistorySearchBinding
+import com.github.gericass.world_heritage_client.library.history.ViewingHistoryViewModel
+import timber.log.Timber
 
 @Styleable
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
+@SuppressLint("ClickableViewAccessibility")
 class HistorySearchView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    init {
-        inflate(context, R.layout.library_view_history_search, this)
-        val color = ContextCompat.getColor(getContext(), R.color.common_gray_background)
-        setBackgroundColor(color)
-        search_edit_text.setOnFocusChangeListener { v, focused ->
-            if (focused) v.callOnClick()
-        }
-        search_motion_layout.setTransitionListener(object : MotionLayout.TransitionListener {
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+    private lateinit var viewModel: ViewingHistoryViewModel
 
-            }
-
-            override fun onTransitionCompleted(p0: MotionLayout?, state: Int) {
-                if (state == search_motion_layout.startState) {
-                    search_edit_text.clearFocus()
-                }
-            }
-
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-
-            }
-
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-
-            }
-        })
-
-
+    private val binding = LibraryViewHistorySearchBinding.inflate(
+        LayoutInflater.from(context),
+        this,
+        true
+    ).apply {
+        lifecycleOwner = context as LifecycleOwner
     }
 
-    companion object {
-        //@Style(isDefault = true)
-        //val DEFAULT_STYLE = R.style.library_SearchTextStyle
+    init {
+        Timber.d("aaaaaa")
+        val color = ContextCompat.getColor(getContext(), R.color.common_gray_background)
+        setBackgroundColor(color)
+        binding.searchEditText.apply {
+            setOnFocusChangeListener { v, focused ->
+                if (focused) v.callOnClick()
+            }
+            setOnEditorActionListener(object : TextView.OnEditorActionListener {
+                override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        viewModel.searchButton.value = Event(v.text.toString())
+                        context.hideKeyboard(this@HistorySearchView)
+                        if (viewModel.keyword.value.isNullOrEmpty()) {
+                            binding.searchMotionLayout.transitionToStart()
+                        }
+                        binding.searchEditText.clearFocus()
+                        return true
+                    }
+                    return false
+                }
+            })
+        }
+        binding.cancelButton.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                viewModel.keyword.value = ""
+                viewModel.searchButton.value = Event("")
+                binding.searchEditText.clearFocus()
+                context.hideKeyboard(this@HistorySearchView)
+            }
+            false
+        }
+    }
+
+    @ModelProp
+    fun setViewModel(viewModel: ViewingHistoryViewModel) {
+        this.viewModel = viewModel
+    }
+
+    @JvmOverloads
+    @ModelProp
+    fun refresh(isRefreshing: Boolean = true) {
+        if (isRefreshing) {
+            binding.run {
+                searchMotionLayout.transitionToStart()
+            }
+        }
+    }
+
+    @AfterPropsSet
+    fun setUp() {
+        binding.viewModel = viewModel
+        val keyword = viewModel.keyword.value
+        if (viewModel.currentKeyword != keyword) {
+            viewModel.keyword.value = viewModel.currentKeyword
+            if (viewModel.currentKeyword.isNullOrEmpty()) {
+                binding.searchMotionLayout.transitionToStart()
+                return
+            }
+            binding.searchMotionLayout.transitionToEnd()
+        } else if (viewModel.currentKeyword != null) {
+            binding.searchMotionLayout.transitionToEnd()
+        }
     }
 }

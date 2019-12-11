@@ -3,6 +3,7 @@ package com.github.gericass.world_heritage_client.library.history
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.github.gericass.world_heritage_client.common.vo.Event
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
@@ -27,6 +28,10 @@ class ViewingHistoryViewModel(
 
     var currentKeyword: String? = null
 
+    val keyword = MutableLiveData<String>()
+
+    val searchButton = MutableLiveData<Event<String>>()
+
     init {
         val loadingObserver = Observer<Status> {
             if (it == Status.LOADING) {
@@ -49,6 +54,7 @@ class ViewingHistoryViewModel(
 
     fun refresh() {
         currentKeyword = null
+        keyword.value = null
         factory.setNewKeyword(null)
     }
 

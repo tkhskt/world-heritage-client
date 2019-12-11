@@ -65,6 +65,7 @@ dependencies {
     implementation Libs.paris
     kapt Libs.parisAnnotation
     implementation Libs.glide
+    implementation Libs.threeTenAbp
 }
 repositories {
     mavenCentral()

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:background="@color/common_gray_background"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.github.gericass.world_heritage_client.library.history.ViewingHistoryViewModel" />
+    </data>
+
 
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/search_motion_layout"
@@ -38,16 +44,19 @@
             android:background="@android:color/transparent"
             android:gravity="center|start"
             android:hint="@string/library_search_text"
-            android:maxLines="1"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
+            android:text="@={viewModel.keyword}"
             android:textColor="@color/common_gray_dark"
             android:textColorHint="@color/common_gray"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/cancel_button"
             app:layout_constraintStart_toEndOf="@id/search_icon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:selection="@{viewModel.keyword}" />
 
         <TextView
             android:id="@+id/cancel_button"
@@ -61,4 +70,4 @@
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 
-</merge>
+</layout>
