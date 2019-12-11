@@ -1,6 +1,4 @@
 <resources>
-    <string name="home_search">Search</string>
+    <string name="home_search">キーワードで検索</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

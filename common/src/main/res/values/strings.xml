@@ -10,4 +10,6 @@
     <string name="common_view_number">%1$s回視聴</string>
 
     <string name="common_post_date">%1$s前 ･\u0020</string>
+
+    <string name="common_avgle">Avgle</string>
 </resources>

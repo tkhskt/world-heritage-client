@@ -10,16 +10,21 @@ import androidx.navigation.ui.setupWithNavController
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeActivityHomeBinding
+import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.coroutines.CoroutineContext
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), CoroutineScope {
 
     private lateinit var binding: HomeActivityHomeBinding
 
     private val navigator: AvgleNavigator by inject()
 
     private val homeViewModel: HomeViewModel by viewModel()
+
+    override val coroutineContext: CoroutineContext
+        get() = Job() + Dispatchers.Main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +71,16 @@ class HomeActivity : AppCompatActivity() {
             navigator.run {
                 navigateToSearch()
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        launch {
+            withContext(Dispatchers.Default) {
+                delay(4000)
+            }
+            binding.toolbarDefault.searchContainer.transitionToEnd()
         }
     }
 
