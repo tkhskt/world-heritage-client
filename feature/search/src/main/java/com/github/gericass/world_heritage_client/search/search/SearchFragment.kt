@@ -70,12 +70,12 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
-        showKeyboard()
+        requireContext().showKeyboard()
     }
 
     override fun onPause() {
         super.onPause()
-        hideKeyboard(binding.root)
+        requireContext().hideKeyboard(binding.root)
     }
 
     private fun setUpToolbar() {

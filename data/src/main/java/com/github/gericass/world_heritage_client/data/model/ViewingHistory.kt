@@ -42,7 +42,8 @@ data class ViewingHistory(
             title = this.title,
             uid = this.uid,
             video_url = this.video_url,
-            viewnumber = this.viewnumber
+            viewnumber = this.viewnumber,
+            createdAt = this.created_at
         )
     }
 

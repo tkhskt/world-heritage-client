@@ -7,6 +7,7 @@
     <color name="common_gray">#767676</color>
     <color name="common_gray_dark">#333</color>
     <color name="common_gray_background">#E7E7E7</color>
+    <color name="common_gray_background_light">#C2C2C2</color>
     <color name="common_transparent_black">#A6000000</color>
     <color name="common_transparent">#00000000</color>
     <color name="common_color_border">#E0E0E0</color>

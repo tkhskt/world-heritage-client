@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:background="@color/common_transparent"
-                        android:singleLine="true"
+                        android:maxLines="1"
                         android:text="@{viewModel.keyword}"
                         android:textColor="@color/common_gray_dark"
                         android:textSize="18sp"

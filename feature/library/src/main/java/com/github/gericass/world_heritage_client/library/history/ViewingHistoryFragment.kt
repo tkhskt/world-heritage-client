@@ -10,6 +10,7 @@ import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
+import com.github.gericass.world_heritage_client.common.vo.Event
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
 import com.github.gericass.world_heritage_client.library.R
@@ -24,13 +25,19 @@ class ViewingHistoryFragment : BaseFragment() {
 
     override val recyclerView: EpoxyRecyclerView by lazy { binding.recycler }
 
-    private val historyController = ViewingHistoryController(videoClickListener)
+    private val historyController by lazy {
+        ViewingHistoryController(
+            videoClickListener,
+            viewModel
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.run {
             observe(pagedList, ::observePagedList)
             observe(loadingStatus, ::observeLoadingStatus)
+            observe(searchButton, ::observeSearchButton)
         }
     }
 
@@ -59,9 +66,16 @@ class ViewingHistoryFragment : BaseFragment() {
 
     private fun observeLoadingStatus(status: Status?) {
         if (status == Status.ERROR) {
-            showSnackbar(getString(R.string.common_msg_api_error)) {
+            showSnackbar(getString(R.string.common_msg_local_error)) {
                 viewModel.refresh()
             }
+        }
+    }
+
+    private fun observeSearchButton(event: Event<String>?) {
+        event?.getContentIfNotHandled()?.let {
+            if (it.isEmpty()) return viewModel.refresh()
+            viewModel.fetch(it)
         }
     }
 

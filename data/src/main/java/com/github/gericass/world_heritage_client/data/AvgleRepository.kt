@@ -21,12 +21,12 @@ interface AvgleRepository {
 
     suspend fun saveInsertHistory(video: Videos.Video)
 
-    suspend fun getViewingHistories(limit: Int = 50, offset: Int = 1): List<ViewingHistory>
+    suspend fun getViewingHistories(limit: Int = 50, offset: Int = 0): List<ViewingHistory>
 
     suspend fun getViewingHistoriesByKeyword(
         keyword: String,
         limit: Int = 50,
-        offset: Int = 1
+        offset: Int = 0
     ): List<ViewingHistory>
 
     suspend fun getAllPlayList(): List<PlayList>

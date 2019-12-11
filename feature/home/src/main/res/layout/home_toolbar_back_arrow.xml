@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center|start"
-                android:textColor="@android:color/black"
+                android:textColor="@color/common_gray_dark"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/search_button"
