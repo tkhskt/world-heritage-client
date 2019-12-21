@@ -20,7 +20,6 @@ import com.github.gericass.world_heritage_client.common.vo.Event
 import com.github.gericass.world_heritage_client.library.R
 import com.github.gericass.world_heritage_client.library.databinding.LibraryViewHistorySearchBinding
 import com.github.gericass.world_heritage_client.library.history.ViewingHistoryViewModel
-import timber.log.Timber
 
 @Styleable
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
@@ -42,7 +41,6 @@ class HistorySearchView @JvmOverloads constructor(
     }
 
     init {
-        Timber.d("aaaaaa")
         val color = ContextCompat.getColor(getContext(), R.color.common_gray_background)
         setBackgroundColor(color)
         binding.searchEditText.apply {

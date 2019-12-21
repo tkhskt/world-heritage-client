@@ -28,9 +28,20 @@ class LibraryFragment : BaseFragment() {
     private val navigator: AvgleNavigator.LibraryNavigator by inject()
 
     private val playListClickListener = { playList: PlayList ->
-        if (playList.id == 0L) {
-            navigator.run {
-                findNavController().navigateToHistory()
+        when (playList.id) {
+            PlayListId.HISTORY.id -> {
+                navigator.run {
+                    findNavController().navigateToHistory()
+                }
+            }
+            PlayListId.FAVORITE.id -> {
+
+            }
+            PlayListId.LATER.id -> {
+
+            }
+            else -> {
+
             }
         }
     }
@@ -74,7 +85,7 @@ class LibraryFragment : BaseFragment() {
     }
 
     private fun observePlayLists(playLists: List<PlayList>?) {
-        val history = PlayList(0, "履歴", R.drawable.common_ic_history_24dp)
+        val history = PlayList(PlayListId.HISTORY.id, "履歴", R.drawable.common_ic_history_24dp)
         val list = playLists?.toMutableList()?.apply {
             add(0, history)
         }
