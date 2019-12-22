@@ -22,8 +22,8 @@ object CategoryViewModelSpec : Spek({
         spyk(CategoryViewModel(avgleRepository), recordPrivateCalls = true)
     }
 
-    describe("api") {
-        it("called") {
+    describe("init") {
+        it("api called") {
             categoryViewModel.init()
             coVerify(exactly = 1) { avgleRepository.getCategories() }
         }
@@ -40,6 +40,14 @@ object CategoryViewModelSpec : Spek({
             coEvery { avgleRepository.getCategories() } throws Exception()
             categoryViewModel.init()
             Truth.assertThat(categoryViewModel.categories.value?.status).isEqualTo(Status.ERROR)
+        }
+    }
+    describe("refresh") {
+        it("api called") {
+            every { categoryViewModel["fetchCategories"]() as Unit } just runs
+            categoryViewModel.refresh()
+            verify(exactly = 1) { categoryViewModel["fetchCategories"]() }
+            Truth.assertThat(categoryViewModel.currentCategory).isNull()
         }
     }
 })

@@ -56,15 +56,17 @@ class CategoryViewModel(
         }
     }
 
-    private fun fetchCategories() = viewModelScope.launch {
-        runCatching { repository.getCategories() }
-            .onSuccess {
-                _categories.value = Response.onSuccess(it.response.categories)
-                if (currentCategory == null) {
-                    fetchVideos(it.response.categories.first())
+    private fun fetchCategories() {
+        viewModelScope.launch {
+            runCatching { repository.getCategories() }
+                .onSuccess {
+                    _categories.value = Response.onSuccess(it.response.categories)
+                    if (currentCategory == null) {
+                        fetchVideos(it.response.categories.first())
+                    }
                 }
-            }
-            .onFailure { _categories.value = Response.onError(it) }
+                .onFailure { _categories.value = Response.onError(it) }
+        }
     }
 
 
