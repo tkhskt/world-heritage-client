@@ -1,5 +1,9 @@
 object Libs {
     object Versions {
+        const val kotlin = "1.3.41"
+        const val swipeRefreshLayout = "1.1.0-alpha02"
+        const val appCompat = "1.1.0"
+        const val constraintLayout = "2.0.0-beta4"
         const val okHttp = "4.2.1"
         const val threeTenAbp = "1.2.1"
         const val timber = "4.7.1"
@@ -21,9 +25,21 @@ object Libs {
         const val room = "2.2.1"
         const val paris = "1.3.0"
         const val leakCanary = "2.0-beta-4"
+        const val JUnitPlugin = "1.5.2.0"
+        const val spek = "2.0.9"
+        const val espresso = "3.2.0"
+        const val mockk = "1.9.3"
+        const val coroutine = "1.3.3"
+        const val truth = "1.0"
 
     }
 
+    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+    const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
+    const val constraintLayout =
+        "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+    const val swipeRefreshLayout =
+        "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefreshLayout}"
     const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
     const val okHttpLogging = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttp}"
     const val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:${Versions.threeTenAbp}"
@@ -65,4 +81,13 @@ object Libs {
     const val paris = "com.airbnb.android:paris:${Versions.paris}"
     const val parisAnnotation = "com.airbnb.android:paris-processor:${Versions.paris}"
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"
+    const val JUnitPlugin = "de.mannodermaus.gradle.plugins:android-junit5:${Versions.JUnitPlugin}"
+    const val spek = "org.spekframework.spek2:spek-dsl-jvm:${Versions.spek}"
+    const val spekJUnit = "org.spekframework.spek2:spek-runner-junit5:${Versions.spek}"
+    const val testRuntime = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
+    const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
+    const val mockk = "io.mockk:mockk:${Versions.mockk}"
+    const val coroutineTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutine}"
+    const val testing = "androidx.arch.core:core-testing:${Versions.lifecycle}"
+    const val truth = "com.google.truth:truth:${Versions.truth}"
 }
