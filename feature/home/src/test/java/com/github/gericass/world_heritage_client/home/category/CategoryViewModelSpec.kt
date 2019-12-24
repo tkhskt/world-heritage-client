@@ -22,32 +22,44 @@ object CategoryViewModelSpec : Spek({
         spyk(CategoryViewModel(avgleRepository), recordPrivateCalls = true)
     }
 
-    describe("init") {
-        it("api called") {
-            categoryViewModel.init()
-            coVerify(exactly = 1) { avgleRepository.getCategories() }
+    describe("categories") {
+        describe("init") {
+            it("api called") {
+                categoryViewModel.init()
+                coVerify(exactly = 1) { avgleRepository.getCategories() }
+            }
+            it("succeeded") {
+                val category: Categories.Category = mockk(relaxed = true)
+                val resp: Categories.Response =
+                    mockk { every { categories } returns listOf(category) }
+                coEvery { avgleRepository.getCategories() } returns Categories(resp, true)
+                coEvery { categoryViewModel.fetchVideos(any()) } just runs
+                categoryViewModel.init()
+                Truth.assertThat(categoryViewModel.categories.value?.status)
+                    .isEqualTo(Status.SUCCESS)
+                verify(exactly = 1) { categoryViewModel.fetchVideos(any()) }
+            }
+            it("failed") {
+                coEvery { avgleRepository.getCategories() } throws Exception()
+                categoryViewModel.init()
+                Truth.assertThat(categoryViewModel.categories.value?.status).isEqualTo(Status.ERROR)
+            }
         }
-        it("succeeded") {
-            val category: Categories.Category = mockk(relaxed = true)
-            val resp: Categories.Response = mockk { every { categories } returns listOf(category) }
-            coEvery { avgleRepository.getCategories() } returns Categories(resp, true)
-            coEvery { categoryViewModel.fetchVideos(any()) } just runs
-            categoryViewModel.init()
-            Truth.assertThat(categoryViewModel.categories.value?.status).isEqualTo(Status.SUCCESS)
-            verify(exactly = 1) { categoryViewModel.fetchVideos(any()) }
-        }
-        it("failed") {
-            coEvery { avgleRepository.getCategories() } throws Exception()
-            categoryViewModel.init()
-            Truth.assertThat(categoryViewModel.categories.value?.status).isEqualTo(Status.ERROR)
+        describe("refresh") {
+            it("api called") {
+                every { categoryViewModel["fetchCategories"]() as Unit } just runs
+                categoryViewModel.refresh()
+                verify(exactly = 1) { categoryViewModel["fetchCategories"]() }
+                Truth.assertThat(categoryViewModel.currentCategory).isNull()
+            }
         }
     }
-    describe("refresh") {
-        it("api called") {
-            every { categoryViewModel["fetchCategories"]() as Unit } just runs
-            categoryViewModel.refresh()
-            verify(exactly = 1) { categoryViewModel["fetchCategories"]() }
-            Truth.assertThat(categoryViewModel.currentCategory).isNull()
-        }
-    }
+    //describe("videos") {
+    //    describe("init") {
+    //        it("pagedList published") {
+    //            Truth.assertThat(categoryViewModel.isRefreshing.value).isFalse()
+    //            Truth.assertThat(categoryViewModel.pagedList).isNotNull()
+    //        }
+    //    }
+    //}
 })
