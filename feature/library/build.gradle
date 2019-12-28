@@ -3,6 +3,7 @@ apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion 29
@@ -24,6 +25,9 @@ android {
     dataBinding {
         enabled = true
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     buildTypes {
         release {
@@ -40,6 +44,7 @@ dependencies {
     implementation Libs.appCompat
     implementation Libs.constraintLayout
     implementation Libs.swipeRefreshLayout
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -10,7 +10,7 @@ import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
-import com.github.gericass.world_heritage_client.data.model.PlayList
+import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
 import com.github.gericass.world_heritage_client.library.databinding.LibraryFragmentLibraryBinding
 import org.koin.android.ext.android.inject
@@ -27,17 +27,17 @@ class LibraryFragment : BaseFragment() {
 
     private val navigator: AvgleNavigator.LibraryNavigator by inject()
 
-    private val playListClickListener = { playList: PlayList ->
-        when (playList.id) {
-            PlayListId.HISTORY.id -> {
+    private val playlistClickListener = { playlist: Playlist ->
+        when (playlist.id) {
+            PlaylistId.HISTORY.id -> {
                 navigator.run {
                     findNavController().navigateToHistory()
                 }
             }
-            PlayListId.FAVORITE.id -> {
+            PlaylistId.FAVORITE.id -> {
 
             }
-            PlayListId.LATER.id -> {
+            PlaylistId.LATER.id -> {
 
             }
             else -> {
@@ -46,13 +46,13 @@ class LibraryFragment : BaseFragment() {
         }
     }
 
-    private val libraryController = LibraryController(videoClickListener, playListClickListener)
+    private val libraryController = LibraryController(videoClickListener, playlistClickListener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.run {
             observe(history, ::observeHistories)
-            observe(playLists, ::observePlayLists)
+            observe(playlists, ::observePlaylists)
         }
     }
 
@@ -84,12 +84,12 @@ class LibraryFragment : BaseFragment() {
         libraryController.history = histories
     }
 
-    private fun observePlayLists(playLists: List<PlayList>?) {
-        val history = PlayList(PlayListId.HISTORY.id, "履歴", R.drawable.common_ic_history_24dp)
-        val list = playLists?.toMutableList()?.apply {
+    private fun observePlaylists(playlists: List<Playlist>?) {
+        val history = Playlist(PlaylistId.HISTORY.id, "履歴", R.drawable.common_ic_history_24dp)
+        val list = playlists?.toMutableList()?.apply {
             add(0, history)
         }
-        libraryController.playLists = list
+        libraryController.playlists = list
         viewModel.isRefreshing.value = false
     }
 }

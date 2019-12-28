@@ -11,6 +11,7 @@ import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
 import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
 import com.github.gericass.world_heritage_client.library.LibraryViewModel
 import com.github.gericass.world_heritage_client.library.history.ViewingHistoryViewModel
+import com.github.gericass.world_heritage_client.library.playlist.PlaylistViewModel
 import com.github.gericass.world_heritage_client.navigator.AvgleNavigatorImpl
 import com.github.gericass.world_heritage_client.search.result.ResultViewModel
 import com.github.gericass.world_heritage_client.search.search.SearchViewModel
@@ -72,6 +73,7 @@ object Modules {
         viewModel { HomeViewModel() }
         viewModel { LibraryViewModel(get()) }
         viewModel { ViewingHistoryViewModel(get()) }
+        viewModel { PlaylistViewModel(get()) }
     }
 
     val navigatorModule = module {

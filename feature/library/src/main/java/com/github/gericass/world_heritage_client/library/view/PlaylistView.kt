@@ -12,12 +12,12 @@ import com.airbnb.epoxy.ModelView
 import com.airbnb.paris.annotations.Style
 import com.airbnb.paris.annotations.Styleable
 import com.bumptech.glide.Glide
-import com.github.gericass.world_heritage_client.data.model.PlayList
+import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.library.R
 
 @Styleable
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
-class PlayListView @JvmOverloads constructor(
+class PlaylistView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -25,7 +25,7 @@ class PlayListView @JvmOverloads constructor(
 
     private val image: ImageView
     private val name: TextView
-    private lateinit var playList: PlayList
+    private lateinit var playlist: Playlist
 
     init {
         inflate(context, R.layout.library_view_playlist, this)
@@ -34,33 +34,33 @@ class PlayListView @JvmOverloads constructor(
     }
 
     @ModelProp
-    fun setPlayList(playList: PlayList) {
-        this.playList = playList
+    fun setPlaylist(playlist: Playlist) {
+        this.playlist = playlist
     }
 
     @AfterPropsSet
     fun setUp() {
-        name.text = playList.title
-        playList.thumbnailImg?.let {
+        name.text = playlist.title
+        playlist.thumbnailImg?.let {
             Glide.with(image)
                 .load(it)
                 .into(image)
         } ?: run {
             Glide.with(image)
-                .load(playList.thumbnailImgUrl)
+                .load(playlist.thumbnailImgUrl)
                 .into(image)
         }
     }
 
     @CallbackProp
-    fun setClickListener(clickListener: (PlayList) -> Unit) {
+    fun setClickListener(clickListener: (Playlist) -> Unit) {
         setOnClickListener {
-            clickListener(playList)
+            clickListener(playlist)
         }
     }
 
     companion object {
         @Style(isDefault = true)
-        val DEFAULT_STYLE = R.style.library_EditTextStyle
+        val DEFAULT_STYLE = R.style.library_PlaylistStyle
     }
 }

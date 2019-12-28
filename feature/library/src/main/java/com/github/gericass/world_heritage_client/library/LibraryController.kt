@@ -6,14 +6,14 @@ import com.airbnb.epoxy.carousel
 import com.github.gericass.world_heritage_client.common.commonViewBorder
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.subjectTextView
-import com.github.gericass.world_heritage_client.data.model.PlayList
+import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
-import com.github.gericass.world_heritage_client.library.view.playListView
+import com.github.gericass.world_heritage_client.library.view.playlistView
 
 
 class LibraryController(
     private val videoClickListener: VideoClickListener,
-    private val playListClickListener: (PlayList) -> Unit
+    private val playlistClickListener: (Playlist) -> Unit
 ) : EpoxyController() {
 
     var history: List<ViewingHistory>? = null
@@ -21,7 +21,7 @@ class LibraryController(
             field = value
             requestModelBuild()
         }
-    var playLists: List<PlayList>? = null
+    var playlists: List<Playlist>? = null
         set(value) {
             field = value
             requestModelBuild()
@@ -49,11 +49,11 @@ class LibraryController(
         commonViewBorder {
             id("carousel_border")
         }
-        playLists?.forEach {
-            playListView {
+        playlists?.forEach {
+            playlistView {
                 id(it.id)
-                playList(it)
-                clickListener(playListClickListener)
+                playlist(it)
+                clickListener(playlistClickListener)
             }
         }
     }

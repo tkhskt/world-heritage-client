@@ -29,17 +29,17 @@ interface AvgleRepository {
         offset: Int = 0
     ): List<ViewingHistory>
 
-    suspend fun getAllPlayList(): List<PlayList>
+    suspend fun getAllPlaylist(): List<Playlist>
 
-    suspend fun getPlayListWithVideos(playListId: Int): PlayListWithVideos
+    suspend fun getPlaylistWithVideos(playlistId: Int): PlaylistWithVideos
 
-    suspend fun savePlayList(
+    suspend fun savePlaylist(
         title: String,
         videos: List<Videos.Video>,
         @DrawableRes
         thumbnail: Int? = null
     )
 
-    suspend fun deletePlayList(playListWithVideos: PlayListWithVideos)
+    suspend fun deletePlaylist(playlistWithVideos: PlaylistWithVideos)
 
 }

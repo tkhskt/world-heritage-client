@@ -15,7 +15,7 @@ internal class AvgleRepositoryImpl(
     private val client by lazy { retrofit.create(AvgleClient::class.java) }
     private val keywordDao by lazy { avgleDatabase.keywordDao() }
     private val historyDao by lazy { avgleDatabase.viewingHistoryDao() }
-    private val playListDao by lazy { avgleDatabase.playListDao() }
+    private val playlistDao by lazy { avgleDatabase.playlistDao() }
     private val videoDao by lazy { avgleDatabase.videoDao() }
 
     override suspend fun getCategories(): Categories {
@@ -67,15 +67,15 @@ internal class AvgleRepositoryImpl(
         return historyDao.getHistoriesByKeyword(keyword, limit, offset)
     }
 
-    override suspend fun getAllPlayList(): List<PlayList> {
-        return playListDao.getAllPlayList()
+    override suspend fun getAllPlaylist(): List<Playlist> {
+        return playlistDao.getAllPlaylist()
     }
 
-    override suspend fun getPlayListWithVideos(playListId: Int): PlayListWithVideos {
-        return playListDao.getPlayList(playListId)
+    override suspend fun getPlaylistWithVideos(playlistId: Int): PlaylistWithVideos {
+        return playlistDao.getPlaylist(playlistId)
     }
 
-    override suspend fun savePlayList(title: String, videos: List<Videos.Video>, thumbnail: Int?) {
+    override suspend fun savePlaylist(title: String, videos: List<Videos.Video>, thumbnail: Int?) {
         if (videos.isNullOrEmpty()) return
         val date = Calendar.getInstance().time
         videos.run {
@@ -85,27 +85,27 @@ internal class AvgleRepositoryImpl(
                 videoDao.insertVideo(it)
             }
         }
-        val playList = thumbnail?.run {
-            PlayList(title = title, thumbnailImg = this)
+        val playlist = thumbnail?.run {
+            Playlist(title = title, thumbnailImg = this)
         } ?: run {
-            PlayList(title = title, thumbnailImgUrl = videos.first().preview_url)
+            Playlist(title = title, thumbnailImgUrl = videos.first().preview_url)
         }
-        val id = playListDao.insertPlayList(playList)
+        val id = playlistDao.insertPlaylist(playlist)
         videos.map {
-            VideoPlayList(it.vid, id)
+            VideoPlaylist(it.vid, id)
         }.forEach {
-            playListDao.insertVideoPlayList(it)
+            playlistDao.insertVideoPlaylist(it)
         }
     }
 
-    override suspend fun deletePlayList(playListWithVideos: PlayListWithVideos) {
+    override suspend fun deletePlaylist(playlistWithVideos: PlaylistWithVideos) {
         avgleDatabase.runInTransaction {
-            playListDao.run {
-                deletePlayList(playListWithVideos.playlist.id)
-                deletePlayListVideo(playListWithVideos.playlist.id)
+            playlistDao.run {
+                deletePlaylist(playlistWithVideos.playlist.id)
+                deletePlaylistVideo(playlistWithVideos.playlist.id)
             }
-            playListWithVideos.videos.forEach {
-                val count = playListDao.videoExists(it.vid)
+            playlistWithVideos.videos.forEach {
+                val count = playlistDao.videoExists(it.vid)
                 if (count < 1) {
                     videoDao.deleteVideo(it.vid)
                 }

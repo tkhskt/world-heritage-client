@@ -5,12 +5,13 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.github.gericass.world_heritage_client.R
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
+import com.github.gericass.world_heritage_client.library.LibraryFragmentDirections
 import com.github.gericass.world_heritage_client.search.SearchActivity
 
 class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
 
     override fun NavController.setHomeGraph() {
-        setGraph(R.navigation.home_nav)
+        setGraph(R.navigation.common_home_navigation)
     }
 
     override fun getBottomNavigationConfig(): AppBarConfiguration {
@@ -30,5 +31,9 @@ class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
 
     override fun NavController.navigateToHistory() {
         navigate(R.id.action_library_to_history)
+    }
+
+    override fun NavController.navigateToFavorite(playlistId: Int, editable: Boolean) {
+        navigate(LibraryFragmentDirections.actionLibraryToPlaylist(playlistId, editable))
     }
 }

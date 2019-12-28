@@ -14,14 +14,14 @@ import androidx.room.ForeignKey.CASCADE
             childColumns = ["video_id"]
 
         ), ForeignKey(
-            entity = PlayList::class,
+            entity = Playlist::class,
             parentColumns = ["id"],
             childColumns = ["playlist_id"],
             onDelete = CASCADE
         )
     ]
 )
-class VideoPlayList(
+class VideoPlaylist(
     @ColumnInfo(name = "video_id")
     val videoId: String,
     @ColumnInfo(name = "playlist_id")
