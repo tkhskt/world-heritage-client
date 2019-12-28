@@ -33,7 +33,18 @@ class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
         navigate(R.id.action_library_to_history)
     }
 
-    override fun NavController.navigateToFavorite(playlistId: Int, editable: Boolean) {
-        navigate(LibraryFragmentDirections.actionLibraryToPlaylist(playlistId, editable))
+    override fun NavController.navigateToFavorite(
+        playlistId: Int,
+        playlistTitle: String,
+        playlistDescription: String
+    ) {
+        navigate(
+            LibraryFragmentDirections.actionLibraryToPlaylist(
+                playlistId,
+                playlistTitle,
+                playlistDescription,
+                false
+            )
+        )
     }
 }

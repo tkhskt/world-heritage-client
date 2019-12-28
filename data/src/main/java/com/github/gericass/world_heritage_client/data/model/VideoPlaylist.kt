@@ -25,5 +25,5 @@ class VideoPlaylist(
     @ColumnInfo(name = "video_id")
     val videoId: String,
     @ColumnInfo(name = "playlist_id")
-    val playlistId: Long
+    val playlistId: Int
 )

@@ -35,7 +35,13 @@ class LibraryFragment : BaseFragment() {
                 }
             }
             PlaylistId.FAVORITE.id -> {
-
+                navigator.run {
+                    findNavController().navigateToFavorite(
+                        playlist.id,
+                        playlist.title,
+                        playlist.description
+                    )
+                }
             }
             PlaylistId.LATER.id -> {
 
@@ -85,9 +91,12 @@ class LibraryFragment : BaseFragment() {
     }
 
     private fun observePlaylists(playlists: List<Playlist>?) {
-        val history = Playlist(PlaylistId.HISTORY.id, "履歴", R.drawable.common_ic_history_24dp)
+        val history = Playlist(PlaylistId.HISTORY.id, "履歴", "", R.drawable.common_ic_history_24dp)
+        val favorite =
+            Playlist(PlaylistId.FAVORITE.id, "お気に入り", "", R.drawable.common_ic_favorite_24dp)
         val list = playlists?.toMutableList()?.apply {
             add(0, history)
+            add(1, favorite)
         }
         libraryController.playlists = list
         viewModel.isRefreshing.value = false

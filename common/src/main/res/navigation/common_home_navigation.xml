@@ -37,6 +37,14 @@
             app:argType="integer" />
 
         <argument
+            android:name="playlistTitle"
+            app:argType="string" />
+
+        <argument
+            android:name="playlistDescription"
+            app:argType="string" />
+
+        <argument
             android:name="editable"
             android:defaultValue="false"
             app:argType="boolean" />

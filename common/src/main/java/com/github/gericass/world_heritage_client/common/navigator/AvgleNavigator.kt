@@ -14,6 +14,10 @@ interface AvgleNavigator {
 
     interface LibraryNavigator {
         fun NavController.navigateToHistory()
-        fun NavController.navigateToFavorite(playlistId: Int, editable: Boolean)
+        fun NavController.navigateToFavorite(
+            playlistId: Int,
+            playlistTitle: String,
+            playlistDescription: String
+        )
     }
 }

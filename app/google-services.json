@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "860000914134",
+    "firebase_url": "https://world-heritage-44936.firebaseio.com",
+    "project_id": "world-heritage-44936",
+    "storage_bucket": "world-heritage-44936.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860000914134:android:e31d5ac775ee4e086f9777",
+        "android_client_info": {
+          "package_name": "com.github.gericass.world_heritage_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860000914134-91ebdsfh8447v3tnkpn47ghf2pr3qild.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4IgmIH-lYkvMr90-zz7lXIKvJooK46Jc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860000914134-91ebdsfh8447v3tnkpn47ghf2pr3qild.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

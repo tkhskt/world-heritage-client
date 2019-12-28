@@ -25,6 +25,7 @@ android {
     dataBinding {
         enabled = true
     }
+    // for safeArgs
     kotlinOptions {
         jvmTarget = '1.8'
     }

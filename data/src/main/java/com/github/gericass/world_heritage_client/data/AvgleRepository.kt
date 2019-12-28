@@ -35,11 +35,18 @@ interface AvgleRepository {
 
     suspend fun savePlaylist(
         title: String,
+        description: String,
         videos: List<Videos.Video>,
         @DrawableRes
         thumbnail: Int? = null
     )
 
     suspend fun deletePlaylist(playlistWithVideos: PlaylistWithVideos)
+
+    suspend fun getFavoriteVideos(limit: Int = 50, offset: Int = 0): List<FavoriteVideo>
+
+    suspend fun saveFavoriteVideo(videos: List<FavoriteVideo>)
+
+    suspend fun deleteFavoriteVideo(videoId: String)
 
 }

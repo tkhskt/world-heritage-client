@@ -11,7 +11,8 @@ import com.github.gericass.world_heritage_client.data.model.*
         ViewingHistory::class,
         VideoEntity::class,
         VideoPlaylist::class,
-        Playlist::class
+        Playlist::class,
+        FavoriteVideo::class
     ], version = 1
 )
 @TypeConverters(DateConverter::class)
@@ -20,4 +21,5 @@ abstract class AvgleDatabase : RoomDatabase() {
     abstract fun viewingHistoryDao(): ViewingHistoryDao
     abstract fun playlistDao(): PlaylistDao
     abstract fun videoDao(): VideoDao
+    abstract fun favoriteVideoDao(): FavoriteVideoDao
 }

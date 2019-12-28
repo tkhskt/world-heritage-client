@@ -25,11 +25,11 @@ interface PlaylistDao {
     suspend fun insertVideoPlaylist(videoPlaylist: VideoPlaylist)
 
     @Query("DELETE FROM Playlist WHERE id = :playlistId")
-    fun deletePlaylist(playlistId: Long)
+    fun deletePlaylist(playlistId: Int)
 
     @Query("DELETE FROM VideoPlaylist WHERE playlist_id = :playlistId")
-    fun deletePlaylistVideo(playlistId: Long)
+    fun deletePlaylistVideo(playlistId: Int)
 
     @Query("SELECT COUNT(*) FROM VideoPlaylist WHERE video_id = :videoId")
-    fun videoExists(videoId: String): Long
+    fun videoExists(videoId: String): Int
 }

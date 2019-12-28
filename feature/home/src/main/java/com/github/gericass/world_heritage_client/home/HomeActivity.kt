@@ -32,7 +32,7 @@ class HomeActivity : AppCompatActivity(), CoroutineScope {
         setSupportActionBar(binding.toolbarArrow.backArrowToolbar)
         val navigationController = findNavController(R.id.home_nav_host_fragment).apply {
             navigator.run { setHomeGraph() }
-            addOnDestinationChangedListener { _, dest, _ ->
+            addOnDestinationChangedListener { _, dest, args ->
                 when (dest.label.toString()) {
                     "home" -> run {
                         binding.apply {
@@ -44,6 +44,14 @@ class HomeActivity : AppCompatActivity(), CoroutineScope {
                     "history" -> {
                         binding.apply {
                             toolbarArrow.title.text = "履歴"
+                            toolbarDefault.mainToolbar.isVisible = false
+                            toolbarArrow.backArrowToolbar.isVisible = true
+                            mainTab.isVisible = false
+                        }
+                    }
+                    "playlist" -> {
+                        binding.apply {
+                            toolbarArrow.title.text = args?.getString("playlistTitle")
                             toolbarDefault.mainToolbar.isVisible = false
                             toolbarArrow.backArrowToolbar.isVisible = true
                             mainTab.isVisible = false

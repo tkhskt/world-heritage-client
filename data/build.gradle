@@ -43,6 +43,8 @@ dependencies {
     kapt Libs.roomAnnotation
     implementation Libs.koinAndroid
     implementation Libs.koinAndroidxScope
+    implementation Libs.firestore
+    implementation Libs.coroutinePlayServices
 }
 repositories {
     mavenCentral()
