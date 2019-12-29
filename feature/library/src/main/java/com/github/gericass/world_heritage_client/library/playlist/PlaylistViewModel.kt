@@ -5,9 +5,10 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Videos
+import kotlinx.coroutines.launch
 
 class PlaylistViewModel(
-    useCase: PlaylistUseCase
+    private val useCase: PlaylistUseCase
 ) : ViewModel(), LifecycleObserver {
 
     var editable = false
@@ -49,6 +50,11 @@ class PlaylistViewModel(
             .build()
     }
 
+    fun deleteVideo(video: Videos.Video) {
+        viewModelScope.launch {
+            useCase.deleteVideo(playlistId, video.vid)
+        }
+    }
 
     fun refresh() {
         factory.refresh()

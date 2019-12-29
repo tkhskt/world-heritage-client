@@ -30,6 +30,14 @@ class PlaylistUseCase(
         }
     }
 
+    suspend fun deleteVideo(playlistId: Int, vid: String) {
+        when (playlistId) {
+            PlaylistId.FAVORITE.id -> repository.deleteFavoriteVideo(vid)
+            else -> {
+            }
+        }
+    }
+
     fun getPagingManagerByPlaylistId(playlistId: Int): PagingManager<*> {
         return when (playlistId) {
             PlaylistId.FAVORITE.id -> PagingManager(FavoriteVideo::class)
