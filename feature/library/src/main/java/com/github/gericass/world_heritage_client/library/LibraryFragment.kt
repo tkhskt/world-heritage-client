@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
+import com.github.gericass.world_heritage_client.common.PlaylistId
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.data.model.Playlist
@@ -82,8 +83,8 @@ class LibraryFragment : BaseFragment() {
                 this@LibraryFragment.viewModel.isRefreshing.value = true
                 this@LibraryFragment.viewModel.refresh()
             }
-
         }
+        showPlaylistDialog()
     }
 
     private fun observeHistories(histories: List<ViewingHistory>?) {
@@ -91,9 +92,19 @@ class LibraryFragment : BaseFragment() {
     }
 
     private fun observePlaylists(playlists: List<Playlist>?) {
-        val history = Playlist(PlaylistId.HISTORY.id, "履歴", "", R.drawable.common_ic_history_24dp)
+        val history = Playlist(
+            PlaylistId.HISTORY.id,
+            PlaylistId.HISTORY.title,
+            "",
+            R.drawable.common_ic_history_24dp
+        )
         val favorite =
-            Playlist(PlaylistId.FAVORITE.id, "お気に入り", "", R.drawable.common_ic_favorite_24dp)
+            Playlist(
+                PlaylistId.FAVORITE.id,
+                PlaylistId.FAVORITE.title,
+                "",
+                R.drawable.common_ic_favorite_24dp
+            )
         val list = playlists?.toMutableList()?.apply {
             add(0, history)
             add(1, favorite)

@@ -16,7 +16,6 @@ import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.library.R
 import com.github.gericass.world_heritage_client.library.databinding.LibraryFragmentPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class PlaylistFragment : BaseFragment() {
 
@@ -83,10 +82,19 @@ class PlaylistFragment : BaseFragment() {
     }
 
     private fun observeLoadingStatus(status: Status?) {
-        Timber.d(status?.name)
-        if (status == Status.ERROR) {
-            showSnackbar(getString(R.string.common_msg_api_error)) {
-                viewModel.refresh()
+        when (status) {
+            Status.LOADING -> playlistController.isLoading = run {
+                viewModel.isRefreshing.value?.let { refreshing ->
+                    if (refreshing) return@run false
+                }
+                return@run true
+            }
+            Status.SUCCESS -> playlistController.isLoading = false
+            Status.ERROR -> run {
+                showSnackbar(getString(R.string.common_msg_api_error)) {
+                    viewModel.refresh()
+                }
+                playlistController.isLoading = false
             }
         }
     }

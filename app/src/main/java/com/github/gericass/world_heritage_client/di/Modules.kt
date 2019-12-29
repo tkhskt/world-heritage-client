@@ -4,6 +4,7 @@ import androidx.room.Room
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.github.gericass.world_heritage_client.common.BaseViewModel
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
+import com.github.gericass.world_heritage_client.common.sheet.BottomSheetViewModel
 import com.github.gericass.world_heritage_client.data.local.AvgleDatabase
 import com.github.gericass.world_heritage_client.data.remote.BASE_URL
 import com.github.gericass.world_heritage_client.home.HomeViewModel
@@ -75,6 +76,7 @@ object Modules {
         viewModel { LibraryViewModel(get()) }
         viewModel { ViewingHistoryViewModel(get()) }
         viewModel { PlaylistViewModel(get()) }
+        viewModel { BottomSheetViewModel(get()) }
     }
 
     val useCaseModule = module {

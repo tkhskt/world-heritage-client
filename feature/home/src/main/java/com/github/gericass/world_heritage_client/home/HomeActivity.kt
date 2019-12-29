@@ -90,6 +90,7 @@ class HomeActivity : AppCompatActivity(), CoroutineScope {
             }
             binding.toolbarDefault.searchContainer.transitionToEnd()
         }
+
     }
 
     override fun onSupportNavigateUp(): Boolean =

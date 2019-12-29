@@ -7,6 +7,10 @@
     <string name="common_home">ホーム</string>
     <string name="common_library">ライブラリ</string>
 
+    <string name="common_sheet_add">動画の保存先</string>
+    <string name="common_new_playlist">新しいプレイリスト</string>
+    <string name="common_done">完了</string>
+
     <string name="common_view_number">%1$s回視聴</string>
 
     <string name="common_post_date">%1$s前 ･\u0020</string>

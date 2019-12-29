@@ -69,6 +69,7 @@ dependencies {
     implementation Libs.koinAndroidxScope
     implementation Libs.koinViewModel
     implementation Libs.timber
+    implementation Libs.materialComponents
 }
 
 repositories {

@@ -4,4 +4,5 @@ import com.github.gericass.world_heritage_client.data.model.Videos
 
 interface VideoClickListener {
     fun onClick(video: Videos.Video)
+    fun onEditClick(video: Videos.Video)
 }

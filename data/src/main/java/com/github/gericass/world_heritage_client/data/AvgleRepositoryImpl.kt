@@ -74,6 +74,14 @@ internal class AvgleRepositoryImpl(
     }
 
     override suspend fun getAllPlaylist(): List<Playlist> {
+//        firestore.collection("playlist")
+//            .get()
+//            .addOnSuccessListener {
+//
+//            }
+//            .addOnFailureListener {
+//
+//            }.await()
         return playlistDao.getAllPlaylist()
     }
 

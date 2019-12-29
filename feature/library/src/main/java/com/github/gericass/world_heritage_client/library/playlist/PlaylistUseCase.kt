@@ -1,10 +1,10 @@
 package com.github.gericass.world_heritage_client.library.playlist
 
+import com.github.gericass.world_heritage_client.common.PlaylistId
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.FavoriteVideo
 import com.github.gericass.world_heritage_client.data.model.VideoEntity
 import com.github.gericass.world_heritage_client.data.model.Videos
-import com.github.gericass.world_heritage_client.library.PlaylistId
 
 class PlaylistUseCase(
     private val repository: AvgleRepository

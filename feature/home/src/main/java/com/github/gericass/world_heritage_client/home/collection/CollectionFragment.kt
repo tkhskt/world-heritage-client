@@ -92,23 +92,22 @@ class CollectionFragment : BaseFragment() {
     }
 
     private fun observeNetworkStatus(status: Status?) {
-        status?.let {
-            when (it) {
-                Status.LOADING -> collectionController.isLoading = run {
-                    viewModel.isRefreshing.value?.let { refreshing ->
-                        if (refreshing) return@run false
-                    }
-                    return@run true
+        when (status) {
+            Status.LOADING -> collectionController.isLoading = run {
+                viewModel.isRefreshing.value?.let { refreshing ->
+                    if (refreshing) return@run false
                 }
-                Status.SUCCESS -> collectionController.isLoading = false
-                Status.ERROR -> run {
-                    showSnackbar(getString(R.string.common_msg_api_error)) {
-                        viewModel.refresh()
-                    }
-                    collectionController.isLoading = false
+                return@run true
+            }
+            Status.SUCCESS -> collectionController.isLoading = false
+            Status.ERROR -> run {
+                showSnackbar(getString(R.string.common_msg_api_error)) {
+                    viewModel.refresh()
                 }
+                collectionController.isLoading = false
             }
         }
+
     }
 
     companion object {
