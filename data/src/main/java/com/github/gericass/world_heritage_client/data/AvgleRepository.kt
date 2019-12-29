@@ -2,6 +2,7 @@ package com.github.gericass.world_heritage_client.data
 
 import androidx.annotation.DrawableRes
 import com.github.gericass.world_heritage_client.data.model.*
+import com.github.gericass.world_heritage_client.data.remote.PagingManager
 
 interface AvgleRepository {
 
@@ -31,7 +32,10 @@ interface AvgleRepository {
 
     suspend fun getAllPlaylist(): List<Playlist>
 
-    suspend fun getPlaylistWithVideos(playlistId: Int): PlaylistWithVideos
+    suspend fun getPlaylistWithVideos(
+        playlistId: Int,
+        pagingManager: PagingManager<Videos.Video>
+    ): PlaylistWithVideos
 
     suspend fun savePlaylist(
         title: String,
@@ -43,10 +47,19 @@ interface AvgleRepository {
 
     suspend fun deletePlaylist(playlistWithVideos: PlaylistWithVideos)
 
-    suspend fun getFavoriteVideos(limit: Int = 50, offset: Int = 0): List<FavoriteVideo>
+    suspend fun getFavoriteVideos(
+        limit: Int = 50,
+        offset: Int = 0,
+        pagingManager: PagingManager<FavoriteVideo>
+    ): List<FavoriteVideo>
 
     suspend fun saveFavoriteVideo(videos: List<FavoriteVideo>)
 
     suspend fun deleteFavoriteVideo(videoId: String)
+
+    suspend fun saveVideoToPlaylist(
+        playlistId: Int,
+        video: Videos.Video
+    )
 
 }

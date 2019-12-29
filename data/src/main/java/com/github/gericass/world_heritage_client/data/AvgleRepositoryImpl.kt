@@ -4,7 +4,7 @@ import com.github.gericass.world_heritage_client.data.local.AvgleDatabase
 import com.github.gericass.world_heritage_client.data.model.*
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.data.remote.AvgleClient
-import com.google.firebase.firestore.Query
+import com.github.gericass.world_heritage_client.data.remote.PagingManager
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -85,7 +85,10 @@ internal class AvgleRepositoryImpl(
         return playlistDao.getAllPlaylist()
     }
 
-    override suspend fun getPlaylistWithVideos(playlistId: Int): PlaylistWithVideos {
+    override suspend fun getPlaylistWithVideos(
+        playlistId: Int,
+        pagingManager: PagingManager<Videos.Video>
+    ): PlaylistWithVideos {
         return playlistDao.getPlaylist(playlistId)
     }
 
@@ -136,22 +139,22 @@ internal class AvgleRepositoryImpl(
         }
     }
 
-    override suspend fun getFavoriteVideos(limit: Int, offset: Int): List<FavoriteVideo> {
+    override suspend fun getFavoriteVideos(
+        limit: Int,
+        offset: Int,
+        pagingManager: PagingManager<FavoriteVideo>
+    ): List<FavoriteVideo> {
         val videos = mutableListOf<FavoriteVideo>()
         val cachedVideos = favoriteVideoDao.getVideos(limit, offset)
-        firestore.collection("favorite")
-            .orderBy("created_at", Query.Direction.DESCENDING)
-            .startAt(limit * offset)
-            .endBefore((limit * offset) + limit)
-            .get()
-            .addOnSuccessListener {
-                videos.addAll(it.map { doc ->
-                    doc.toObject(FavoriteVideo::class.java)
-                })
-            }
-            .addOnFailureListener {
+        pagingManager.collectionPath = "favorite"
+        pagingManager.getRecords(
+            onSuccess = {
+                videos.addAll(it)
+            },
+            onFailure = {
                 videos.addAll(cachedVideos)
-            }.await()
+            }
+        )
         favoriteVideoDao.insertVideosAfterDelete(videos, limit, offset)
         return videos
     }
@@ -164,5 +167,15 @@ internal class AvgleRepositoryImpl(
 
     override suspend fun deleteFavoriteVideo(videoId: String) {
         firestore.collection("favorite").document(videoId).delete().await()
+    }
+
+    override suspend fun saveVideoToPlaylist(
+        playlistId: Int,
+        video: Videos.Video
+    ) {
+        val now = Calendar.getInstance().time
+        if (playlistId == PlaylistId.FAVORITE.id) {
+            saveFavoriteVideo(listOf(video.toFavoriteVideo(now)))
+        }
     }
 }

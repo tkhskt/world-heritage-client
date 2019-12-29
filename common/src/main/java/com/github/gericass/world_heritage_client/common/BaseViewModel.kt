@@ -24,6 +24,11 @@ class BaseViewModel(
     fun showPlaylistDialog(fm: FragmentManager) {
         viewModelScope.launch {
             val selectedPlaylistIds = BottomSheetFragment.showWithResult(fm)
+            selectedVideo?.let { video ->
+                selectedPlaylistIds?.forEach { playlistId ->
+                    repository.saveVideoToPlaylist(playlistId, video)
+                }
+            }
         }
     }
 }

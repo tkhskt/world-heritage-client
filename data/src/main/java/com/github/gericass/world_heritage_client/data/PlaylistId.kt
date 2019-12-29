@@ -1,4 +1,4 @@
-package com.github.gericass.world_heritage_client.common.vo
+package com.github.gericass.world_heritage_client.data
 
 enum class PlaylistId(val id: Int, val title: String) {
     HISTORY(-1, "履歴"),

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Videos
+import com.github.gericass.world_heritage_client.data.remote.PagingManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -15,6 +16,14 @@ class PlaylistDataSource(
     private val useCase: PlaylistUseCase,
     private val playlistId: Int? = null
 ) : PageKeyedDataSource<Int, Videos.Video>() {
+
+    var pagingManager: PagingManager<*>? = null
+
+    init {
+        playlistId?.let {
+            pagingManager = useCase.getPagingManagerByPlaylistId(playlistId)
+        }
+    }
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -50,9 +59,13 @@ class PlaylistDataSource(
         callback: (Int?, List<Videos.Video>) -> Unit
     ) {
         if (playlistId == null) return
+        val manager = pagingManager ?: return
         try {
             loadingState.postValue(Status.LOADING)
-            val videos = useCase.getVideosByPlaylistId(playlistId)
+            val videos = useCase.getVideosByPlaylistId(
+                playlistId,
+                manager
+            )
             if (videos.size == 50) {
                 val next = page + 1
                 callback(next, videos)

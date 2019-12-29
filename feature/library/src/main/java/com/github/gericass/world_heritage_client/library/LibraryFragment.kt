@@ -10,8 +10,8 @@ import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
-import com.github.gericass.world_heritage_client.common.vo.PlaylistId
 import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
+import com.github.gericass.world_heritage_client.data.PlaylistId
 import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
 import com.github.gericass.world_heritage_client.library.databinding.LibraryFragmentLibraryBinding

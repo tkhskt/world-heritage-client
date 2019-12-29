@@ -79,6 +79,8 @@ class SmallVideoView @JvmOverloads constructor(
             onItemSelectedListener = spinnerListener
         }
         binding.button.setOnClickListener {
+            val video = binding.video ?: return@setOnClickListener
+            binding.listener?.onEditClick(video)
             binding.spinner.performClick()
         }
     }

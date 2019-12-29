@@ -1,20 +1,39 @@
 package com.github.gericass.world_heritage_client.library.playlist
 
-import com.github.gericass.world_heritage_client.common.vo.PlaylistId
 import com.github.gericass.world_heritage_client.data.AvgleRepository
+import com.github.gericass.world_heritage_client.data.PlaylistId
 import com.github.gericass.world_heritage_client.data.model.FavoriteVideo
 import com.github.gericass.world_heritage_client.data.model.VideoEntity
 import com.github.gericass.world_heritage_client.data.model.Videos
+import com.github.gericass.world_heritage_client.data.remote.PagingManager
 
 class PlaylistUseCase(
     private val repository: AvgleRepository
 ) {
 
-    suspend fun getVideosByPlaylistId(playlistId: Int): List<Videos.Video> {
+    @Suppress("UNCHECKED_CAST")
+    suspend fun <T : Any> getVideosByPlaylistId(
+        playlistId: Int,
+        pagingManager: PagingManager<T>
+    ): List<Videos.Video> {
         return when (playlistId) {
-            PlaylistId.FAVORITE.id -> repository.getFavoriteVideos().map(FavoriteVideo::toVideo)
-            else -> repository.getPlaylistWithVideos(playlistId).videos.map(VideoEntity::toVideo)
-        }
+            PlaylistId.FAVORITE.id -> repository.getFavoriteVideos(
+                pagingManager = (pagingManager as PagingManager<FavoriteVideo>)
+            ).map(
+                FavoriteVideo::toVideo
+            )
+            else -> repository.getPlaylistWithVideos(
+                playlistId,
+                pagingManager = (pagingManager as PagingManager<Videos.Video>)
 
+            ).videos.map(VideoEntity::toVideo)
+        }
+    }
+
+    fun getPagingManagerByPlaylistId(playlistId: Int): PagingManager<*> {
+        return when (playlistId) {
+            PlaylistId.FAVORITE.id -> PagingManager(FavoriteVideo::class)
+            else -> PagingManager(Videos.Video::class)
+        }
     }
 }
