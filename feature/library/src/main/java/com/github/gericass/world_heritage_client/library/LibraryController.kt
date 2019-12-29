@@ -6,14 +6,17 @@ import com.airbnb.epoxy.carousel
 import com.github.gericass.world_heritage_client.common.commonViewBorder
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.subjectTextView
+import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
+import com.github.gericass.world_heritage_client.library.view.LibraryVideoViewModel_
 import com.github.gericass.world_heritage_client.library.view.playlistView
 
 
 class LibraryController(
     private val videoClickListener: VideoClickListener,
-    private val playlistClickListener: (Playlist) -> Unit
+    private val playlistClickListener: (Playlist) -> Unit,
+    private val spinnerItems: List<SpinnerItem>
 ) : EpoxyController() {
 
     var history: List<ViewingHistory>? = null
@@ -35,10 +38,11 @@ class LibraryController(
             sectionStyle(true)
         }
         val videos = history?.map {
-            LibraryViewVideoBindingModel_().apply {
+            LibraryVideoViewModel_().apply {
                 id(it.vid)
                 video(it.toVideo())
                 listener(videoClickListener)
+                spinnerItems(spinnerItems)
             }
         } ?: return
         Carousel.setDefaultGlobalSnapHelperFactory(null)

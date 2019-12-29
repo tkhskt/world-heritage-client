@@ -1,4 +1,4 @@
-@EpoxyDataBindingLayouts({R2.layout.library_view_video, R2.layout.library_view_playlist_header})
+@EpoxyDataBindingLayouts({R2.layout.library_view_playlist_header})
 
 
 package com.github.gericass.world_heritage_client.library.view;

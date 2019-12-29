@@ -5,10 +5,12 @@ import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.github.gericass.world_heritage_client.common.view.SmallVideoViewModel_
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.progressView
+import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.data.model.Videos
 
 class ResultController(
-    private val videoClickListener: VideoClickListener
+    private val videoClickListener: VideoClickListener,
+    private val spinnerItems: List<SpinnerItem>
 ) : PagedListEpoxyController<Videos.Video>() {
 
     var isLoading: Boolean = true
@@ -26,6 +28,7 @@ class ResultController(
                 video(it)
             }
             listener(videoClickListener)
+            spinnerItems(spinnerItems)
         }
     }
 

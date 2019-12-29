@@ -31,11 +31,11 @@ class ViewingHistoryFragment : BaseFragment() {
             videoClickListener,
             viewModel,
             listOf(
-                SpinnerItem("[後で見る]に追加", {}),
-                SpinnerItem("再生リストに追加", ::showPlaylistDialog)
+                SpinnerItem(getString(R.string.common_spinner_watch_later), {}),
+                SpinnerItem(getString(R.string.common_spinner_playlist), ::showPlaylistDialog)
             )
         )
-        )
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

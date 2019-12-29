@@ -1,5 +1,4 @@
 @EpoxyDataBindingLayouts({
-        R2.layout.common_view_video,
         R2.layout.common_view_border
 })
 

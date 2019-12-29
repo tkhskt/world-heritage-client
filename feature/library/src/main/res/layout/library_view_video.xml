@@ -68,6 +68,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/title" />
 
+
+        <com.github.gericass.world_heritage_client.common.view.VideoSpinner
+            android:id="@+id/spinner"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:popupBackground="@android:color/white"
+            app:layout_constraintEnd_toEndOf="@id/button"
+            app:layout_constraintStart_toStartOf="@id/button"
+            app:layout_constraintTop_toTopOf="@id/button" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

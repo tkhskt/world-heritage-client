@@ -11,6 +11,7 @@ import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.vo.Response
+import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Categories
 import com.github.gericass.world_heritage_client.data.model.Videos
@@ -40,8 +41,16 @@ class CategoryFragment : BaseFragment() {
         }
     }
 
-    private val categoryController: CategoryController =
-        CategoryController(categoryClickListener, videoClickListener)
+    private val categoryController: CategoryController by lazy {
+        CategoryController(
+            categoryClickListener,
+            videoClickListener,
+            listOf(
+                SpinnerItem(getString(R.string.common_spinner_watch_later), {}),
+                SpinnerItem(getString(R.string.common_spinner_playlist), ::showPlaylistDialog)
+            )
+        )
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
