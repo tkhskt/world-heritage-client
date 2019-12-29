@@ -1,6 +1,6 @@
 package com.github.gericass.world_heritage_client.library.playlist
 
-import com.github.gericass.world_heritage_client.common.PlaylistId
+import com.github.gericass.world_heritage_client.common.vo.PlaylistId
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.FavoriteVideo
 import com.github.gericass.world_heritage_client.data.model.VideoEntity

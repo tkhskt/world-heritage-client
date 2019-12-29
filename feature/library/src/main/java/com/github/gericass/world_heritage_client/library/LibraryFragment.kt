@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
-import com.github.gericass.world_heritage_client.common.PlaylistId
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
+import com.github.gericass.world_heritage_client.common.vo.PlaylistId
 import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
 import com.github.gericass.world_heritage_client.library.databinding.LibraryFragmentLibraryBinding
@@ -84,7 +84,6 @@ class LibraryFragment : BaseFragment() {
                 this@LibraryFragment.viewModel.refresh()
             }
         }
-        showPlaylistDialog()
     }
 
     private fun observeHistories(histories: List<ViewingHistory>?) {

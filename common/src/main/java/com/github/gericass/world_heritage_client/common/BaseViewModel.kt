@@ -11,7 +11,8 @@ import kotlinx.coroutines.launch
 class BaseViewModel(
     private val repository: AvgleRepository
 ) : ViewModel() {
-    
+
+    var selectedVideo: Videos.Video? = null
 
     fun saveHistory(video: Videos.Video) {
         viewModelScope.launch {
@@ -23,8 +24,6 @@ class BaseViewModel(
     fun showPlaylistDialog(fm: FragmentManager) {
         viewModelScope.launch {
             val selectedPlaylistIds = BottomSheetFragment.showWithResult(fm)
-
-
         }
     }
 }

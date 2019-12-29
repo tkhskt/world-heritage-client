@@ -2,7 +2,7 @@ package com.github.gericass.world_heritage_client.library.playlist
 
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
-import com.github.gericass.world_heritage_client.common.CommonViewVideoSmallBindingModel_
+import com.github.gericass.world_heritage_client.common.view.SmallVideoViewModel_
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.progressView
 import com.github.gericass.world_heritage_client.data.model.Videos
@@ -23,7 +23,7 @@ class PlaylistController(
         }
 
     override fun buildItemModel(currentPosition: Int, item: Videos.Video?): EpoxyModel<*> {
-        return CommonViewVideoSmallBindingModel_().apply {
+        return SmallVideoViewModel_().apply {
             id(currentPosition)
             item?.let {
                 video(it)

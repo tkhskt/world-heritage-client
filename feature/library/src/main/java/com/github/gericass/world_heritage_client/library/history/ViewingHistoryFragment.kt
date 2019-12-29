@@ -11,6 +11,7 @@ import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.vo.Event
+import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
 import com.github.gericass.world_heritage_client.library.R
@@ -28,7 +29,12 @@ class ViewingHistoryFragment : BaseFragment() {
     private val historyController by lazy {
         ViewingHistoryController(
             videoClickListener,
-            viewModel
+            viewModel,
+            listOf(
+                SpinnerItem("[後で見る]に追加", {}),
+                SpinnerItem("再生リストに追加", ::showPlaylistDialog)
+            )
+        )
         )
     }
 

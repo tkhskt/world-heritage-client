@@ -8,8 +8,7 @@ import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.carousel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
-import com.github.gericass.world_heritage_client.common.CommonViewVideoBindingModel_
-import com.github.gericass.world_heritage_client.common.CommonViewVideoSmallBindingModel_
+import com.github.gericass.world_heritage_client.common.view.SmallVideoViewModel_
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.progressView
 import com.github.gericass.world_heritage_client.common.view.subjectTextView
@@ -38,7 +37,7 @@ class CategoryController(
 
     override fun buildItemModel(currentPosition: Int, item: Videos.Video?): EpoxyModel<*> {
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            return CommonViewVideoSmallBindingModel_().apply {
+            return SmallVideoViewModel_().apply {
                 id(currentPosition)
                 item?.let {
                     video(it)
@@ -46,7 +45,7 @@ class CategoryController(
                 listener(videoClickListener)
             }
         }
-        return CommonViewVideoBindingModel_().apply {
+        return SmallVideoViewModel_().apply {
             id(currentPosition)
             item?.let {
                 video(it)

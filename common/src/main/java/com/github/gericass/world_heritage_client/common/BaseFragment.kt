@@ -25,10 +25,10 @@ abstract class BaseFragment : Fragment() {
         }
 
         override fun onEditClick(video: Videos.Video) {
-
+            viewModel.selectedVideo = video
         }
     }
-
+    
     override fun onDestroyView() {
         super.onDestroyView()
         recyclerView.recycledViewPool.clear()

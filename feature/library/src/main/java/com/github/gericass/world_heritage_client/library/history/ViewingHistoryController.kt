@@ -2,9 +2,10 @@ package com.github.gericass.world_heritage_client.library.history
 
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
-import com.github.gericass.world_heritage_client.common.CommonViewVideoSmallBindingModel_
 import com.github.gericass.world_heritage_client.common.period
+import com.github.gericass.world_heritage_client.common.view.SmallVideoViewModel_
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
+import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
 import com.github.gericass.world_heritage_client.library.view.dateTextView
 import com.github.gericass.world_heritage_client.library.view.historySearchView
@@ -12,18 +13,20 @@ import java.util.*
 
 class ViewingHistoryController(
     private val videoClickListener: VideoClickListener,
-    private val viewModel: ViewingHistoryViewModel
+    private val viewModel: ViewingHistoryViewModel,
+    private val spinnerItems: List<SpinnerItem>
 ) : PagedListEpoxyController<ViewingHistory>() {
 
     private var previousDate = Calendar.getInstance().time
 
     override fun buildItemModel(currentPosition: Int, item: ViewingHistory?): EpoxyModel<*> {
-        return CommonViewVideoSmallBindingModel_().apply {
+        return SmallVideoViewModel_().apply {
             id(currentPosition)
             item?.let {
                 video(it.toVideo())
             }
             listener(videoClickListener)
+            spinnerItems(spinnerItems)
         }
     }
 
@@ -39,7 +42,7 @@ class ViewingHistoryController(
         val insertModels = mutableListOf<EpoxyModel<*>>()
 
         models.forEachIndexed { i, v ->
-            val history = v as CommonViewVideoSmallBindingModel_
+            val history = v as SmallVideoViewModel_
             val video = history.video()
             val time = video.createdAt ?: return // break
             val period = time.period(previousDate)

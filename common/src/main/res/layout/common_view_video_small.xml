@@ -72,6 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
+            android:ellipsize="end"
             android:maxLines="3"
             android:text="@{video.title}"
             android:textColor="@color/common_gray_dark"
@@ -86,10 +87,20 @@
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/common_ic_more_vert_24dp"
             android:tint="@color/common_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.github.gericass.world_heritage_client.common.view.VideoSpinner
+            android:id="@+id/spinner"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="@id/button"
+            app:layout_constraintStart_toStartOf="@id/button"
+            app:layout_constraintTop_toTopOf="@id/button" />
 
         <TextView
             android:id="@+id/channel"
