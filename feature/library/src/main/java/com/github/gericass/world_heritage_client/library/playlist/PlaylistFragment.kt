@@ -11,6 +11,7 @@ import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
+import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.library.R
@@ -39,7 +40,11 @@ class PlaylistFragment : BaseFragment() {
             viewModel.description,
             videoClickListener,
             editButtonListener,
-            viewModel.editable
+            viewModel.editable,
+            listOf(
+                SpinnerItem(getString(R.string.common_spinner_watch_later), {}),
+                SpinnerItem(getString(R.string.common_spinner_playlist), ::showPlaylistDialog)
+            )
         )
     }
 

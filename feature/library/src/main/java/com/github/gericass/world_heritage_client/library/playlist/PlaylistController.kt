@@ -5,6 +5,7 @@ import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.github.gericass.world_heritage_client.common.view.SmallVideoViewModel_
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.progressView
+import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.library.LibraryViewPlaylistHeaderBindingModel_
 
@@ -13,7 +14,8 @@ class PlaylistController(
     private val description: String,
     private val videoClickListener: VideoClickListener,
     private val editButtonListener: EditButtonListener,
-    private val editable: Boolean
+    private val editable: Boolean,
+    private val spinnerItems: List<SpinnerItem>
 ) : PagedListEpoxyController<Videos.Video>() {
 
     var isLoading = true
@@ -30,6 +32,7 @@ class PlaylistController(
             }
             draggable(true)
             listener(videoClickListener)
+            spinnerItems(spinnerItems)
         }
     }
 
