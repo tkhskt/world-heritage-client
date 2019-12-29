@@ -35,6 +35,7 @@ class PagingManager<T : Any>(
     private suspend fun Query.getWithPaging(onSuccess: (List<T>) -> Unit, onFailure: () -> Unit) {
         get()
             .addOnSuccessListener { recordSnapshots ->
+                if (recordSnapshots.size() <= 0) return@addOnSuccessListener
                 val lastVisible = recordSnapshots.documents[recordSnapshots.size() - 1]
 
                 next = db.collection(collectionPath)
