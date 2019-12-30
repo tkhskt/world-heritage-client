@@ -19,5 +19,11 @@ interface AvgleNavigator {
             playlistTitle: String,
             playlistDescription: String
         )
+
+        fun NavController.navigateToLater(
+            playlistId: Int,
+            playlistTitle: String,
+            playlistDescription: String
+        )
     }
 }

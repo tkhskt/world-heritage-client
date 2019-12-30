@@ -28,11 +28,15 @@ abstract class BaseFragment : Fragment() {
             viewModel.selectedVideo = video
         }
     }
-    
+
     override fun onDestroyView() {
         super.onDestroyView()
         recyclerView.recycledViewPool.clear()
         launcher.destroy()
+    }
+
+    protected fun saveVideoToLater() {
+        viewModel.saveVideoToLater()
     }
 
     protected fun showPlaylistDialog() {
