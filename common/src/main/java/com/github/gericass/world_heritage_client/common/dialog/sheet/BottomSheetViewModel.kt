@@ -1,4 +1,4 @@
-package com.github.gericass.world_heritage_client.common.sheet
+package com.github.gericass.world_heritage_client.common.dialog.sheet
 
 import androidx.lifecycle.*
 import com.github.gericass.world_heritage_client.common.R

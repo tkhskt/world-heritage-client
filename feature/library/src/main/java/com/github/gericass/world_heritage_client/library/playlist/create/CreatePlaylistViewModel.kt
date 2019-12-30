@@ -1,39 +1,35 @@
-package com.github.gericass.world_heritage_client.library.playlist
+package com.github.gericass.world_heritage_client.library.playlist.create
 
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.gericass.world_heritage_client.common.vo.Status
+import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.model.Videos
 import kotlinx.coroutines.launch
 
-class PlaylistViewModel(
-    private val useCase: PlaylistUseCase
-) : ViewModel(), LifecycleObserver {
+class CreatePlaylistViewModel(
+    private val repository: AvgleRepository
+) : ViewModel() {
 
-    var editable = false
+    val selectedVideos = mutableListOf<Videos.Video>()
 
-    var playlistId = 0
-        set(value) {
-            field = value
-            factory.playListId = value
-        }
+    val selectedItemCount = MutableLiveData<Int>()
 
-    var title = ""
-    var description = ""
-
-    private val _videos = MutableLiveData<List<Videos.Video>>()
-    val videos: LiveData<List<Videos.Video>> = _videos
+    private val _video = MutableLiveData<List<Videos.Video>>()
+    val video: LiveData<List<Videos.Video>> = _video
 
     private val _loadingStatus = MutableLiveData<Status>()
     val loadingStatus: LiveData<Status> = _loadingStatus
 
     private val factory =
-        PlaylistDataSourceFactory(viewModelScope, useCase, _loadingStatus)
+        CreatePlaylistDataSouceFactory(viewModelScope, repository, _loadingStatus)
 
     val isRefreshing = MediatorLiveData<Boolean>()
 
     val pagedList: LiveData<PagedList<Videos.Video>>
+
+    val keyword = MutableLiveData<String>()
 
     init {
         val loadingObserver = Observer<Status> {
@@ -42,6 +38,7 @@ class PlaylistViewModel(
             }
             isRefreshing.value = false
         }
+        selectedItemCount.value = 0
         isRefreshing.addSource(_loadingStatus, loadingObserver)
         val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -50,9 +47,9 @@ class PlaylistViewModel(
             .build()
     }
 
-    fun deleteVideo(video: Videos.Video) {
+    fun createNewPlaylist(title: String) {
         viewModelScope.launch {
-            useCase.deleteVideo(playlistId, video.vid)
+            repository.savePlaylist(title, "", selectedVideos)
         }
     }
 

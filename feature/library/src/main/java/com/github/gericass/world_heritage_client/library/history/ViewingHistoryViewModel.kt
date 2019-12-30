@@ -10,7 +10,7 @@ import com.github.gericass.world_heritage_client.data.model.ViewingHistory
 
 class ViewingHistoryViewModel(
     repository: AvgleRepository
-) : ViewModel(), LifecycleObserver {
+) : ViewModel() {
 
     private val _history = MutableLiveData<List<ViewingHistory>>()
     val history: LiveData<List<ViewingHistory>> = _history

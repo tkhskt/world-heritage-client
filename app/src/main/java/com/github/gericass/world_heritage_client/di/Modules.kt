@@ -3,8 +3,8 @@ package com.github.gericass.world_heritage_client.di
 import androidx.room.Room
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.github.gericass.world_heritage_client.common.BaseViewModel
+import com.github.gericass.world_heritage_client.common.dialog.sheet.BottomSheetViewModel
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
-import com.github.gericass.world_heritage_client.common.sheet.BottomSheetViewModel
 import com.github.gericass.world_heritage_client.data.local.AvgleDatabase
 import com.github.gericass.world_heritage_client.data.remote.BASE_URL
 import com.github.gericass.world_heritage_client.home.HomeViewModel
@@ -12,8 +12,9 @@ import com.github.gericass.world_heritage_client.home.category.CategoryViewModel
 import com.github.gericass.world_heritage_client.home.collection.CollectionViewModel
 import com.github.gericass.world_heritage_client.library.LibraryViewModel
 import com.github.gericass.world_heritage_client.library.history.ViewingHistoryViewModel
-import com.github.gericass.world_heritage_client.library.playlist.PlaylistUseCase
-import com.github.gericass.world_heritage_client.library.playlist.PlaylistViewModel
+import com.github.gericass.world_heritage_client.library.playlist.create.CreatePlaylistViewModel
+import com.github.gericass.world_heritage_client.library.playlist.show.PlaylistUseCase
+import com.github.gericass.world_heritage_client.library.playlist.show.PlaylistViewModel
 import com.github.gericass.world_heritage_client.navigator.AvgleNavigatorImpl
 import com.github.gericass.world_heritage_client.search.result.ResultViewModel
 import com.github.gericass.world_heritage_client.search.search.SearchViewModel
@@ -75,8 +76,9 @@ object Modules {
         viewModel { HomeViewModel() }
         viewModel { LibraryViewModel(get()) }
         viewModel { ViewingHistoryViewModel(get()) }
-        viewModel { PlaylistViewModel(get()) }
+        viewModel { PlaylistViewModel(get(), get()) }
         viewModel { BottomSheetViewModel(get()) }
+        viewModel { CreatePlaylistViewModel(get()) }
     }
 
     val useCaseModule = module {

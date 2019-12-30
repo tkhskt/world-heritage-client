@@ -55,7 +55,13 @@ class LibraryFragment : BaseFragment() {
                 }
             }
             else -> {
-
+                navigator.run {
+                    findNavController().navigateToPlaylist(
+                        playlist.id,
+                        playlist.title,
+                        playlist.description
+                    )
+                }
             }
         }
     }
@@ -64,6 +70,11 @@ class LibraryFragment : BaseFragment() {
         LibraryController(
             videoClickListener,
             playlistClickListener,
+            {
+                navigator.run {
+                    requireActivity().navigateToNewPlaylist()
+                }
+            },
             listOf(
                 SpinnerItem(getString(R.string.common_spinner_watch_later), ::saveVideoToLater),
                 SpinnerItem(getString(R.string.common_spinner_playlist), ::showPlaylistDialog)

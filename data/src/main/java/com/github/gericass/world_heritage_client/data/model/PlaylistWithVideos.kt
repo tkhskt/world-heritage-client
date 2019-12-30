@@ -5,8 +5,10 @@ import androidx.room.Junction
 import androidx.room.Relation
 
 
-data class PlaylistWithVideos(
-    @Embedded val playlist: Playlist,
+class PlaylistWithVideos {
+    @Embedded
+    lateinit var playlist: Playlist
+
     @Relation(
         parentColumn = "id",
         entity = VideoEntity::class,
@@ -17,5 +19,9 @@ data class PlaylistWithVideos(
             entityColumn = "video_id"
         )
     )
-    val videos: List<VideoEntity>
-)
+    lateinit var videos: List<VideoEntity>
+
+    fun toRemoteModel(): PlaylistWithVideosRemoteModel {
+        return PlaylistWithVideosRemoteModel(playlist, videos)
+    }
+}

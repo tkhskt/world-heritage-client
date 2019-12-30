@@ -1,4 +1,4 @@
-package com.github.gericass.world_heritage_client.library.playlist
+package com.github.gericass.world_heritage_client.library.playlist.show
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
@@ -21,7 +21,13 @@ class PlaylistDataSourceFactory(
     private val dataSource = MutableLiveData<PlaylistDataSource>()
 
     override fun create(): DataSource<Int, Videos.Video> {
-        val dataSource = PlaylistDataSource(scope, status, useCase, playListId)
+        val dataSource =
+            PlaylistDataSource(
+                scope,
+                status,
+                useCase,
+                playListId
+            )
         this.dataSource.postValue(dataSource)
         return dataSource
     }

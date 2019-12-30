@@ -3,7 +3,7 @@ package com.github.gericass.world_heritage_client.common
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.gericass.world_heritage_client.common.sheet.BottomSheetFragment
+import com.github.gericass.world_heritage_client.common.dialog.sheet.BottomSheetFragment
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.PlaylistId
 import com.github.gericass.world_heritage_client.data.model.Videos

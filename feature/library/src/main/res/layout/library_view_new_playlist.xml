@@ -11,16 +11,8 @@
         android:id="@+id/thumbnail"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
+        android:src="@drawable/common_ic_add_24dp"
+        android:tint="@color/common_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,13 +22,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:textColor="@color/common_gray_dark"
+        android:text="@string/common_new_playlist_ja"
+        android:textColor="@color/common_blue"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/thumbnail"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="aaaaaaaaaaaaaaaaaaaaaaaaaa" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </merge>

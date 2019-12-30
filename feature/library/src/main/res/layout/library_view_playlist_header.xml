@@ -11,7 +11,7 @@
 
         <variable
             name="listener"
-            type="com.github.gericass.world_heritage_client.library.playlist.PlaylistController.EditButtonListener" />
+            type="com.github.gericass.world_heritage_client.library.playlist.show.PlaylistController.EditButtonListener" />
 
         <variable
             name="title"
@@ -61,15 +61,29 @@
 
         <ImageView
             android:id="@+id/edit"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_margin="16dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:onClick="@{() -> listener.onEditButtonClick()}"
             android:src="@drawable/library_ic_edit_24dp"
             android:tint="@color/common_gray_dark"
             android:visibility="@{editable ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="16dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:onClick="@{() -> listener.onDeleteButtonClick()}"
+            android:src="@drawable/common_ic_delete_24dp"
+            android:tint="@color/common_gray_dark"
+            android:visibility="@{editable ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/edit" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

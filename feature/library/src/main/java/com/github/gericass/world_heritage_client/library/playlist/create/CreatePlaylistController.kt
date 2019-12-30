@@ -1,21 +1,16 @@
-package com.github.gericass.world_heritage_client.library.playlist
+package com.github.gericass.world_heritage_client.library.playlist.create
 
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.github.gericass.world_heritage_client.common.view.SmallVideoViewModel_
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.progressView
-import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.data.model.Videos
-import com.github.gericass.world_heritage_client.library.LibraryViewPlaylistHeaderBindingModel_
+import com.github.gericass.world_heritage_client.library.view.SelectedCountViewModel_
 
-class PlaylistController(
-    private val title: String,
-    private val description: String,
+class CreatePlaylistController(
     private val videoClickListener: VideoClickListener,
-    private val editButtonListener: EditButtonListener,
-    private val editable: Boolean,
-    private val spinnerItems: List<SpinnerItem>
+    private val viewModel: CreatePlaylistViewModel
 ) : PagedListEpoxyController<Videos.Video>() {
 
     var isLoading = true
@@ -30,19 +25,15 @@ class PlaylistController(
             item?.let {
                 video(it)
             }
-            draggable(true)
             listener(videoClickListener)
-            spinnerItems(spinnerItems)
+            checkable(true)
         }
     }
 
     override fun addModels(models: List<EpoxyModel<*>>) {
-        LibraryViewPlaylistHeaderBindingModel_().apply {
-            id("header")
-            title(title)
-            description(description)
-            editable(editable)
-            listener(editButtonListener)
+        SelectedCountViewModel_().apply {
+            id("count")
+            viewModel(viewModel)
         }.addTo(this)
         super.addModels(models)
         if (isLoading) {
@@ -50,9 +41,5 @@ class PlaylistController(
                 id("progress")
             }
         }
-    }
-
-    interface EditButtonListener {
-        fun onEditButtonClick()
     }
 }

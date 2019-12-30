@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/nav_playlist"
-        android:name="com.github.gericass.world_heritage_client.library.playlist.PlaylistFragment"
+        android:name="com.github.gericass.world_heritage_client.library.playlist.show.PlaylistFragment"
         android:label="playlist">
 
         <argument

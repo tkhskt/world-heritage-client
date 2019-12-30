@@ -58,7 +58,6 @@ class ViewingHistoryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycle.addObserver(viewModel)
         binding.apply {
             viewModel = this@ViewingHistoryFragment.viewModel
             lifecycleOwner = this@ViewingHistoryFragment

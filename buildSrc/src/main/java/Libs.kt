@@ -13,6 +13,7 @@ object Libs {
         const val koin = "2.0.1"
         const val navigation = "2.1.0"
         const val coreKtx = "1.1.0"
+        const val fragmentKtx = "1.2.0-alpha03"
         const val viewPager2 = "1.0.0-rc01"
         const val materialComponents = "1.1.0-beta01"
         const val glide = "4.10.0"
@@ -96,4 +97,5 @@ object Libs {
     const val truth = "com.google.truth:truth:${Versions.truth}"
     const val analytics = "com.google.firebase:firebase-analytics:${Versions.analytics}"
     const val firestore = "com.google.firebase:firebase-firestore-ktx:${Versions.firestore}"
+    const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}"
 }

@@ -1,4 +1,4 @@
-package com.github.gericass.world_heritage_client.library.playlist
+package com.github.gericass.world_heritage_client.library.playlist.show
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
