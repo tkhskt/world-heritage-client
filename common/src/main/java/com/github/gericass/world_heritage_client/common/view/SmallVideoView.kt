@@ -52,6 +52,12 @@ class SmallVideoView @JvmOverloads constructor(
         binding.draggable = draggable
     }
 
+    @ModelProp
+    @JvmOverloads
+    fun setCheckable(checkable: Boolean = false) {
+        binding.checkable = checkable
+    }
+
     @CallbackProp
     fun setListener(listener: VideoClickListener?) {
         binding.listener = listener
@@ -82,6 +88,14 @@ class SmallVideoView @JvmOverloads constructor(
             val video = binding.video ?: return@setOnClickListener
             binding.listener?.onEditClick(video)
             binding.spinner.performClick()
+        }
+        val checkable = binding.checkable ?: return
+        setOnClickListener {
+            val video = binding.video ?: return@setOnClickListener
+            binding.listener?.onClick(video)
+            if (checkable) {
+                binding.checkbox.isChecked = !binding.checkbox.isChecked
+            }
         }
     }
 }

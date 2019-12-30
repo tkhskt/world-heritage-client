@@ -17,7 +17,7 @@ abstract class BaseFragment : Fragment() {
 
     private val launcher by lazy { TwaLauncher(requireContext()) }
 
-    protected val videoClickListener = object : VideoClickListener {
+    protected open val videoClickListener = object : VideoClickListener {
         override fun onClick(video: Videos.Video) {
             val builder = TrustedWebActivityIntentBuilder(Uri.parse(video.video_url))
             launcher.launch(builder, null, null)

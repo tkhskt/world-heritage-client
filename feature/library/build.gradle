@@ -74,6 +74,7 @@ dependencies {
     kapt Libs.parisAnnotation
     implementation Libs.glide
     implementation Libs.threeTenAbp
+    implementation Libs.fragmentKtx
 }
 repositories {
     mavenCentral()

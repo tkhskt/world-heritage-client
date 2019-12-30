@@ -6,6 +6,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import com.github.gericass.world_heritage_client.R
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.library.LibraryFragmentDirections
+import com.github.gericass.world_heritage_client.library.playlist.create.CreatePlaylistActivity
 import com.github.gericass.world_heritage_client.search.SearchActivity
 
 class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
@@ -61,5 +62,10 @@ class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
                 false
             )
         )
+    }
+
+    override fun Activity.navigateToNewPlaylist() {
+        val intent = CreatePlaylistActivity.createIntent(this)
+        startActivity(intent)
     }
 }

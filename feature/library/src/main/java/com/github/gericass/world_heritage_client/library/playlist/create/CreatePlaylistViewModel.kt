@@ -1,36 +1,35 @@
-package com.github.gericass.world_heritage_client.library.history
+package com.github.gericass.world_heritage_client.library.playlist.create
 
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.github.gericass.world_heritage_client.common.vo.Event
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.AvgleRepository
-import com.github.gericass.world_heritage_client.data.model.ViewingHistory
+import com.github.gericass.world_heritage_client.data.model.Videos
 
-class ViewingHistoryViewModel(
+class CreatePlaylistViewModel(
     repository: AvgleRepository
 ) : ViewModel() {
 
-    private val _history = MutableLiveData<List<ViewingHistory>>()
-    val history: LiveData<List<ViewingHistory>> = _history
+    val selectedVideos = mutableListOf<Videos.Video>()
+
+    val selectedItemCount = MutableLiveData<Int>()
+
+    private val _video = MutableLiveData<List<Videos.Video>>()
+    val video: LiveData<List<Videos.Video>> = _video
 
     private val _loadingStatus = MutableLiveData<Status>()
     val loadingStatus: LiveData<Status> = _loadingStatus
 
     private val factory =
-        ViewingHistoryDataSourceFactory(viewModelScope, repository, _loadingStatus)
-
+        CreatePlaylistDataSouceFactory(viewModelScope, repository, _loadingStatus)
 
     val isRefreshing = MediatorLiveData<Boolean>()
 
-    val pagedList: LiveData<PagedList<ViewingHistory>>
-
-    var currentKeyword: String? = null
+    val pagedList: LiveData<PagedList<Videos.Video>>
 
     val keyword = MutableLiveData<String>()
 
-    val searchButton = MutableLiveData<Event<String>>()
 
     init {
         val loadingObserver = Observer<Status> {
@@ -39,6 +38,7 @@ class ViewingHistoryViewModel(
             }
             isRefreshing.value = false
         }
+        selectedItemCount.value = 0
         isRefreshing.addSource(_loadingStatus, loadingObserver)
         val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -47,15 +47,7 @@ class ViewingHistoryViewModel(
             .build()
     }
 
-    fun fetch(keyword: String) {
-        currentKeyword = keyword
-        factory.setNewKeyword(keyword)
-    }
-
     fun refresh() {
-        currentKeyword = null
-        keyword.value = null
-        factory.setNewKeyword(null)
+        factory.refresh()
     }
-
 }

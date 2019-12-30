@@ -20,6 +20,9 @@
 
     <string name="common_next">次へ</string>
     <string name="common_add_video">動画を追加する</string>
+    <string name="common_new_playlist_ja">新しい再生リスト</string>
+    <string name="common_recently_played">最近再生した動画</string>
+    <string name="common_play_count">%1d本の動画を選択しました</string>
 
     <string name="common_avgle">Avgle</string>
 </resources>

@@ -64,6 +64,11 @@ class LibraryFragment : BaseFragment() {
         LibraryController(
             videoClickListener,
             playlistClickListener,
+            {
+                navigator.run {
+                    requireActivity().navigateToNewPlaylist()
+                }
+            },
             listOf(
                 SpinnerItem(getString(R.string.common_spinner_watch_later), ::saveVideoToLater),
                 SpinnerItem(getString(R.string.common_spinner_playlist), ::showPlaylistDialog)

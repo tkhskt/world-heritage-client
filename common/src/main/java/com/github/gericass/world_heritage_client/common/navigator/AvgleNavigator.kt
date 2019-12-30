@@ -25,5 +25,7 @@ interface AvgleNavigator {
             playlistTitle: String,
             playlistDescription: String
         )
+
+        fun Activity.navigateToNewPlaylist()
     }
 }
