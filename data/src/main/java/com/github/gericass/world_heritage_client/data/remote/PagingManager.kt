@@ -15,7 +15,9 @@ class PagingManager<T : Any>(
     var collectionPath: String = ""
 
     private val first by lazy {
-        db.collection(collectionPath).limit(limit)
+        db.collection(collectionPath)
+            .orderBy("created_at", Query.Direction.DESCENDING)
+            .limit(limit)
     }
     var next: Query? = null
 
@@ -35,6 +37,7 @@ class PagingManager<T : Any>(
                 val lastVisible = recordSnapshots.documents[recordSnapshots.size() - 1]
 
                 next = db.collection(collectionPath)
+                    .orderBy("created_at", Query.Direction.DESCENDING)
                     .startAfter(lastVisible)
                     .limit(limit)
 
