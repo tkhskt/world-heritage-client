@@ -1,4 +1,4 @@
-package com.github.gericass.world_heritage_client.library.playlist
+package com.github.gericass.world_heritage_client.library.playlist.show
 
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
@@ -29,7 +29,11 @@ class PlaylistViewModel(
     val loadingStatus: LiveData<Status> = _loadingStatus
 
     private val factory =
-        PlaylistDataSourceFactory(viewModelScope, useCase, _loadingStatus)
+        PlaylistDataSourceFactory(
+            viewModelScope,
+            useCase,
+            _loadingStatus
+        )
 
     val isRefreshing = MediatorLiveData<Boolean>()
 

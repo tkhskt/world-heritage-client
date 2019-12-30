@@ -11,7 +11,7 @@
 
         <variable
             name="listener"
-            type="com.github.gericass.world_heritage_client.library.playlist.PlaylistController.EditButtonListener" />
+            type="com.github.gericass.world_heritage_client.library.playlist.show.PlaylistController.EditButtonListener" />
 
         <variable
             name="title"

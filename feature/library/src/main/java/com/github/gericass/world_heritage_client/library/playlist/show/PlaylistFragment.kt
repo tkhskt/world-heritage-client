@@ -1,4 +1,4 @@
-package com.github.gericass.world_heritage_client.library.playlist
+package com.github.gericass.world_heritage_client.library.playlist.show
 
 
 import android.graphics.Canvas
@@ -34,7 +34,8 @@ class PlaylistFragment : BaseFragment() {
 
     override val recyclerView: EpoxyRecyclerView by lazy { binding.recycler }
 
-    private val editButtonListener = object : PlaylistController.EditButtonListener {
+    private val editButtonListener = object :
+        PlaylistController.EditButtonListener {
         override fun onEditButtonClick() {
 
         }
