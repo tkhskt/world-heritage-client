@@ -45,6 +45,7 @@ dependencies {
     implementation Libs.koinAndroidxScope
     implementation Libs.firestore
     implementation Libs.coroutinePlayServices
+    implementation Libs.timber
 }
 repositories {
     mavenCentral()

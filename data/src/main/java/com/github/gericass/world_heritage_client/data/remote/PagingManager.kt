@@ -8,7 +8,7 @@ import kotlin.reflect.KClass
 class PagingManager<T : Any>(
     private val responseType: KClass<T>
 ) {
-    val db = FirebaseFirestore.getInstance()
+    private val db = FirebaseFirestore.getInstance()
 
     private val limit = 50L
 
@@ -19,7 +19,7 @@ class PagingManager<T : Any>(
             .orderBy("created_at", Query.Direction.DESCENDING)
             .limit(limit)
     }
-    var next: Query? = null
+    private var next: Query? = null
 
     suspend fun getRecords(onSuccess: (List<T>) -> Unit, onFailure: () -> Unit) {
         val nextQuery = next

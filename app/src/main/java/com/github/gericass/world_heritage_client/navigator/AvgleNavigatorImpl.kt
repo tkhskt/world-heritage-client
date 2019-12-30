@@ -47,4 +47,19 @@ class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
             )
         )
     }
+
+    override fun NavController.navigateToLater(
+        playlistId: Int,
+        playlistTitle: String,
+        playlistDescription: String
+    ) {
+        navigate(
+            LibraryFragmentDirections.actionLibraryToPlaylist(
+                playlistId,
+                playlistTitle,
+                playlistDescription,
+                false
+            )
+        )
+    }
 }

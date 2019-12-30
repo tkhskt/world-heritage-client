@@ -23,6 +23,7 @@ internal class AvgleRepositoryImpl(
     private val playlistDao by lazy { avgleDatabase.playlistDao() }
     private val videoDao by lazy { avgleDatabase.videoDao() }
     private val favoriteVideoDao by lazy { avgleDatabase.favoriteVideoDao() }
+    private val laterVideoDao by lazy { avgleDatabase.lateVideoDao() }
 
     override suspend fun getCategories(): Categories {
         return client.getAllCategories()
@@ -146,7 +147,7 @@ internal class AvgleRepositoryImpl(
     ): List<FavoriteVideo> {
         val videos = mutableListOf<FavoriteVideo>()
         val cachedVideos = favoriteVideoDao.getVideos(limit, offset)
-        pagingManager.collectionPath = "favorite"
+        pagingManager.collectionPath = PlaylistId.FAVORITE.collectionName
         pagingManager.getRecords(
             onSuccess = {
                 videos.addAll(it)
@@ -161,12 +162,13 @@ internal class AvgleRepositoryImpl(
 
     override suspend fun saveFavoriteVideo(videos: List<FavoriteVideo>) {
         videos.forEach {
-            firestore.collection("favorite").document(it.vid).set(it).await()
+            firestore.collection(PlaylistId.FAVORITE.collectionName).document(it.vid).set(it)
+                .await()
         }
     }
 
     override suspend fun deleteFavoriteVideo(videoId: String) {
-        firestore.collection("favorite").document(videoId).delete().await()
+        firestore.collection(PlaylistId.FAVORITE.collectionName).document(videoId).delete().await()
     }
 
     override suspend fun saveVideoToPlaylist(
@@ -176,6 +178,38 @@ internal class AvgleRepositoryImpl(
         val now = Calendar.getInstance().time
         if (playlistId == PlaylistId.FAVORITE.id) {
             saveFavoriteVideo(listOf(video.toFavoriteVideo(now)))
+        } else if (playlistId == PlaylistId.LATER.id) {
+            saveLaterVideo(listOf(video.toLaterVideo(now)))
         }
+    }
+
+    override suspend fun getLaterVideos(
+        limit: Int,
+        offset: Int,
+        pagingManager: PagingManager<LaterVideo>
+    ): List<LaterVideo> {
+        val videos = mutableListOf<LaterVideo>()
+        val cachedVideos = laterVideoDao.getVideos(limit, offset)
+        pagingManager.collectionPath = PlaylistId.LATER.collectionName
+        pagingManager.getRecords(
+            onSuccess = {
+                videos.addAll(it)
+            },
+            onFailure = {
+                videos.addAll(cachedVideos)
+            }
+        )
+        laterVideoDao.insertVideosAfterDelete(videos, limit, offset)
+        return videos
+    }
+
+    override suspend fun saveLaterVideo(videos: List<LaterVideo>) {
+        videos.forEach {
+            firestore.collection(PlaylistId.LATER.collectionName).document(it.vid).set(it).await()
+        }
+    }
+
+    override suspend fun deleteLaterVideo(videoId: String) {
+        firestore.collection(PlaylistId.LATER.collectionName).document(videoId).delete().await()
     }
 }

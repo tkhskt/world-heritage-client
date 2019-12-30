@@ -46,7 +46,13 @@ class LibraryFragment : BaseFragment() {
                 }
             }
             PlaylistId.LATER.id -> {
-
+                navigator.run {
+                    findNavController().navigateToLater(
+                        playlist.id,
+                        playlist.title,
+                        playlist.description
+                    )
+                }
             }
             else -> {
 
@@ -59,7 +65,7 @@ class LibraryFragment : BaseFragment() {
             videoClickListener,
             playlistClickListener,
             listOf(
-                SpinnerItem(getString(R.string.common_spinner_watch_later), {}),
+                SpinnerItem(getString(R.string.common_spinner_watch_later), ::saveVideoToLater),
                 SpinnerItem(getString(R.string.common_spinner_playlist), ::showPlaylistDialog)
             )
         )
@@ -114,9 +120,17 @@ class LibraryFragment : BaseFragment() {
                 "",
                 R.drawable.common_ic_favorite_24dp
             )
+        val later =
+            Playlist(
+                PlaylistId.LATER.id,
+                PlaylistId.LATER.title,
+                "",
+                R.drawable.common_ic_watch_later_24dp
+            )
         val list = playlists?.toMutableList()?.apply {
             add(0, history)
             add(1, favorite)
+            add(2, later)
         }
         libraryController.playlists = list
         viewModel.isRefreshing.value = false

@@ -62,4 +62,15 @@ interface AvgleRepository {
         video: Videos.Video
     )
 
+    suspend fun getLaterVideos(
+        limit: Int = 50,
+        offset: Int = 0,
+        pagingManager: PagingManager<LaterVideo>
+    ): List<LaterVideo>
+
+    suspend fun saveLaterVideo(videos: List<LaterVideo>)
+
+    suspend fun deleteLaterVideo(videoId: String)
+
+
 }

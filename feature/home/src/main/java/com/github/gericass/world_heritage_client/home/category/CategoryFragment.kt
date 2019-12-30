@@ -46,7 +46,7 @@ class CategoryFragment : BaseFragment() {
             categoryClickListener,
             videoClickListener,
             listOf(
-                SpinnerItem(getString(R.string.common_spinner_watch_later), {}),
+                SpinnerItem(getString(R.string.common_spinner_watch_later), ::saveVideoToLater),
                 SpinnerItem(getString(R.string.common_spinner_playlist), ::showPlaylistDialog)
             )
         )

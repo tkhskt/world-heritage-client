@@ -3,6 +3,7 @@ package com.github.gericass.world_heritage_client.library.playlist
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.PlaylistId
 import com.github.gericass.world_heritage_client.data.model.FavoriteVideo
+import com.github.gericass.world_heritage_client.data.model.LaterVideo
 import com.github.gericass.world_heritage_client.data.model.VideoEntity
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.data.remote.PagingManager
@@ -17,22 +18,30 @@ class PlaylistUseCase(
         pagingManager: PagingManager<T>
     ): List<Videos.Video> {
         return when (playlistId) {
-            PlaylistId.FAVORITE.id -> repository.getFavoriteVideos(
-                pagingManager = (pagingManager as PagingManager<FavoriteVideo>)
-            ).map(
-                FavoriteVideo::toVideo
-            )
-            else -> repository.getPlaylistWithVideos(
-                playlistId,
-                pagingManager = (pagingManager as PagingManager<Videos.Video>)
+            PlaylistId.FAVORITE.id -> {
+                repository.getFavoriteVideos(
+                    pagingManager = (pagingManager as PagingManager<FavoriteVideo>)
+                ).map(FavoriteVideo::toVideo)
+            }
+            PlaylistId.LATER.id -> {
+                repository.getLaterVideos(
+                    pagingManager = (pagingManager as PagingManager<LaterVideo>)
+                ).map(LaterVideo::toVideo)
+            }
+            else -> {
+                repository.getPlaylistWithVideos(
+                    playlistId,
+                    pagingManager = (pagingManager as PagingManager<Videos.Video>)
 
-            ).videos.map(VideoEntity::toVideo)
+                ).videos.map(VideoEntity::toVideo)
+            }
         }
     }
 
     suspend fun deleteVideo(playlistId: Int, vid: String) {
         when (playlistId) {
             PlaylistId.FAVORITE.id -> repository.deleteFavoriteVideo(vid)
+            PlaylistId.LATER.id -> repository.deleteLaterVideo(vid)
             else -> {
             }
         }
@@ -41,6 +50,7 @@ class PlaylistUseCase(
     fun getPagingManagerByPlaylistId(playlistId: Int): PagingManager<*> {
         return when (playlistId) {
             PlaylistId.FAVORITE.id -> PagingManager(FavoriteVideo::class)
+            PlaylistId.LATER.id -> PagingManager(LaterVideo::class)
             else -> PagingManager(Videos.Video::class)
         }
     }
