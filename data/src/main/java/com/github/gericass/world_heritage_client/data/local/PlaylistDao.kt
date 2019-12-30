@@ -1,9 +1,6 @@
 package com.github.gericass.world_heritage_client.data.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.PlaylistWithVideos
 import com.github.gericass.world_heritage_client.data.model.VideoPlaylist
@@ -18,10 +15,10 @@ interface PlaylistDao {
     @Query("SELECT * FROM Playlist")
     suspend fun getAllPlaylist(): List<Playlist>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlaylist(playlist: Playlist): Long
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertVideoPlaylist(videoPlaylist: VideoPlaylist)
 
     @Query("DELETE FROM Playlist WHERE id = :playlistId")

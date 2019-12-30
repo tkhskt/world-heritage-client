@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.github.gericass.world_heritage_client.common.sheet.BottomSheetViewModel" />
+            type="com.github.gericass.world_heritage_client.common.dialog.sheet.BottomSheetViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -29,21 +29,17 @@ class PlaylistUseCase(
                 ).map(LaterVideo::toVideo)
             }
             else -> {
-                repository.getPlaylistWithVideos(
-                    playlistId,
-                    pagingManager = (pagingManager as PagingManager<Videos.Video>)
-
-                ).videos.map(VideoEntity::toVideo)
+                repository.getPlaylistWithVideos(playlistId).videos.map(VideoEntity::toVideo)
             }
         }
     }
 
-    suspend fun deleteVideo(playlistId: Int, vid: String) {
+    suspend fun deleteVideo(playlistId: Int, video: Videos.Video) {
         when (playlistId) {
-            PlaylistId.FAVORITE.id -> repository.deleteFavoriteVideo(vid)
-            PlaylistId.LATER.id -> repository.deleteLaterVideo(vid)
-            else -> {
-            }
+            PlaylistId.FAVORITE.id -> repository.deleteFavoriteVideo(video.vid)
+            PlaylistId.LATER.id -> repository.deleteLaterVideo(video.vid)
+            else -> repository.deleteVideoFromPlaylist(playlistId, video)
+
         }
     }
 

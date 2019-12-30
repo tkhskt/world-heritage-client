@@ -54,5 +54,6 @@ class PlaylistController(
 
     interface EditButtonListener {
         fun onEditButtonClick()
+        fun onDeleteButtonClick()
     }
 }

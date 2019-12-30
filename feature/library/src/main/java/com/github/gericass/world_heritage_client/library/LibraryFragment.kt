@@ -55,7 +55,13 @@ class LibraryFragment : BaseFragment() {
                 }
             }
             else -> {
-
+                navigator.run {
+                    findNavController().navigateToPlaylist(
+                        playlist.id,
+                        playlist.title,
+                        playlist.description
+                    )
+                }
             }
         }
     }

@@ -5,10 +5,14 @@ import com.github.gericass.world_heritage_client.data.model.*
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.data.remote.AvgleClient
 import com.github.gericass.world_heritage_client.data.remote.PagingManager
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
+import timber.log.Timber
 import java.util.*
 
 internal class AvgleRepositoryImpl(
@@ -75,22 +79,37 @@ internal class AvgleRepositoryImpl(
     }
 
     override suspend fun getAllPlaylist(): List<Playlist> {
-//        firestore.collection("playlist")
-//            .get()
-//            .addOnSuccessListener {
-//
-//            }
-//            .addOnFailureListener {
-//
-//            }.await()
-        return playlistDao.getAllPlaylist()
+        var playlists = playlistDao.getAllPlaylist()
+        firestore.collection("playlist")
+            .get()
+            .addOnSuccessListener {
+                playlists = it.map { queryDocumentSnapshot ->
+                    queryDocumentSnapshot.toObject(PlaylistWithVideosRemoteModel::class.java)
+                        .playlist
+                }
+            }.await()
+        return playlists
     }
 
-    override suspend fun getPlaylistWithVideos(
-        playlistId: Int,
-        pagingManager: PagingManager<Videos.Video>
-    ): PlaylistWithVideos {
-        return playlistDao.getPlaylist(playlistId)
+    override suspend fun getPlaylistWithVideos(playlistId: Int): PlaylistWithVideos {
+        var playlistWithVideos = playlistDao.getPlaylist(playlistId)
+        firestore
+            .collection("playlist")
+            .document(playlistId.toString())
+            .get()
+            .addOnSuccessListener {
+                it.toObject(PlaylistWithVideosRemoteModel::class.java)?.toPlaylistWithVideos()
+                    ?.let { pv ->
+                        playlistWithVideos = pv
+                    }
+            }.await()
+        playlistDao.insertPlaylist(playlistWithVideos.playlist)
+        playlistWithVideos.videos.forEach {
+            videoDao.insertVideo(it)
+            val vp = VideoPlaylist(it.vid, playlistId)
+            playlistDao.insertVideoPlaylist(vp)
+        }
+        return playlistWithVideos
     }
 
     override suspend fun savePlaylist(
@@ -101,43 +120,60 @@ internal class AvgleRepositoryImpl(
     ) {
         if (videos.isNullOrEmpty()) return
         val date = Calendar.getInstance().time
-        videos.run {
-            map {
-                it.toVideoEntity(date)
-            }.forEach {
-                videoDao.insertVideo(it)
-            }
+        videos.map {
+            it.toVideoEntity(date)
+        }.forEach {
+            videoDao.insertVideo(it)
         }
+        val playlistId = (1..Int.MAX_VALUE).random()
         val playlist = thumbnail?.run {
             Playlist(title = title, description = description, thumbnailImg = this)
         } ?: run {
             Playlist(
+                id = playlistId,
                 title = title,
                 description = description,
                 thumbnailImgUrl = videos.first().preview_url
             )
         }
-        val id = playlistDao.insertPlaylist(playlist)
+        playlistDao.insertPlaylist(playlist)
         videos.map {
-            VideoPlaylist(it.vid, id.toInt())
+            VideoPlaylist(it.vid, playlistId)
         }.forEach {
             playlistDao.insertVideoPlaylist(it)
         }
+        firestore
+            .collection("playlist")
+            .document(playlistId.toString())
+            .set(PlaylistWithVideosRemoteModel(playlist, videos.map { it.toVideoEntity(date) }))
+            .await()
     }
 
-    override suspend fun deletePlaylist(playlistWithVideos: PlaylistWithVideos) {
-        avgleDatabase.runInTransaction {
-            playlistDao.run {
-                deletePlaylist(playlistWithVideos.playlist.id)
-                deletePlaylistVideo(playlistWithVideos.playlist.id)
-            }
-            playlistWithVideos.videos.forEach {
-                val count = playlistDao.videoExists(it.vid)
-                if (count < 1) {
-                    videoDao.deleteVideo(it.vid)
+    override suspend fun deletePlaylist(playlistId: Int) {
+        val playlistWithVideos = playlistDao.getPlaylist(playlistId)
+        withContext(Dispatchers.IO) {
+            avgleDatabase.runInTransaction {
+                playlistDao.run {
+                    deletePlaylist(playlistWithVideos.playlist.id)
+                    deletePlaylistVideo(playlistWithVideos.playlist.id)
+                }
+                playlistWithVideos.videos.forEach {
+                    val count = playlistDao.videoExists(it.vid)
+                    if (count < 1) {
+                        videoDao.deleteVideo(it.vid)
+                    }
                 }
             }
         }
+        firestore.collection("playlist")
+            .document(playlistWithVideos.playlist.id.toString())
+            .delete()
+            .addOnSuccessListener {
+                Timber.d("deeeeeeee")
+            }.addOnFailureListener {
+                Timber.d("deeeedddddeeee")
+            }
+            .await()
     }
 
     override suspend fun getFavoriteVideos(
@@ -171,15 +207,24 @@ internal class AvgleRepositoryImpl(
         firestore.collection(PlaylistId.FAVORITE.collectionName).document(videoId).delete().await()
     }
 
-    override suspend fun saveVideoToPlaylist(
-        playlistId: Int,
-        video: Videos.Video
-    ) {
+    override suspend fun saveVideoToPlaylist(playlistId: Int, video: Videos.Video) {
         val now = Calendar.getInstance().time
-        if (playlistId == PlaylistId.FAVORITE.id) {
-            saveFavoriteVideo(listOf(video.toFavoriteVideo(now)))
-        } else if (playlistId == PlaylistId.LATER.id) {
-            saveLaterVideo(listOf(video.toLaterVideo(now)))
+        when (playlistId) {
+            PlaylistId.FAVORITE.id -> saveFavoriteVideo(listOf(video.toFavoriteVideo(now)))
+            PlaylistId.LATER.id -> saveLaterVideo(listOf(video.toLaterVideo(now)))
+            else -> firestore.collection("playlist")
+                .document(playlistId.toString())
+                .update("videos", FieldValue.arrayUnion(video.toVideoEntity()))
+        }
+    }
+
+    override suspend fun deleteVideoFromPlaylist(playlistId: Int, video: Videos.Video) {
+        when (playlistId) {
+            PlaylistId.FAVORITE.id -> deleteFavoriteVideo(video.vid)
+            PlaylistId.LATER.id -> deleteLaterVideo(video.vid)
+            else -> firestore.collection("playlist")
+                .document(playlistId.toString())
+                .update("videos", FieldValue.arrayRemove(video.toVideoEntity()))
         }
     }
 

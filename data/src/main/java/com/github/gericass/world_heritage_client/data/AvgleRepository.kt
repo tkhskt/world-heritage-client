@@ -33,8 +33,7 @@ interface AvgleRepository {
     suspend fun getAllPlaylist(): List<Playlist>
 
     suspend fun getPlaylistWithVideos(
-        playlistId: Int,
-        pagingManager: PagingManager<Videos.Video>
+        playlistId: Int
     ): PlaylistWithVideos
 
     suspend fun savePlaylist(
@@ -45,7 +44,7 @@ interface AvgleRepository {
         thumbnail: Int? = null
     )
 
-    suspend fun deletePlaylist(playlistWithVideos: PlaylistWithVideos)
+    suspend fun deletePlaylist(playlistId: Int)
 
     suspend fun getFavoriteVideos(
         limit: Int = 50,
@@ -58,6 +57,11 @@ interface AvgleRepository {
     suspend fun deleteFavoriteVideo(videoId: String)
 
     suspend fun saveVideoToPlaylist(
+        playlistId: Int,
+        video: Videos.Video
+    )
+
+    suspend fun deleteVideoFromPlaylist(
         playlistId: Int,
         video: Videos.Video
     )

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.PagedList
 import com.airbnb.epoxy.EpoxyRecyclerView
@@ -38,6 +39,12 @@ class PlaylistFragment : BaseFragment() {
         PlaylistController.EditButtonListener {
         override fun onEditButtonClick() {
 
+        }
+
+        override fun onDeleteButtonClick() {
+            viewModel.deletePlaylist {
+                findNavController().navigateUp()
+            }
         }
     }
 

@@ -22,4 +22,10 @@
     <style name="common_CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlNormal">@color/common_gray</item>
     </style>
+
+    <style name="common_AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/common_blue</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/common_gray_dark</item>
+    </style>
 </resources>

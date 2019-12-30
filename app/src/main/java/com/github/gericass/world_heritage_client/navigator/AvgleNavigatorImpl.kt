@@ -64,6 +64,21 @@ class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
         )
     }
 
+    override fun NavController.navigateToPlaylist(
+        playlistId: Int,
+        playlistTitle: String,
+        playlistDescription: String
+    ) {
+        navigate(
+            LibraryFragmentDirections.actionLibraryToPlaylist(
+                playlistId,
+                playlistTitle,
+                playlistDescription,
+                true
+            )
+        )
+    }
+
     override fun Activity.navigateToNewPlaylist() {
         val intent = CreatePlaylistActivity.createIntent(this)
         startActivity(intent)

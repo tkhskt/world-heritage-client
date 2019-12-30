@@ -54,7 +54,27 @@ data class Videos(
             )
         }
 
-        fun toVideoEntity(date: Date): VideoEntity {
+        fun toVideoEntity(date: Date = Date()): VideoEntity {
+            if (createdAt == null) {
+                return VideoEntity(
+                    vid = this.vid,
+                    addtime = this.addtime,
+                    channel = this.channel,
+                    dislikes = this.dislikes,
+                    duration = this.duration,
+                    embedded_url = this.embedded_url,
+                    framerate = this.framerate,
+                    hd = this.hd,
+                    keyword = this.keyword,
+                    likes = this.likes,
+                    preview_url = this.preview_url,
+                    title = this.title,
+                    uid = this.uid,
+                    video_url = this.video_url,
+                    viewnumber = this.viewnumber,
+                    created_at = date
+                )
+            }
             return VideoEntity(
                 vid = this.vid,
                 addtime = this.addtime,
@@ -71,8 +91,9 @@ data class Videos(
                 uid = this.uid,
                 video_url = this.video_url,
                 viewnumber = this.viewnumber,
-                created_at = date
+                created_at = this.createdAt
             )
+
         }
 
         fun toFavoriteVideo(date: Date): FavoriteVideo {

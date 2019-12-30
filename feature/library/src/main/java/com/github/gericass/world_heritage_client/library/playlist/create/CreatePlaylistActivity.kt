@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
+import com.github.gericass.world_heritage_client.common.dialog.create.NewPlaylistDialog
 import com.github.gericass.world_heritage_client.library.R
 import com.github.gericass.world_heritage_client.library.databinding.LibraryActivityCreatePlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,6 +25,13 @@ class CreatePlaylistActivity : AppCompatActivity() {
         setUpToolbar()
         supportFragmentManager.commit {
             replace(R.id.container, CreatePlaylistFragment.newInstance())
+        }
+        binding.next.setOnClickListener {
+            if (viewModel.selectedVideos.size == 0) return@setOnClickListener
+            NewPlaylistDialog.show(this) { title ->
+                viewModel.createNewPlaylist(title)
+                finish()
+            }
         }
 
     }

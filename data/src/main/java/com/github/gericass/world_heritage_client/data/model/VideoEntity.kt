@@ -7,23 +7,23 @@ import java.util.*
 
 @Entity
 data class VideoEntity(
-    val addtime: Int,
-    val channel: String,
-    val dislikes: Int,
-    val duration: Double,
-    val embedded_url: String,
-    val framerate: Double,
-    val hd: Boolean,
-    val keyword: String,
-    val likes: Int,
-    val preview_url: String,
-    val title: String,
-    val uid: String,
+    val addtime: Int = 0,
+    val channel: String = "",
+    val dislikes: Int = 0,
+    val duration: Double = 0.0,
+    val embedded_url: String = "",
+    val framerate: Double = 0.0,
+    val hd: Boolean = false,
+    val keyword: String = "",
+    val likes: Int = 0,
+    val preview_url: String = "",
+    val title: String = "",
+    val uid: String = "",
     @PrimaryKey
-    val vid: String,
-    val video_url: String,
-    val viewnumber: Int,
-    val created_at: Date
+    val vid: String = "",
+    val video_url: String = "",
+    val viewnumber: Int = 0,
+    val created_at: Date = Date()
 ) : Serializable {
     fun toVideo(): Videos.Video {
         return Videos.Video(
@@ -41,7 +41,8 @@ data class VideoEntity(
             title = this.title,
             uid = this.uid,
             video_url = this.video_url,
-            viewnumber = this.viewnumber
+            viewnumber = this.viewnumber,
+            createdAt = this.created_at
         )
     }
 }
