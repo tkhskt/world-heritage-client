@@ -31,6 +31,8 @@ object Libs {
         const val mockk = "1.9.3"
         const val coroutine = "1.3.3"
         const val truth = "1.0"
+        const val analytics = "17.2.1"
+        const val firestore = "21.2.1"
 
     }
 
@@ -88,6 +90,10 @@ object Libs {
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
     const val coroutineTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutine}"
+    const val coroutinePlayServices =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutine}"
     const val testing = "androidx.arch.core:core-testing:${Versions.lifecycle}"
     const val truth = "com.google.truth:truth:${Versions.truth}"
+    const val analytics = "com.google.firebase:firebase-analytics:${Versions.analytics}"
+    const val firestore = "com.google.firebase:firebase-firestore-ktx:${Versions.firestore}"
 }

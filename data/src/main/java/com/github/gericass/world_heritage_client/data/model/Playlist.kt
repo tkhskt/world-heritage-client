@@ -4,10 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class PlayList(
+data class Playlist(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
+    var id: Int = 0,
     val title: String,
+    val description: String = "",
     val thumbnailImg: Int? = null,
     val thumbnailImgUrl: String? = null
 )

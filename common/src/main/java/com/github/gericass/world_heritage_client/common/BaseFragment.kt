@@ -23,11 +23,19 @@ abstract class BaseFragment : Fragment() {
             launcher.launch(builder, null, null)
             viewModel.saveHistory(video)
         }
-    }
 
+        override fun onEditClick(video: Videos.Video) {
+            viewModel.selectedVideo = video
+        }
+    }
+    
     override fun onDestroyView() {
         super.onDestroyView()
         recyclerView.recycledViewPool.clear()
         launcher.destroy()
+    }
+
+    protected fun showPlaylistDialog() {
+        viewModel.showPlaylistDialog(requireActivity().supportFragmentManager)
     }
 }

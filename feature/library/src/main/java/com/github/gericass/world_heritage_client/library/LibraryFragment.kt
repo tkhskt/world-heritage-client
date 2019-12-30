@@ -10,7 +10,9 @@ import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
-import com.github.gericass.world_heritage_client.data.model.PlayList
+import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
+import com.github.gericass.world_heritage_client.data.PlaylistId
+import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
 import com.github.gericass.world_heritage_client.library.databinding.LibraryFragmentLibraryBinding
 import org.koin.android.ext.android.inject
@@ -27,21 +29,47 @@ class LibraryFragment : BaseFragment() {
 
     private val navigator: AvgleNavigator.LibraryNavigator by inject()
 
-    private val playListClickListener = { playList: PlayList ->
-        if (playList.id == 0L) {
-            navigator.run {
-                findNavController().navigateToHistory()
+    private val playlistClickListener = { playlist: Playlist ->
+        when (playlist.id) {
+            PlaylistId.HISTORY.id -> {
+                navigator.run {
+                    findNavController().navigateToHistory()
+                }
+            }
+            PlaylistId.FAVORITE.id -> {
+                navigator.run {
+                    findNavController().navigateToFavorite(
+                        playlist.id,
+                        playlist.title,
+                        playlist.description
+                    )
+                }
+            }
+            PlaylistId.LATER.id -> {
+
+            }
+            else -> {
+
             }
         }
     }
 
-    private val libraryController = LibraryController(videoClickListener, playListClickListener)
+    private val libraryController by lazy {
+        LibraryController(
+            videoClickListener,
+            playlistClickListener,
+            listOf(
+                SpinnerItem(getString(R.string.common_spinner_watch_later), {}),
+                SpinnerItem(getString(R.string.common_spinner_playlist), ::showPlaylistDialog)
+            )
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.run {
             observe(history, ::observeHistories)
-            observe(playLists, ::observePlayLists)
+            observe(playlists, ::observePlaylists)
         }
     }
 
@@ -65,7 +93,6 @@ class LibraryFragment : BaseFragment() {
                 this@LibraryFragment.viewModel.isRefreshing.value = true
                 this@LibraryFragment.viewModel.refresh()
             }
-
         }
     }
 
@@ -73,12 +100,25 @@ class LibraryFragment : BaseFragment() {
         libraryController.history = histories
     }
 
-    private fun observePlayLists(playLists: List<PlayList>?) {
-        val history = PlayList(0, "履歴", R.drawable.common_ic_history_24dp)
-        val list = playLists?.toMutableList()?.apply {
+    private fun observePlaylists(playlists: List<Playlist>?) {
+        val history = Playlist(
+            PlaylistId.HISTORY.id,
+            PlaylistId.HISTORY.title,
+            "",
+            R.drawable.common_ic_history_24dp
+        )
+        val favorite =
+            Playlist(
+                PlaylistId.FAVORITE.id,
+                PlaylistId.FAVORITE.title,
+                "",
+                R.drawable.common_ic_favorite_24dp
+            )
+        val list = playlists?.toMutableList()?.apply {
             add(0, history)
+            add(1, favorite)
         }
-        libraryController.playLists = list
+        libraryController.playlists = list
         viewModel.isRefreshing.value = false
     }
 }

@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion 29
@@ -68,6 +69,7 @@ dependencies {
     implementation Libs.koinAndroidxScope
     implementation Libs.koinViewModel
     implementation Libs.timber
+    implementation Libs.materialComponents
 }
 
 repositories {

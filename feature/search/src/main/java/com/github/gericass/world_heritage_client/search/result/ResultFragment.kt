@@ -15,6 +15,7 @@ import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.vo.Event
+import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.search.R
@@ -30,7 +31,15 @@ class ResultFragment : BaseFragment() {
 
     private val args: ResultFragmentArgs by navArgs()
 
-    private val resultController = ResultController(videoClickListener)
+    private val resultController by lazy {
+        ResultController(
+            videoClickListener,
+            listOf(
+                SpinnerItem(getString(R.string.common_spinner_watch_later), {}),
+                SpinnerItem(getString(R.string.common_spinner_playlist), ::showPlaylistDialog)
+            )
+        )
+    }
 
     override val recyclerView: EpoxyRecyclerView by lazy { binding.keywordLogRecycler }
 

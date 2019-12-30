@@ -6,6 +6,7 @@ import com.github.gericass.world_heritage_client.data.di.RepositoryModule.reposi
 import com.github.gericass.world_heritage_client.di.Modules.apiModule
 import com.github.gericass.world_heritage_client.di.Modules.databaseModule
 import com.github.gericass.world_heritage_client.di.Modules.navigatorModule
+import com.github.gericass.world_heritage_client.di.Modules.useCaseModule
 import com.github.gericass.world_heritage_client.di.Modules.viewModelModule
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.koin.android.ext.koin.androidContext
@@ -26,7 +27,8 @@ class App : Application() {
                     repositoryModule,
                     viewModelModule,
                     databaseModule,
-                    navigatorModule
+                    navigatorModule,
+                    useCaseModule
                 )
             )
         }

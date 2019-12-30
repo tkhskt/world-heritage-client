@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.github.gericass.world_heritage_client.common.sheet.BottomSheetViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/add_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:text="@string/common_sheet_add"
+            android:textColor="@color/common_gray_dark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/new_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/common_ic_add_24dp"
+            android:tint="@color/common_blue"
+            app:layout_constraintBottom_toBottomOf="@+id/new_text"
+            app:layout_constraintEnd_toStartOf="@+id/new_text"
+            app:layout_constraintTop_toTopOf="@+id/new_text" />
+
+        <TextView
+            android:id="@+id/new_text"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center|start"
+            android:text="@string/common_new_playlist"
+            android:textColor="@color/common_blue"
+            app:layout_constraintBottom_toBottomOf="@id/add_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/add_text" />
+
+        <View
+            android:id="@+id/top_border"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/common_color_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_text" />
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_border">
+
+            <LinearLayout
+                android:id="@+id/checkbox_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <View
+            android:id="@+id/bottom_border"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/common_color_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scroll" />
+
+
+        <ImageView
+            android:id="@+id/check_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:onClick="@{() -> viewModel.onDoneClick()}"
+            android:src="@drawable/ic_check_24dp"
+            android:tint="@color/common_gray"
+            app:layout_constraintBottom_toBottomOf="@id/done"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/done" />
+
+        <TextView
+            android:id="@+id/done"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start|center"
+            android:onClick="@{() -> viewModel.onDoneClick()}"
+            android:padding="12dp"
+            android:text="@string/common_done"
+            android:textColor="@color/common_gray_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/check_icon"
+            app:layout_constraintTop_toBottomOf="@id/bottom_border" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

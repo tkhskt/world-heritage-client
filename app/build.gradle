@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
 
 android {
     compileSdkVersion 29
@@ -72,4 +74,7 @@ dependencies {
     implementation Libs.room
     implementation Libs.roomKtx
     implementation Libs.threeTenAbp
+    implementation Libs.analytics
 }
+
+apply plugin: 'com.google.gms.google-services'
