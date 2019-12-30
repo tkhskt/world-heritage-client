@@ -14,7 +14,7 @@ class PagingManager<T : Any>(
 
     var collectionPath: String = ""
 
-    val first by lazy {
+    private val first by lazy {
         db.collection(collectionPath).limit(limit)
     }
     var next: Query? = null
@@ -26,10 +26,6 @@ class PagingManager<T : Any>(
         } else {
             first.getWithPaging(onSuccess, onFailure)
         }
-    }
-
-    fun refresh() {
-        next = null
     }
 
     private suspend fun Query.getWithPaging(onSuccess: (List<T>) -> Unit, onFailure: () -> Unit) {
