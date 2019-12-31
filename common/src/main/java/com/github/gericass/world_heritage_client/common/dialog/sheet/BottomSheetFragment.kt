@@ -88,6 +88,8 @@ class BottomSheetFragment : BottomSheetDialogFragment(), CoroutineScope {
                     fragment.dismiss()
                 }
             }
+
+        const val CREATE_PLAYLIST = 0
     }
 
 }
