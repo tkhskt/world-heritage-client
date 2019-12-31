@@ -5,11 +5,15 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.github.gericass.world_heritage_client.R
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
+import com.github.gericass.world_heritage_client.home.HomeActivity
 import com.github.gericass.world_heritage_client.library.LibraryFragmentDirections
 import com.github.gericass.world_heritage_client.library.playlist.create.CreatePlaylistActivity
 import com.github.gericass.world_heritage_client.search.SearchActivity
 
-class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
+class AvgleNavigatorImpl :
+    AvgleNavigator,
+    AvgleNavigator.LibraryNavigator,
+    AvgleNavigator.LoginNavigator {
 
     override fun NavController.setHomeGraph() {
         setGraph(R.navigation.common_home_navigation)
@@ -81,6 +85,11 @@ class AvgleNavigatorImpl : AvgleNavigator, AvgleNavigator.LibraryNavigator {
 
     override fun Activity.navigateToNewPlaylist() {
         val intent = CreatePlaylistActivity.createIntent(this)
+        startActivity(intent)
+    }
+
+    override fun Activity.navigateToHome() {
+        val intent = HomeActivity.createIntent(this)
         startActivity(intent)
     }
 }

@@ -5,6 +5,7 @@ import com.github.gericass.world_heritage_client.data.model.*
 import com.github.gericass.world_heritage_client.data.model.Collections
 import com.github.gericass.world_heritage_client.data.remote.AvgleClient
 import com.github.gericass.world_heritage_client.data.remote.PagingManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -12,8 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
-import timber.log.Timber
 import java.util.*
+import javax.security.auth.login.LoginException
 
 internal class AvgleRepositoryImpl(
     private val retrofit: Retrofit,
@@ -21,6 +22,7 @@ internal class AvgleRepositoryImpl(
 ) : AvgleRepository {
 
     private val firestore = Firebase.firestore
+    private val userId by lazy { FirebaseAuth.getInstance().currentUser?.uid }
     private val client by lazy { retrofit.create(AvgleClient::class.java) }
     private val keywordDao by lazy { avgleDatabase.keywordDao() }
     private val historyDao by lazy { avgleDatabase.viewingHistoryDao() }
@@ -80,7 +82,11 @@ internal class AvgleRepositoryImpl(
 
     override suspend fun getAllPlaylist(): List<Playlist> {
         var playlists = playlistDao.getAllPlaylist()
-        firestore.collection("playlist")
+        val user = userId ?: throw LoginException("user not logged in")
+        firestore
+            .collection(user)
+            .document("playlist")
+            .collection("playlist")
             .get()
             .addOnSuccessListener {
                 playlists = it.map { queryDocumentSnapshot ->
@@ -93,7 +99,10 @@ internal class AvgleRepositoryImpl(
 
     override suspend fun getPlaylistWithVideos(playlistId: Int): PlaylistWithVideos {
         var playlistWithVideos = playlistDao.getPlaylist(playlistId)
+        val user = userId ?: throw LoginException("user not logged in")
         firestore
+            .collection(user)
+            .document("playlist")
             .collection("playlist")
             .document(playlistId.toString())
             .get()
@@ -120,6 +129,7 @@ internal class AvgleRepositoryImpl(
     ) {
         if (videos.isNullOrEmpty()) return
         val date = Calendar.getInstance().time
+        val user = userId ?: throw LoginException("user not logged in")
         videos.map {
             it.toVideoEntity(date)
         }.forEach {
@@ -143,6 +153,8 @@ internal class AvgleRepositoryImpl(
             playlistDao.insertVideoPlaylist(it)
         }
         firestore
+            .collection(user)
+            .document("playlist")
             .collection("playlist")
             .document(playlistId.toString())
             .set(PlaylistWithVideosRemoteModel(playlist, videos.map { it.toVideoEntity(date) }))
@@ -151,6 +163,7 @@ internal class AvgleRepositoryImpl(
 
     override suspend fun deletePlaylist(playlistId: Int) {
         val playlistWithVideos = playlistDao.getPlaylist(playlistId)
+        val user = userId ?: throw LoginException("user not logged in")
         withContext(Dispatchers.IO) {
             avgleDatabase.runInTransaction {
                 playlistDao.run {
@@ -165,14 +178,11 @@ internal class AvgleRepositoryImpl(
                 }
             }
         }
-        firestore.collection("playlist")
+        firestore.collection(user)
+            .document("playlist")
+            .collection("playlist")
             .document(playlistWithVideos.playlist.id.toString())
             .delete()
-            .addOnSuccessListener {
-                Timber.d("deeeeeeee")
-            }.addOnFailureListener {
-                Timber.d("deeeedddddeeee")
-            }
             .await()
     }
 
@@ -197,32 +207,47 @@ internal class AvgleRepositoryImpl(
     }
 
     override suspend fun saveFavoriteVideo(videos: List<FavoriteVideo>) {
+        val user = userId ?: throw LoginException("user not logged in")
         videos.forEach {
-            firestore.collection(PlaylistId.FAVORITE.collectionName).document(it.vid).set(it)
+            firestore.collection(user)
+                .document(PlaylistId.FAVORITE.collectionName)
+                .collection(PlaylistId.FAVORITE.collectionName)
+                .document(it.vid).set(it)
                 .await()
         }
     }
 
     override suspend fun deleteFavoriteVideo(videoId: String) {
-        firestore.collection(PlaylistId.FAVORITE.collectionName).document(videoId).delete().await()
+        val user = userId ?: throw LoginException("user not logged in")
+        firestore.collection(user)
+            .document(PlaylistId.FAVORITE.collectionName)
+            .collection(PlaylistId.FAVORITE.collectionName)
+            .document(videoId).delete()
+            .await()
     }
 
     override suspend fun saveVideoToPlaylist(playlistId: Int, video: Videos.Video) {
         val now = Calendar.getInstance().time
+        val user = userId ?: throw LoginException("user not logged in")
         when (playlistId) {
             PlaylistId.FAVORITE.id -> saveFavoriteVideo(listOf(video.toFavoriteVideo(now)))
             PlaylistId.LATER.id -> saveLaterVideo(listOf(video.toLaterVideo(now)))
-            else -> firestore.collection("playlist")
+            else -> firestore.collection(user)
+                .document("playlist")
+                .collection("playlist")
                 .document(playlistId.toString())
                 .update("videos", FieldValue.arrayUnion(video.toVideoEntity()))
         }
     }
 
     override suspend fun deleteVideoFromPlaylist(playlistId: Int, video: Videos.Video) {
+        val user = userId ?: throw LoginException("user not logged in")
         when (playlistId) {
             PlaylistId.FAVORITE.id -> deleteFavoriteVideo(video.vid)
             PlaylistId.LATER.id -> deleteLaterVideo(video.vid)
-            else -> firestore.collection("playlist")
+            else -> firestore.collection(user)
+                .document("playlist")
+                .collection("playlist")
                 .document(playlistId.toString())
                 .update("videos", FieldValue.arrayRemove(video.toVideoEntity()))
         }
@@ -249,12 +274,22 @@ internal class AvgleRepositoryImpl(
     }
 
     override suspend fun saveLaterVideo(videos: List<LaterVideo>) {
+        val user = userId ?: throw LoginException("user not logged in")
         videos.forEach {
-            firestore.collection(PlaylistId.LATER.collectionName).document(it.vid).set(it).await()
+            firestore.collection(user)
+                .document(PlaylistId.LATER.collectionName)
+                .collection(PlaylistId.LATER.collectionName)
+                .document(it.vid).set(it)
+                .await()
         }
     }
 
     override suspend fun deleteLaterVideo(videoId: String) {
-        firestore.collection(PlaylistId.LATER.collectionName).document(videoId).delete().await()
+        val user = userId ?: throw LoginException("user not logged in")
+        firestore.collection(user)
+            .document(PlaylistId.LATER.collectionName)
+            .collection(PlaylistId.LATER.collectionName)
+            .document(videoId).delete()
+            .await()
     }
 }
