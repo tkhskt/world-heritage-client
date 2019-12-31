@@ -2,6 +2,7 @@ package com.github.gericass.world_heritage_client.common.dialog.sheet
 
 import androidx.lifecycle.*
 import com.github.gericass.world_heritage_client.common.R
+import com.github.gericass.world_heritage_client.common.dialog.sheet.BottomSheetFragment.Companion.CREATE_PLAYLIST
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.PlaylistId
 import com.github.gericass.world_heritage_client.data.model.Playlist
@@ -34,9 +35,16 @@ class BottomSheetViewModel(
         }
     }
 
+
     fun onDoneClick() {
         viewModelScope.launch {
             buttonChannel.send(checkedList)
+        }
+    }
+
+    fun onCreatePlaylistClick() {
+        viewModelScope.launch {
+            buttonChannel.send(listOf(CREATE_PLAYLIST))
         }
     }
 }
