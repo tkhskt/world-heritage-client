@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/library" />
             <option value="$PROJECT_DIR$/feature/search" />
+            <option value="$PROJECT_DIR$/login" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

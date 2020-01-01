@@ -92,6 +92,9 @@ object Modules {
         single<AvgleNavigator.LibraryNavigator> {
             AvgleNavigatorImpl()
         }
+        single<AvgleNavigator.LoginNavigator> {
+            AvgleNavigatorImpl()
+        }
     }
 
     //val navigationModule = module {

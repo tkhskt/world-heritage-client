@@ -34,4 +34,8 @@ interface AvgleNavigator {
 
         fun Activity.navigateToNewPlaylist()
     }
+
+    interface LoginNavigator {
+        fun Activity.navigateToHome()
+    }
 }

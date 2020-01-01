@@ -1,5 +1,7 @@
 package com.github.gericass.world_heritage_client.home
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -96,4 +98,8 @@ class HomeActivity : AppCompatActivity(), CoroutineScope {
     override fun onSupportNavigateUp(): Boolean =
         findNavController(R.id.home_nav_host_fragment).navigateUp()
 
+
+    companion object {
+        fun createIntent(activity: Activity) = Intent(activity, HomeActivity::class.java)
+    }
 }

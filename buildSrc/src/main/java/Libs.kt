@@ -34,6 +34,8 @@ object Libs {
         const val truth = "1.0"
         const val analytics = "17.2.1"
         const val firestore = "21.2.1"
+        const val firebaseAuth = "19.2.0"
+        const val firebaseUiAuth = "6.2.0"
 
     }
 
@@ -98,4 +100,6 @@ object Libs {
     const val analytics = "com.google.firebase:firebase-analytics:${Versions.analytics}"
     const val firestore = "com.google.firebase:firebase-firestore-ktx:${Versions.firestore}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}"
+    const val firebaseAuth = "com.google.firebase:firebase-auth:${Versions.firebaseAuth}"
+    const val firebaseUiAuth = "com.firebaseui:firebase-ui-auth:${Versions.firebaseUiAuth}"
 }
