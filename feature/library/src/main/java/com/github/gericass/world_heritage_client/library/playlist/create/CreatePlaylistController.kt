@@ -20,10 +20,14 @@ class CreatePlaylistController(
         }
 
     override fun buildItemModel(currentPosition: Int, item: Videos.Video?): EpoxyModel<*> {
+        val selectedVideoId = viewModel.selectedVideos.map { it.vid }
         return SmallVideoViewModel_().apply {
             id(currentPosition)
             item?.let {
                 video(it)
+                if (selectedVideoId.contains(it.vid)) {
+                    isChecked(true)
+                }
             }
             listener(videoClickListener)
             checkable(true)

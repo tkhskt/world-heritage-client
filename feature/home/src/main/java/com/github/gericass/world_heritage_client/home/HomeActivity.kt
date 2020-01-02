@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
+import com.github.gericass.world_heritage_client.data.PlaylistId
 import com.github.gericass.world_heritage_client.feature.home.R
 import com.github.gericass.world_heritage_client.feature.home.databinding.HomeActivityHomeBinding
 import kotlinx.coroutines.*
@@ -43,15 +44,15 @@ class HomeActivity : AppCompatActivity(), CoroutineScope {
                             mainTab.isVisible = true
                         }
                     }
-                    "history" -> {
+                    PlaylistId.HISTORY.collectionName -> {
                         binding.apply {
-                            toolbarArrow.title.text = "履歴"
+                            toolbarArrow.title.text = PlaylistId.HISTORY.title
                             toolbarDefault.mainToolbar.isVisible = false
                             toolbarArrow.backArrowToolbar.isVisible = true
                             mainTab.isVisible = false
                         }
                     }
-                    "playlist" -> {
+                    PlaylistId.FAVORITE.collectionName -> {
                         binding.apply {
                             toolbarArrow.title.text = args?.getString("playlistTitle")
                             toolbarDefault.mainToolbar.isVisible = false

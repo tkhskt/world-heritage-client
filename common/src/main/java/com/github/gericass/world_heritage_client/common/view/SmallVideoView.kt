@@ -58,6 +58,12 @@ class SmallVideoView @JvmOverloads constructor(
         binding.checkable = checkable
     }
 
+    @ModelProp
+    @JvmOverloads
+    fun setIsChecked(isChecked: Boolean = false) {
+        binding.checkbox.isChecked = isChecked
+    }
+
     @CallbackProp
     fun setListener(listener: VideoClickListener?) {
         binding.listener = listener

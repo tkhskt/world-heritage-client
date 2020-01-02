@@ -5,6 +5,7 @@ import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.github.gericass.world_heritage_client.common.commonViewBorder
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
+import com.github.gericass.world_heritage_client.common.view.progressView
 import com.github.gericass.world_heritage_client.common.view.subjectTextView
 import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.data.PlaylistId
@@ -21,6 +22,12 @@ class LibraryController(
     private val newPlaylistClickListener: () -> Unit,
     private val spinnerItems: List<SpinnerItem>
 ) : EpoxyController() {
+
+    var isLoading: Boolean = false
+        set(value) {
+            field = value
+            requestModelBuild()
+        }
 
     var history: List<ViewingHistory>? = null
         set(value) {
@@ -70,6 +77,11 @@ class LibraryController(
                     id("new_playlist")
                     clickListener { newPlaylistClickListener() }
                 }
+            }
+        }
+        if (isLoading) {
+            progressView {
+                id("progress")
             }
         }
     }

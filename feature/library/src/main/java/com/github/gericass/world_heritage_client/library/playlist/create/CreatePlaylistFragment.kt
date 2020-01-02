@@ -40,7 +40,9 @@ class CreatePlaylistFragment : BaseFragment() {
         }
     }
 
-    private val controller by lazy { CreatePlaylistController(videoClickListener, viewModel) }
+    private val controller by lazy {
+        CreatePlaylistController(videoClickListener, viewModel)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
