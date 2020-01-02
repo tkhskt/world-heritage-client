@@ -10,7 +10,9 @@ import com.airbnb.epoxy.EpoxyRecyclerView
 import com.github.gericass.world_heritage_client.common.BaseFragment
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
+import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
+import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.PlaylistId
 import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.ViewingHistory
@@ -70,11 +72,31 @@ class LibraryFragment : BaseFragment() {
         )
     }
 
+    private val defaultList = listOf(
+        Playlist(
+            PlaylistId.HISTORY.id,
+            PlaylistId.HISTORY.title,
+            "",
+            R.drawable.common_ic_history_24dp
+        ), Playlist(
+            PlaylistId.FAVORITE.id,
+            PlaylistId.FAVORITE.title,
+            "",
+            R.drawable.common_ic_favorite_24dp
+        ), Playlist(
+            PlaylistId.LATER.id,
+            PlaylistId.LATER.title,
+            "",
+            R.drawable.common_ic_watch_later_24dp
+        )
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.run {
             observe(history, ::observeHistories)
             observe(playlists, ::observePlaylists)
+            observe(loadingStatus, ::observeLoadingStatus)
         }
     }
 
@@ -99,37 +121,35 @@ class LibraryFragment : BaseFragment() {
                 this@LibraryFragment.viewModel.refresh()
             }
         }
+        libraryController.playlists = defaultList
     }
 
     private fun observeHistories(histories: List<ViewingHistory>?) {
         libraryController.history = histories
     }
 
+    private fun observeLoadingStatus(status: Status?) {
+        when (status) {
+            Status.LOADING -> libraryController.isLoading = run {
+                viewModel.isRefreshing.value?.let { refreshing ->
+                    if (refreshing) return@run false
+                }
+                return@run true
+            }
+            Status.SUCCESS -> libraryController.isLoading = false
+            Status.ERROR -> run {
+                showSnackbar(getString(R.string.common_msg_api_error)) {
+                    viewModel.refresh()
+                }
+                libraryController.isLoading = false
+            }
+        }
+    }
+
     private fun observePlaylists(playlists: List<Playlist>?) {
-        val history = Playlist(
-            PlaylistId.HISTORY.id,
-            PlaylistId.HISTORY.title,
-            "",
-            R.drawable.common_ic_history_24dp
-        )
-        val favorite =
-            Playlist(
-                PlaylistId.FAVORITE.id,
-                PlaylistId.FAVORITE.title,
-                "",
-                R.drawable.common_ic_favorite_24dp
-            )
-        val later =
-            Playlist(
-                PlaylistId.LATER.id,
-                PlaylistId.LATER.title,
-                "",
-                R.drawable.common_ic_watch_later_24dp
-            )
-        val list = playlists?.toMutableList()?.apply {
-            add(0, history)
-            add(1, favorite)
-            add(2, later)
+        val list = defaultList.toMutableList()
+        playlists?.let {
+            list.addAll(it)
         }
         libraryController.playlists = list
         viewModel.isRefreshing.value = false
