@@ -13,6 +13,7 @@ import com.github.gericass.world_heritage_client.home.collection.CollectionViewM
 import com.github.gericass.world_heritage_client.library.LibraryViewModel
 import com.github.gericass.world_heritage_client.library.history.ViewingHistoryViewModel
 import com.github.gericass.world_heritage_client.library.playlist.create.CreatePlaylistViewModel
+import com.github.gericass.world_heritage_client.library.playlist.edit.EditPlaylistViewModel
 import com.github.gericass.world_heritage_client.library.playlist.show.PlaylistUseCase
 import com.github.gericass.world_heritage_client.library.playlist.show.PlaylistViewModel
 import com.github.gericass.world_heritage_client.navigator.AvgleNavigatorImpl
@@ -79,6 +80,7 @@ object Modules {
         viewModel { PlaylistViewModel(get(), get()) }
         viewModel { BottomSheetViewModel(get()) }
         viewModel { CreatePlaylistViewModel(get()) }
+        viewModel { EditPlaylistViewModel(get()) }
     }
 
     val useCaseModule = module {

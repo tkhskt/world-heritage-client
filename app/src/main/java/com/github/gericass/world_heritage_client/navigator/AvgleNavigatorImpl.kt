@@ -5,9 +5,11 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.github.gericass.world_heritage_client.R
 import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
+import com.github.gericass.world_heritage_client.data.PlaylistId
 import com.github.gericass.world_heritage_client.home.HomeActivity
 import com.github.gericass.world_heritage_client.library.LibraryFragmentDirections
 import com.github.gericass.world_heritage_client.library.playlist.create.CreatePlaylistActivity
+import com.github.gericass.world_heritage_client.library.playlist.edit.EditPlaylistActivity
 import com.github.gericass.world_heritage_client.search.SearchActivity
 
 class AvgleNavigatorImpl :
@@ -38,49 +40,35 @@ class AvgleNavigatorImpl :
         navigate(R.id.action_library_to_history)
     }
 
-    override fun NavController.navigateToFavorite(
-        playlistId: Int,
-        playlistTitle: String,
-        playlistDescription: String
-    ) {
+    override fun NavController.navigateToFavorite(playlistId: Int) {
         navigate(
             LibraryFragmentDirections.actionLibraryToPlaylist(
                 playlistId,
-                playlistTitle,
-                playlistDescription,
+                PlaylistId.FAVORITE.title,
                 false
             )
         )
     }
 
-    override fun NavController.navigateToLater(
-        playlistId: Int,
-        playlistTitle: String,
-        playlistDescription: String
-    ) {
+    override fun NavController.navigateToLater(playlistId: Int) {
         navigate(
             LibraryFragmentDirections.actionLibraryToPlaylist(
                 playlistId,
-                playlistTitle,
-                playlistDescription,
+                PlaylistId.LATER.title,
                 false
             )
         )
     }
 
-    override fun NavController.navigateToPlaylist(
-        playlistId: Int,
-        playlistTitle: String,
-        playlistDescription: String
-    ) {
+    override fun NavController.navigateToPlaylist(playlistId: Int, playlistTitle: String) {
         navigate(
-            LibraryFragmentDirections.actionLibraryToPlaylist(
-                playlistId,
-                playlistTitle,
-                playlistDescription,
-                true
-            )
+            LibraryFragmentDirections.actionLibraryToPlaylist(playlistId, playlistTitle, true)
         )
+    }
+
+    override fun Activity.navigateToEditPlaylist(playlistId: Int) {
+        val intent = EditPlaylistActivity.createIntent(this, playlistId)
+        startActivity(intent)
     }
 
     override fun Activity.navigateToNewPlaylist() {

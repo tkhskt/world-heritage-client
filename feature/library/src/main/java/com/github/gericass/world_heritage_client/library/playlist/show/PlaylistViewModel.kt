@@ -5,6 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.gericass.world_heritage_client.common.vo.Status
 import com.github.gericass.world_heritage_client.data.AvgleRepository
+import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.Videos
 import kotlinx.coroutines.launch
 
@@ -21,11 +22,11 @@ class PlaylistViewModel(
             factory.playListId = value
         }
 
-    var title = ""
-    var description = ""
-
     private val _videos = MutableLiveData<List<Videos.Video>>()
     val videos: LiveData<List<Videos.Video>> = _videos
+
+    private val _playlist = MutableLiveData<Playlist>()
+    val playlist: LiveData<Playlist> = _playlist
 
     private val _loadingStatus = MutableLiveData<Status>()
     val loadingStatus: LiveData<Status> = _loadingStatus
@@ -56,6 +57,20 @@ class PlaylistViewModel(
             .build()
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun init() {
+        viewModelScope.launch {
+            runCatching {
+                useCase.getPlaylist(playlistId)
+            }.onSuccess {
+                _loadingStatus.value = Status.SUCCESS
+                _playlist.value = it
+            }.onFailure {
+                _loadingStatus.value = Status.ERROR
+            }
+        }
+    }
+
     fun deleteVideo(video: Videos.Video) {
         viewModelScope.launch {
             useCase.deleteVideo(playlistId, video)
@@ -70,6 +85,7 @@ class PlaylistViewModel(
     }
 
     fun refresh() {
+        init()
         factory.refresh()
     }
 }

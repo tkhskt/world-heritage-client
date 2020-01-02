@@ -2,8 +2,6 @@
 
     <string name="library_search_text">再生履歴を検索します</string>
     <string name="library_cancel">キャンセル</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="library_edit_playlist">再生リストの編集</string>
 
 </resources>

@@ -54,7 +54,7 @@ abstract class BaseFragment : Fragment() {
     }
 
     private fun observeShowPlaylistTitleDialog(event: Event<Unit>?) {
-        event?.getContentIfNotHandled()
+        event?.getContentIfNotHandled() ?: return
         val videos = viewModel.selectedVideo ?: return
         NewPlaylistDialog.show(requireContext()) { title ->
             viewModel.createNewPlaylist(title, listOf(videos))
