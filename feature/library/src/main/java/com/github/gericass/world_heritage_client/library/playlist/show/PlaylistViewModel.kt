@@ -42,6 +42,8 @@ class PlaylistViewModel(
 
     val pagedList: LiveData<PagedList<Videos.Video>>
 
+    var deleteProgress = MutableLiveData<Boolean>()
+
     init {
         val loadingObserver = Observer<Status> {
             if (it == Status.LOADING) {
@@ -73,14 +75,26 @@ class PlaylistViewModel(
 
     fun deleteVideo(video: Videos.Video) {
         viewModelScope.launch {
-            useCase.deleteVideo(playlistId, video)
+            deleteProgress.value = true
+            runCatching {
+                useCase.deleteVideo(playlistId, video)
+            }.also {
+                deleteProgress.value = false
+            }
         }
     }
 
     fun deletePlaylist(onDelete: () -> Unit) {
         viewModelScope.launch {
-            repository.deletePlaylist(playlistId)
-            onDelete()
+            deleteProgress.value = true
+            runCatching {
+                repository.deletePlaylist(playlistId)
+            }.onSuccess {
+                onDelete()
+            }.also {
+                deleteProgress.value = false
+            }
+
         }
     }
 
