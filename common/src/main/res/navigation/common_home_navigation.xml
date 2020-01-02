@@ -32,6 +32,30 @@
         android:name="com.github.gericass.world_heritage_client.library.playlist.show.PlaylistFragment"
         android:label="playlist">
 
+        <action
+            android:id="@+id/action_show_to_edit"
+            app:destination="@id/nav_edit_playlist" />
+
+        <argument
+            android:name="playlistId"
+            app:argType="integer" />
+
+        <argument
+            android:name="playlistTitle"
+            app:argType="string" />
+
+        <argument
+            android:name="editable"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_playlist"
+        android:name="com.github.gericass.world_heritage_client.library.playlist.edit.EditPlaylistFragment"
+        android:label="edit">
+
         <argument
             android:name="playlistId"
             app:argType="integer" />
@@ -45,9 +69,8 @@
             app:argType="string" />
 
         <argument
-            android:name="editable"
-            android:defaultValue="false"
-            app:argType="boolean" />
+            android:name="playlistThumbnail"
+            app:argType="string" />
 
     </fragment>
 

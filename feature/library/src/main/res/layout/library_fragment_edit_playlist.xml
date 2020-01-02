@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.github.gericass.world_heritage_client.library.playlist.edit.EditPlaylistViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".playlist.edit.EditPlaylistFragment">
+
+        <ImageView
+            android:id="@+id/cover_image"
+            android:layout_width="160dp"
+            android:layout_height="90dp"
+            app:image_url="@{viewModel.thumbnail}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/common_duration_background"
+            tools:src="@drawable/common_logo" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/common_gray"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:layout_constraintBottom_toBottomOf="@+id/cover_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cover_image"
+            app:layout_constraintTop_toTopOf="@id/cover_image">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:hint="@string/common_title"
+                android:inputType="text"
+                android:maxLines="1"
+                android:text="@={viewModel.titleEditText}"
+                android:textColor="@color/common_gray_dark"
+                android:textCursorDrawable="@drawable/common_cursor"
+                android:theme="@style/library_PlaylistEditTextStyle"
+                app:selection="@{viewModel.titleEditText}"
+                tools:text="aaaaaaaa" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColorHint="@color/common_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cover_image">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/common_description"
+                android:inputType="text"
+                android:maxLines="1"
+                android:text="@={viewModel.descriptionEditText}"
+                android:textColor="@color/common_gray_dark"
+                android:textCursorDrawable="@drawable/common_cursor"
+                android:theme="@style/library_PlaylistEditTextStyle"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:selection="@{viewModel.descriptionEditText}"
+                tools:text="aaaaaa" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

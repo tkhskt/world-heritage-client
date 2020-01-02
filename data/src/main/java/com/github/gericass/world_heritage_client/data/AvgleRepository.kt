@@ -44,6 +44,8 @@ interface AvgleRepository {
         thumbnail: Int? = null
     )
 
+    suspend fun updatePlaylist(playlistId: Int, title: String, description: String)
+
     suspend fun deletePlaylist(playlistId: Int)
 
     suspend fun getFavoriteVideos(

@@ -13,14 +13,17 @@ import androidx.paging.PagedList
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.epoxy.EpoxyTouchHelper
 import com.github.gericass.world_heritage_client.common.BaseFragment
+import com.github.gericass.world_heritage_client.common.navigator.AvgleNavigator
 import com.github.gericass.world_heritage_client.common.observe
 import com.github.gericass.world_heritage_client.common.showSnackbar
 import com.github.gericass.world_heritage_client.common.view.SmallVideoViewModel_
 import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
 import com.github.gericass.world_heritage_client.common.vo.Status
+import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.library.R
 import com.github.gericass.world_heritage_client.library.databinding.LibraryFragmentPlaylistBinding
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
@@ -35,10 +38,14 @@ class PlaylistFragment : BaseFragment() {
 
     override val recyclerView: EpoxyRecyclerView by lazy { binding.recycler }
 
+    private val navigator: AvgleNavigator.LibraryNavigator by inject()
+
     private val editButtonListener = object :
         PlaylistController.EditButtonListener {
         override fun onEditButtonClick() {
-
+            navigator.run {
+                requireActivity().navigateToEditPlaylist(viewModel.playlistId)
+            }
         }
 
         override fun onDeleteButtonClick() {
@@ -50,8 +57,6 @@ class PlaylistFragment : BaseFragment() {
 
     private val playlistController by lazy {
         PlaylistController(
-            viewModel.title,
-            viewModel.description,
             videoClickListener,
             editButtonListener,
             viewModel.editable,
@@ -67,6 +72,11 @@ class PlaylistFragment : BaseFragment() {
         viewModel.run {
             observe(loadingStatus, ::observeLoadingStatus)
             observe(pagedList, ::observePagedList)
+            observe(playlist, ::observePlaylist)
+        }
+        viewModel.apply {
+            editable = args.editable
+            playlistId = args.playlistId
         }
     }
 
@@ -83,12 +93,6 @@ class PlaylistFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(viewModel)
-        viewModel.apply {
-            editable = args.editable
-            playlistId = args.playlistId
-            title = args.playlistTitle
-            description = args.playlistDescription
-        }
         binding.apply {
             lifecycleOwner = this@PlaylistFragment
             viewModel = this@PlaylistFragment.viewModel
@@ -154,6 +158,11 @@ class PlaylistFragment : BaseFragment() {
                     itemView?.setBackgroundColor(Color.WHITE)
                 }
             })
+    }
+
+    private fun observePlaylist(resp: Playlist?) {
+        val playlist = resp ?: return
+        playlistController.playlist = playlist
     }
 
     private fun observePagedList(pagedList: PagedList<Videos.Video>?) {

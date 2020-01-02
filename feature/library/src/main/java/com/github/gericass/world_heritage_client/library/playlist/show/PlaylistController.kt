@@ -6,12 +6,11 @@ import com.github.gericass.world_heritage_client.common.view.SmallVideoViewModel
 import com.github.gericass.world_heritage_client.common.view.VideoClickListener
 import com.github.gericass.world_heritage_client.common.view.progressView
 import com.github.gericass.world_heritage_client.common.vo.SpinnerItem
+import com.github.gericass.world_heritage_client.data.model.Playlist
 import com.github.gericass.world_heritage_client.data.model.Videos
 import com.github.gericass.world_heritage_client.library.LibraryViewPlaylistHeaderBindingModel_
 
 class PlaylistController(
-    private val title: String,
-    private val description: String,
     private val videoClickListener: VideoClickListener,
     private val editButtonListener: EditButtonListener,
     private val editable: Boolean,
@@ -19,6 +18,12 @@ class PlaylistController(
 ) : PagedListEpoxyController<Videos.Video>() {
 
     var isLoading = true
+        set(value) {
+            field = value
+            requestModelBuild()
+        }
+
+    var playlist: Playlist? = null
         set(value) {
             field = value
             requestModelBuild()
@@ -39,8 +44,8 @@ class PlaylistController(
     override fun addModels(models: List<EpoxyModel<*>>) {
         LibraryViewPlaylistHeaderBindingModel_().apply {
             id("header")
-            title(title)
-            description(description)
+            title(playlist?.title)
+            description(playlist?.description)
             editable(editable)
             listener(editButtonListener)
         }.addTo(this)

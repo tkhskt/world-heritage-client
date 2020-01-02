@@ -161,6 +161,19 @@ internal class AvgleRepositoryImpl(
             .await()
     }
 
+    override suspend fun updatePlaylist(playlistId: Int, title: String, description: String) {
+        val user = userId ?: throw LoginException("user not logged in")
+        firestore.collection(user).document("playlist")
+            .collection("playlist")
+            .document(playlistId.toString())
+            .update(
+                mapOf(
+                    "playlist.title" to title,
+                    "playlist.description" to description
+                )
+            ).await()
+    }
+
     override suspend fun deletePlaylist(playlistId: Int) {
         val playlistWithVideos = playlistDao.getPlaylist(playlistId)
         val user = userId ?: throw LoginException("user not logged in")

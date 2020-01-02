@@ -14,23 +14,13 @@ interface AvgleNavigator {
 
     interface LibraryNavigator {
         fun NavController.navigateToHistory()
-        fun NavController.navigateToFavorite(
-            playlistId: Int,
-            playlistTitle: String,
-            playlistDescription: String
-        )
+        fun NavController.navigateToFavorite(playlistId: Int)
 
-        fun NavController.navigateToLater(
-            playlistId: Int,
-            playlistTitle: String,
-            playlistDescription: String
-        )
+        fun NavController.navigateToLater(playlistId: Int)
 
-        fun NavController.navigateToPlaylist(
-            playlistId: Int,
-            playlistTitle: String,
-            playlistDescription: String
-        )
+        fun NavController.navigateToPlaylist(playlistId: Int, playlistTitle: String)
+
+        fun Activity.navigateToEditPlaylist(playlistId: Int)
 
         fun Activity.navigateToNewPlaylist()
     }

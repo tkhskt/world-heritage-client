@@ -38,29 +38,17 @@ class LibraryFragment : BaseFragment() {
             }
             PlaylistId.FAVORITE.id -> {
                 navigator.run {
-                    findNavController().navigateToFavorite(
-                        playlist.id,
-                        playlist.title,
-                        playlist.description
-                    )
+                    findNavController().navigateToFavorite(playlist.id)
                 }
             }
             PlaylistId.LATER.id -> {
                 navigator.run {
-                    findNavController().navigateToLater(
-                        playlist.id,
-                        playlist.title,
-                        playlist.description
-                    )
+                    findNavController().navigateToLater(playlist.id)
                 }
             }
             else -> {
                 navigator.run {
-                    findNavController().navigateToPlaylist(
-                        playlist.id,
-                        playlist.title,
-                        playlist.description
-                    )
+                    findNavController().navigateToPlaylist(playlist.id, playlist.title)
                 }
             }
         }

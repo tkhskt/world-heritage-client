@@ -2,10 +2,7 @@ package com.github.gericass.world_heritage_client.library.playlist.show
 
 import com.github.gericass.world_heritage_client.data.AvgleRepository
 import com.github.gericass.world_heritage_client.data.PlaylistId
-import com.github.gericass.world_heritage_client.data.model.FavoriteVideo
-import com.github.gericass.world_heritage_client.data.model.LaterVideo
-import com.github.gericass.world_heritage_client.data.model.VideoEntity
-import com.github.gericass.world_heritage_client.data.model.Videos
+import com.github.gericass.world_heritage_client.data.model.*
 import com.github.gericass.world_heritage_client.data.remote.PagingManager
 
 class PlaylistUseCase(
@@ -31,6 +28,14 @@ class PlaylistUseCase(
             else -> {
                 repository.getPlaylistWithVideos(playlistId).videos.map(VideoEntity::toVideo)
             }
+        }
+    }
+
+    suspend fun getPlaylist(playlistId: Int): Playlist {
+        return when (playlistId) {
+            PlaylistId.FAVORITE.id -> Playlist(playlistId, PlaylistId.FAVORITE.title)
+            PlaylistId.LATER.id -> Playlist(playlistId, PlaylistId.LATER.title)
+            else -> repository.getPlaylistWithVideos(playlistId).playlist
         }
     }
 

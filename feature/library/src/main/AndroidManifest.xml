@@ -3,7 +3,8 @@
     package="com.github.gericass.world_heritage_client.library">
 
     <application>
-        <activity android:name=".playlist.create.CreatePlaylistActivity"></activity>
+        <activity android:name=".playlist.edit.EditPlaylistActivity"></activity>
+        <activity android:name=".playlist.create.CreatePlaylistActivity" />
     </application>
 
 </manifest>
